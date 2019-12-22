@@ -23,7 +23,7 @@ runs locally on localhost:3000
 ```
 cd chatter/chat-server
 npm i
-ng serve
+npm run start:dev
 ```
 
 ## MongoDB
