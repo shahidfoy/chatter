@@ -93,4 +93,18 @@ export class PostsService {
             throw new InternalServerErrorException({ message: `Like Error Occured ${err}` });
         });
     }
+
+    async addDislike(user: User, postId: string): Promise<string> {
+        return await this.postModel.updateOne({
+            '_id': postId,
+            'dislikes.username': { $ne: user.username },
+        }, {
+            $push: { dislikes: { username: user.username } },
+            $inc: { totalDislikes: 1 },
+        }).then(() => {
+            return JSON.stringify(postId);
+        }).catch(err => {
+            throw new InternalServerErrorException({ message: `Dislike Error Occured ${err}`});
+        });
+    }
 }

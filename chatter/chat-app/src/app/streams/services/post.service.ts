@@ -26,8 +26,12 @@ export class PostService {
     return this.http.get<Post[]>(`${environment.BASEURL}/api/posts`);
   }
 
-  addLIke(body: Post): Observable<string> {
+  addLike(body: Post): Observable<string> {
     return this.http.post<string>(`${environment.BASEURL}/api/posts/like`, body);
+  }
+
+  addDislike(body: Post): Observable<string> {
+    return this.http.post<string>(`${environment.BASEURL}/api/posts/dislike`, body);
   }
 
   ///////////////////////////////////////////

@@ -28,4 +28,12 @@ export class PostsController {
     ): Promise<string> {
         return this.postsService.addLike(req.user, postId);
     }
+
+    @Post('dislike')
+    async addDisLike(
+        @Req() req: CustomRequest,
+        @Body('_id') postId: string,
+    ): Promise<string> {
+        return this.postsService.addDislike(req.user, postId);
+    }
 }

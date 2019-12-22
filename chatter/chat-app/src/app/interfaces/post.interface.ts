@@ -8,7 +8,9 @@ export interface Post {
   tags: string[];
   comments: UserComment[];
   totalLikes: number;
-  likes: PostLikes[];
+  likes: UsernameObj[];
+  totalDislikes: number;
+  dislikes: UsernameObj[];
   createdAt: Date;
 }
 
@@ -19,6 +21,6 @@ export interface UserComment {
   createdAt: Date;
 }
 
-export interface PostLikes {
+export interface UsernameObj {
   username: string;
 }

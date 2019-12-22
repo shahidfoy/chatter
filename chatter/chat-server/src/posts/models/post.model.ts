@@ -18,6 +18,10 @@ export const PostSchema = new mongoose.Schema({
     likes: [
         { username: { type: String, default: '' } },
     ],
+    totalDislikes: { type: Number, default: 0 },
+    dislikes: [
+        { username: { type: String, default: '' } },
+    ],
     createdAt: { type: Date, default: Date.now() },
 });
 
@@ -29,7 +33,9 @@ export interface UserPost extends mongoose.Document {
     tags: string[];
     comments: UserComment[];
     totalLikes: number;
-    likes: PostLikes[];
+    likes: UsernameObj[];
+    totalDislikes: number;
+    dislikes: UsernameObj[];
     createdAt: Date;
 }
 
@@ -40,6 +46,6 @@ export interface UserComment {
     createdAt: Date;
 }
 
-export interface PostLikes {
+export interface UsernameObj {
     username: string;
 }
