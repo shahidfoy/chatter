@@ -14,6 +14,7 @@ import { StreamsRoutingModule } from './streams-routing.module';
 import { PostService } from './services/post.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CommentsComponent } from './posts/comments/comments.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { HttpClientModule } from '@angular/common/http';
     PostsComponent,
     ActionBarComponent,
     PostFormComponent,
-    ProfileComponent
+    ProfileComponent,
+    CommentsComponent
   ],
   imports: [
     CommonModule,

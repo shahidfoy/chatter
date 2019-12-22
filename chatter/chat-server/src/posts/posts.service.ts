@@ -86,6 +86,20 @@ export class PostsService {
      * @param postId post id
      */
     async addLike(user: User, postId: string): Promise<string> {
+        const userDisliked = await this.postModel.find({ 'likes.username': user.username });
+
+        if (userDisliked) {
+            this.postModel.updateOne({
+                '_id': postId,
+                'dislikes.username': { $eq: user.username },
+            }, {
+                $pull: { dislikes: { username: user.username } },
+                $inc: { totalDislikes: -1 },
+            }).then().catch(err => {
+                throw new InternalServerErrorException({ message: `Like Error Occured removing dislike ${err}` });
+            });
+        }
+
         return await this.postModel.updateOne({
             '_id': postId,
             'likes.username': { $ne: user.username },
@@ -105,6 +119,20 @@ export class PostsService {
      * @param postId post id
      */
     async addDislike(user: User, postId: string): Promise<string> {
+        const userLiked = await this.postModel.find({ 'likes.username': user.username });
+
+        if (userLiked) {
+            this.postModel.updateOne({
+                '_id': postId,
+                'likes.username': { $eq: user.username },
+            }, {
+                $pull: { likes: { username: user.username } },
+                $inc: { totalLikes: -1 },
+            }).then().catch(err => {
+                throw new InternalServerErrorException({ message: `Dislike Error Occured removing like ${err}` });
+            });
+        }
+
         return await this.postModel.updateOne({
             '_id': postId,
             'dislikes.username': { $ne: user.username },

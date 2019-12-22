@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { TokenService } from 'src/app/services/token.service';
 import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-posts',
@@ -28,6 +29,7 @@ export class PostsComponent implements OnInit {
     private applicationStateService: ApplicationStateService,
     private postService: PostService,
     private notification: NzNotificationService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -41,6 +43,15 @@ export class PostsComponent implements OnInit {
     this.postService.receiveNewPostSocket().subscribe(() => {
       this.getAllPosts();
     });
+  }
+
+  /**
+   * open comments for post
+   * @param post post comments
+   */
+  openComments(post: Post) {
+    console.log('navigating', post);
+    this.router.navigate(['streams/post', post._id]);
   }
 
   /**

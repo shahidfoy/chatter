@@ -18,8 +18,6 @@
             <nz-comment-content>
               <!-- <img src="../../../assets/logo6.png"/> -->
               <p class="post">{{ post.post }}</p>
-
-              <!-- TODO make tags look better -->
               <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag>
             </nz-comment-content>
             <nz-comment-action>
@@ -33,7 +31,6 @@
               ></i>
               <span class="count like">{{ post.totalLikes }}</span>
             </nz-comment-action>
-            <!-- implement this later -->
             <nz-comment-action>
               <i
                 nz-tooltip
@@ -45,7 +42,7 @@
               ></i>
               <span class="count dislike">{{ post.totalDislikes }}</span>
             </nz-comment-action>
-            <nz-comment-action>comments {{ post.comments.length }}</nz-comment-action>
+            <nz-comment-action ><span (click)="openComments(post)"><i nz-icon nzType="message"></i> comments {{ post.comments.length }}</span></nz-comment-action>
           </nz-comment>
       </div>
     </div>
