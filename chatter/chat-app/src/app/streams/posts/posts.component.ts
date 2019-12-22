@@ -43,10 +43,18 @@ export class PostsComponent implements OnInit {
     });
   }
 
+  /**
+   * uses moment to customize time output
+   * @param time time stamp
+   */
   timeFromNow(time: Date) {
     return moment(time).fromNow();
   }
 
+  /**
+   * add like to a post
+   * @param post post being liked
+   */
   like(post: Post) {
     this.postService.addLike(post).subscribe((postId: string) => {
       this.postService.emitNewPostSocket();
@@ -55,6 +63,10 @@ export class PostsComponent implements OnInit {
     });
   }
 
+  /**
+   * add dislike to a post
+   * @param post post being disliked
+   */
   dislike(post: Post) {
     this.postService.addDislike(post).subscribe((postId: string) => {
       this.postService.emitNewPostSocket();
@@ -63,20 +75,37 @@ export class PostsComponent implements OnInit {
     });
   }
 
+  /**
+   * check if the user is in the likes array
+   * @param likesArray array of likes
+   * @param username user who liked post
+   */
   checkUserInLikesArray(likesArray: UsernameObj[], username: string) {
     return _.some(likesArray, { username });
   }
 
+  /**
+   * check if the user is in the dislikes array
+   * @param dislikesArray array of dislikes
+   * @param username user who disliked post
+   */
   checkUserInDislikesArray(dislikesArray: UsernameObj[], username: string) {
     return _.some(dislikesArray, { username });
   }
 
+  /**
+   * gets all posts
+   */
   private getAllPosts() {
     this.postService.getPosts().subscribe(posts => {
       this.posts = posts;
     });
   }
 
+  /**
+   * displays error
+   * @param message error message
+   */
   private displayError(message: string) {
     this.notification.create('warning', 'unable to like post', message);
   }

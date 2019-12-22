@@ -7,6 +7,20 @@ import { UserPost } from './models/post.model';
 export class PostsController {
     constructor(private readonly postsService: PostsService) {}
 
+    /**
+     * gets all posts
+     */
+    @Get()
+    async getPosts(): Promise<UserPost[]> {
+        return this.postsService.getPosts();
+    }
+
+    /**
+     * creates new post
+     * @param req custom request
+     * @param post new post
+     * @param tags tags for post
+     */
     @Post('add-post')
     async addPost(
         @Req() req: CustomRequest,
@@ -16,11 +30,11 @@ export class PostsController {
         return this.postsService.addPost(req.user, post, tags);
     }
 
-    @Get()
-    async getPosts(): Promise<UserPost[]> {
-        return this.postsService.getPosts();
-    }
-
+    /**
+     * adds like to post
+     * @param req custom request
+     * @param postId post id
+     */
     @Post('like')
     async addLike(
         @Req() req: CustomRequest,
@@ -29,6 +43,11 @@ export class PostsController {
         return this.postsService.addLike(req.user, postId);
     }
 
+    /**
+     * adds dislike to post
+     * @param req custom request
+     * @param postId post id
+     */
     @Post('dislike')
     async addDisLike(
         @Req() req: CustomRequest,

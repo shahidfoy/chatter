@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PostService } from '../../services/post.service';
 import { Post } from '../../../interfaces/post.interface';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NzNotificationService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-post-form',
@@ -15,10 +17,12 @@ export class PostFormComponent implements OnInit {
 
   inputValue = '';
   submitting = false;
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
-    private postService: PostService
+    private postService: PostService,
+    private notification: NzNotificationService,
   ) { }
 
   ngOnInit() {
@@ -34,9 +38,18 @@ export class PostFormComponent implements OnInit {
   // TODO:: limit tag length
 
   submitPost() {
+    this.isLoading = true;
     this.postService.addPost(this.postForm.value).subscribe((data: Post) => {
       this.postForm.reset();
       this.postService.emitNewPostSocket();
+      this.isLoading = false;
+    }, (err: HttpErrorResponse) => {
+      this.displayError(err.error.message);
+      this.isLoading = false;
     });
+  }
+
+  private displayError(message: string) {
+    this.notification.create('warning', 'unable to post', message);
   }
 }

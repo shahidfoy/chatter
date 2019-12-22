@@ -5,6 +5,12 @@ import { UsersService, Token } from './users.service';
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
+    /**
+     * creates new user
+     * @param username users username
+     * @param email users email
+     * @param password users password
+     */
     @Post('/register')
     async createUser(
         @Body('username') username: string,
@@ -14,6 +20,11 @@ export class UsersController {
         return await this.usersService.createUser(username, email, password);
     }
 
+    /**
+     * logs in registered users
+     * @param email users email
+     * @param password users password
+     */
     @Post('/login')
     async loginUser(
         @Body('email') email: string,

@@ -11,7 +11,11 @@
           </nz-select>
         </nz-form-item>
         <nz-form-item>
-          <button nz-button [nzType]="'primary'" class="float-right" [nzLoading]="submitting">
+          <button
+            nz-button
+            [nzType]="'primary'"
+            class="float-right"
+            [nzLoading]="isLoading">
             Post
           </button>
           <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" class="float-right">

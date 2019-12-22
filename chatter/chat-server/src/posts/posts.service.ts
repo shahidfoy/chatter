@@ -80,6 +80,11 @@ export class PostsService {
         }
     }
 
+    /**
+     * adds like to post
+     * @param user user who liked post
+     * @param postId post id
+     */
     async addLike(user: User, postId: string): Promise<string> {
         return await this.postModel.updateOne({
             '_id': postId,
@@ -94,6 +99,11 @@ export class PostsService {
         });
     }
 
+    /**
+     * adds dislike to post
+     * @param user user who disliked post
+     * @param postId post id
+     */
     async addDislike(user: User, postId: string): Promise<string> {
         return await this.postModel.updateOne({
             '_id': postId,
