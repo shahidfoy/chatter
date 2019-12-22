@@ -8,20 +8,20 @@ Requires:
 -Node.js
 
 ## Angular
-To start front-end open `chat-app` install packages `npm i` and run `ng serve`
+To start front-end open `chatter/chat-app` install packages `npm i` and run `ng serve`
 runs locally on localhost:4200
 
 ```
-cd chat-app
+cd chatter/chat-app
 npm i
 ng serve
 ```
 
 ## NestJS
-To start back-end open `chat-server` install packages `npm i` and run `npm run start:dev`
+To start back-end open `chatter/chat-server` install packages `npm i` and run `npm run start:dev`
 runs locally on localhost:3000
 ```
-cd chat-server
+cd chatter/chat-server
 npm i
 ng serve
 ```
