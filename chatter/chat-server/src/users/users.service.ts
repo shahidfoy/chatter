@@ -16,7 +16,7 @@ export class UsersService {
     constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
     /**
-     * Creats new user
+     * Creates new user
      * @param username
      * @param email
      * @param password
