@@ -1,0 +1,18 @@
+
+<div class="container">
+  <div>
+    <img height="250px" src="../../assets/logo5.png">
+    <h2>GAME CHATTER <i class="fas fa-gamepad"></i></h2>
+  </div>
+
+  <nz-tabset>
+    <nz-tab [nzTitle]="titleTemplateLogin">
+      <ng-template #titleTemplateLogin> <i nz-icon [nzType]="'login'"></i>Login </ng-template>
+      <app-login></app-login>
+    </nz-tab>
+    <nz-tab [nzTitle]="titleTemplateSignup">
+      <ng-template #titleTemplateSignup> <i nz-icon [nzType]="'file-add'"></i>Sign Up </ng-template>
+      <app-signup></app-signup>
+    </nz-tab>
+  </nz-tabset>
+</div>

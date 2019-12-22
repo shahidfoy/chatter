@@ -1,0 +1,31 @@
+<nz-layout class="layout">
+
+  <nz-header>
+    <app-header [isMobile]="isMobile" [payload]="payload"></app-header>
+  </nz-header>
+
+  <nz-layout>
+    <nz-sider
+    nzCollapsible
+    [(nzCollapsed)]="isCollapsed"
+    [nzBreakpoint]="'lg'"
+    [nzCollapsedWidth]="0"
+    [nzZeroTrigger]="zeroTrigger">
+      <app-side-nav></app-side-nav>
+    </nz-sider>
+
+    <nz-layout>
+      <nz-content>
+        <!-- <app-posts></app-posts> -->
+        <router-outlet></router-outlet>
+      </nz-content>
+      <app-footer [isCollapsed]="isCollapsed" [isMobile]="isMobile"></app-footer>
+    </nz-layout>
+
+  </nz-layout>
+</nz-layout>
+
+<!-- side-nav hamberger bar -->
+<ng-template #zeroTrigger>
+  <i nz-icon nzType="menu-fold" nzTheme="outline"></i>
+</ng-template>

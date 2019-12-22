@@ -1,0 +1,37 @@
+import { Injectable } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { JwtPayload, PayloadData } from '../interfaces/jwt-payload.interface';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TokenService {
+
+  private readonly CHAT_TOKEN: string = 'chat_token';
+
+  constructor(private cookieService: CookieService) { }
+
+  setToken(token: string) {
+    this.cookieService.set(this.CHAT_TOKEN, token);
+  }
+
+  getToken(): string {
+    return this.cookieService.get(this.CHAT_TOKEN);
+  }
+
+  deleteToken() {
+    this.cookieService.delete(this.CHAT_TOKEN);
+  }
+
+  getPayload(): PayloadData {
+    const token = this.getToken();
+    let payloadStr: string;
+    let payload: JwtPayload;
+    if (token) {
+      payloadStr = token.split('.')[1]; // jwt payload
+      payload = JSON.parse(window.atob(payloadStr));
+    }
+
+    return payload.data;
+  }
+}

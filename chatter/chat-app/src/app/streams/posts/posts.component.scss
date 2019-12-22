@@ -1,0 +1,39 @@
+.posts {
+  // border: solid 1px white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-bottom: 88px;
+  margin: 0 auto;
+  .inner-content {
+    width: 400px;
+    margin: 3px;
+    background: rgb(82, 82, 82);
+    border-radius: 8px;
+    padding-top: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    .content {
+      padding: 8px;
+      img {
+        width: 100%;
+      }
+      p {
+        margin-top: 24px;
+      }
+      .post {
+        word-break: break-all;
+        padding: 8px;
+      }
+    }
+  }
+}
+
+.count {
+  padding-left: 8px;
+  cursor: auto;
+}
+
+.mobile-content {
+  width: 100% !important;
+}

@@ -1,0 +1,21 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-bottom: 8px;
+  nz-avatar {
+    margin: 18px;
+    width: 64px;
+    height: 64px;
+  }
+  button {
+    margin-left: 18px;
+  }
+}
+
+nz-select {
+  margin-top: 12px;
+  width: 100%;
+}
+
+// ::TODO fix for mobile and non mobile

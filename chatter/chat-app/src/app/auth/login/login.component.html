@@ -1,0 +1,29 @@
+<form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please input your email!">
+      <nz-input-group nzSize="large" nzPrefixIcon="mail">
+        <input type="email" nz-input formControlName="email" placeholder="Email" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please input your Password!">
+      <nz-input-group nzSize="large" nzPrefixIcon="lock">
+        <input type="password" nz-input formControlName="password" placeholder="Password" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <button
+        nz-button
+        nzShape="round"
+        class="login-form-button"
+        [nzType]="'primary'"
+        [disabled]="!validateForm.valid"
+        [nzLoading]="isLoading"
+      >Log in <i nz-icon nzType="login"></i> </button>
+      <!-- <a class="login-form-forgot" class="login-form-forgot">Forgot password</a> -->
+    </nz-form-control>
+  </nz-form-item>
+</form>

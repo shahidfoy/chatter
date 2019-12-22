@@ -1,0 +1,53 @@
+<!-- side nav -->
+<!-- ul might add [nzInlineCollapsed]="isCollapsed" -->
+<ul
+  nz-menu
+  nzTheme="dark"
+  nzMode="inline">
+  <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
+    <a [routerLink]="['/streams/posts']">
+      <i nz-icon nzType="wifi"></i>
+      <span>Posts</span>
+    </a>
+  </li>
+  <li nz-menu-item>
+    <i nz-icon nzType="shake"></i>
+    <span>Trending</span>
+  </li>
+  <li nz-menu-item>
+    <i nz-icon nzType="appstore"></i>
+    <span>Groups</span>
+  </li>
+  <li nz-menu-item>
+    <i nz-icon nzType="book"></i>
+    <span>Notifications</span>
+  </li>
+  <li nz-menu-item>
+    <i nz-icon nzType="camera"></i>
+    <span>Photos</span>
+  </li>
+  <li nz-submenu nzTitle="Users" nzIcon="team">
+    <ul>
+      <li nz-menu-item>
+          <i class="fas fa-address-book"></i>
+          <span> Following - 28</span>
+        </li>
+        <li nz-menu-item>
+          <i class="fas fa-users"></i>
+          <span> Followers - 404</span>
+        </li>
+        <li nz-menu-item>
+          <i nz-icon nzType="search"></i>
+          <span>Search</span>
+        </li>
+    </ul>
+  </li>
+  <li nz-submenu nzTitle="Settings" nzIcon="setting">
+    <ul>
+      <li nz-menu-item (click)="logout()">
+        <i nz-icon [nzType]="'logout'"></i>
+        <span>Log out</span>
+      </li>
+    </ul>
+  </li>
+</ul>

@@ -1,0 +1,54 @@
+<app-post-form [isMobile]="isMobile"></app-post-form>
+
+<div class="posts">
+
+  <div class="inner-content" *ngFor="let post of posts" [ngClass]="{'mobile-content': isMobile}">
+      <div class="content">
+
+          <nz-comment [nzAuthor]="post.username" [nzDatetime]="timeFromNow(post.createdAt)">
+            <nz-avatar
+              nz-comment-avatar
+              nzIcon="user"
+              [nzShape]="'square'"
+              [nzSize]="'large'"
+            ></nz-avatar>
+          </nz-comment>
+          <hr>
+          <nz-comment>
+            <nz-comment-content>
+              <!-- <img src="../../../assets/logo6.png"/> -->
+              <p class="post">{{ post.post }}</p>
+
+              <!-- TODO make tags look better -->
+              <p>Tags: {{ post.tags }}</p>
+            </nz-comment-content>
+            <nz-comment-action>
+              <i
+                nz-tooltip
+                nzTitle="Like"
+                nz-icon
+                nzType="like"
+                [theme]="checkUserInLikesArray(post.likes, username) ? 'twotone' : 'outline'"
+                (click)="like(post)"
+              ></i>
+              <span class="count like">{{ post.totalLikes }}</span>
+            </nz-comment-action>
+            <!-- implement this later -->
+            <!-- <nz-comment-action>
+              <i
+                nz-tooltip
+                nzTitle="Dislike"
+                nz-icon
+                nzType="dislike"
+                [theme]="dislikes > 0 ? 'twotone' : 'outline'"
+                (click)="dislike()"
+              ></i>
+              <span class="count dislike">{{ dislikes }}</span>
+            </nz-comment-action> -->
+            <nz-comment-action>comments {{ post.comments.length }}</nz-comment-action>
+          </nz-comment>
+      </div>
+    </div>
+
+</div>
+

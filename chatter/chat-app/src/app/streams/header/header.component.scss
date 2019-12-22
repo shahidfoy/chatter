@@ -1,0 +1,15 @@
+.app-header {
+  position: relative;
+  height: 64px;
+  padding: 0;
+  background: rgb(41, 41, 41);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+}
+
+.header-title {
+  text-transform: uppercase;
+  color: #fff;
+  strong {
+    margin: 12px;
+  }
+}

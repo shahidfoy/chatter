@@ -1,0 +1,6 @@
+chatter/chat-server/node_modules
+chatter/chat-app/node_modules
+.history
+chatter/chat-server/.history
+chatter/chat-app/.history
+chatter/chat-server/dist

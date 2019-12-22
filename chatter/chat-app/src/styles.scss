@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Sulphur+Point&display=swap');
+@import url('./assets/fontawesome/css/all.min.css');
+
+/////////////////////////////////////////////
+//** GLOBAL STYLES
+/////////////////////////////////////////////
+
+body {
+  font-family: 'Sulphur Point', sans-serif;
+}
+
+/////////////////////////////////////////////
+//** ZORRO STYLE OVERRIDES
+/////////////////////////////////////////////
+
+// input icon color
+.ant-form-item-children {
+  .anticon {
+    color: white !important;
+  }
+}
+
+// badge notification color
+nz-badge {
+  .ant-scroll-number {
+    color: white;
+  }
+}
+
+// side-nav mobile hamburger bar
+.ant-layout-sider-zero-width-trigger {
+  top: 0.4vh;
+}
+
+// inputs
+.ant-input {
+  border: transparent;
+}
+
+// select
+.ant-select-selection {
+  border: transparent;
+}
+
+// select tag color
+.ant-select-selection--multiple .ant-select-selection__rendered > ul > li {
+  background: transparent;
+}
+
+// select dropdown
+.ant-select-dropdown-menu-item,
+.ant-select-dropdown-menu-item-selected,
+.ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
+  background-color: transparent;
+  &:hover {
+    background: #888888 !important;
+  }
+}
+
+// comments and posts
+.ant-comment-inner {
+  padding: 0;
+}
+
+/////////////////////////////////////////////
+//** GENERIC STYLES
+/////////////////////////////////////////////
+
+// width 100%
+.full-width {
+  width: 100%;
+}
+
+// pull right
+.float-right {
+  float: right;
+}
+
+// margins
+.margin-left-24 {
+  margin-left: 24px;
+}
+

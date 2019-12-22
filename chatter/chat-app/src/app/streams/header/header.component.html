@@ -1,0 +1,16 @@
+<div class="app-header">
+
+  <a [routerLink]="['/streams/profile']">
+    <nz-avatar
+    class="margin-left-24"
+    nzIcon="user"
+    [nzShape]="'square'"></nz-avatar>
+  </a>
+
+  <span class="header-title">
+    <strong> {{ title }} <i class="fas fa-gamepad"></i></strong>{{ username }}
+  </span>
+  <span style="float: right" [hidden]="isMobile">
+      <app-action-bar></app-action-bar>
+  </span>
+</div>
