@@ -1,1 +1,20 @@
-<p>comments works!</p>
+<div class="container">
+  <form class="full-width">
+    <nz-comment>
+      <nz-comment-content>
+        <nz-form-item>
+          <textarea nz-input formControlName="post" rows="4" placeholder="What's on your mind.."></textarea>
+        </nz-form-item>
+        <nz-form-item>
+          <button
+            nz-button
+            [nzType]="'primary'"
+            class="float-right"
+            [nzLoading]="isLoading">
+            Comment
+          </button>
+        </nz-form-item>
+      </nz-comment-content>
+    </nz-comment>
+  </form>
+</div>

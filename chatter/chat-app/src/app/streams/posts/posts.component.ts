@@ -50,7 +50,6 @@ export class PostsComponent implements OnInit {
    * @param post post comments
    */
   openComments(post: Post) {
-    console.log('navigating', post);
     this.router.navigate(['streams/post', post._id]);
   }
 
