@@ -27,16 +27,21 @@
     </div>
   </div>
 
-  <div class="padding-bottom-88">
-    <nz-list [nzDataSource]="commentsArray" [nzRenderItem]="comment" [nzItemLayout]="'horizontal'">
-      <ng-template #comment let-item>
-        <nz-comment [nzAuthor]="item.username" [nzDatetime]="timeFromNow(item.createdAt)">
-          <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
-          <nz-comment-content>
-            <p>{{ item.comment }}</p>
-          </nz-comment-content>
-        </nz-comment>
-      </ng-template>
-    </nz-list>
+  <div class="">
+    <div class="padding-bottom-88">
+      <nz-list [nzDataSource]="commentsArray" [nzRenderItem]="comment" [nzItemLayout]="'horizontal'">
+        <ng-template #comment let-item>
+          <nz-comment
+            class="post-content"
+            [nzAuthor]="item.username"
+            [nzDatetime]="timeFromNow(item.createdAt)">
+            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
+            <nz-comment-content>
+              <p>{{ item.comment }}</p>
+            </nz-comment-content>
+          </nz-comment>
+        </ng-template>
+      </nz-list>
+    </div>
   </div>
 </nz-content>
