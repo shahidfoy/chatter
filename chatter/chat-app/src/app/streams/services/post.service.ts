@@ -18,12 +18,16 @@ export class PostService {
     private http: HttpClient,
   ) { }
 
-  addPost(body: Post): Observable<Post> {
-    return this.http.post<Post>(`${environment.BASEURL}/api/posts/add-post`, body);
-  }
-
   getPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(`${environment.BASEURL}/api/posts`);
+  }
+
+  getPost(id: string): Observable<Post> {
+    return this.http.get<Post>(`${environment.BASEURL}/api/posts/${id}`);
+  }
+
+  addPost(body: Post): Observable<Post> {
+    return this.http.post<Post>(`${environment.BASEURL}/api/posts/add-post`, body);
   }
 
   addLike(body: Post): Observable<string> {
@@ -32,6 +36,13 @@ export class PostService {
 
   addDislike(body: Post): Observable<string> {
     return this.http.post<string>(`${environment.BASEURL}/api/posts/dislike`, body);
+  }
+
+  addComment(postId: string, comment: string): Observable<any> {
+    return this.http.post<any>(`${environment.BASEURL}/api/posts/add-comment`, {
+      postId,
+      comment
+    });
   }
 
   ///////////////////////////////////////////

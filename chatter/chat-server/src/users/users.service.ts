@@ -72,7 +72,7 @@ export class UsersService {
                 };
 
                 this.userModel.create(body).then((user) => {
-                    const token: string = jwt.sign({data: user}, dbConfig.secret, { expiresIn: '48h' });
+                    const token: string = jwt.sign({data: user}, dbConfig.secret, { expiresIn: '168h' });
                     // cookieParser.cookie({ 'auth': token });
                     resolve({ token });
                 }).catch(tokenError => {
@@ -98,7 +98,7 @@ export class UsersService {
                     if (!result) {
                         throw new InternalServerErrorException({ message: 'Password is incorrect' });
                     }
-                    const token: string = jwt.sign({ data: user }, dbConfig.secret, { expiresIn: '48h' });
+                    const token: string = jwt.sign({ data: user }, dbConfig.secret, { expiresIn: '168h' });
                     resolve({ token });
                 }).catch(tokenError => {
                     reject({ message: `Error occured ${tokenError.message.message}` });

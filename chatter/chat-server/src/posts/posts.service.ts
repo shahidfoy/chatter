@@ -15,6 +15,34 @@ export class PostsService {
     ) {}
 
     /**
+     * gets all user posts
+     */
+    async getPosts(): Promise<UserPost[]> {
+        try {
+            const posts = await this.postModel.find({})
+                .populate('user')
+                .sort({ createdAt: -1 });
+            return posts;
+        } catch (err) {
+            throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
+        }
+    }
+
+    /**
+     * gets post by id
+     * @param postId post id
+     */
+    async getPostById(postId: string): Promise<UserPost> {
+        return await this.postModel.findOne({ _id: postId })
+            .then((post) => {
+                return post;
+            })
+            .catch(err => {
+                throw new InternalServerErrorException({ message: `Retrieving post Error Occured ${err}`});
+            });
+    }
+
+    /**
      * adds user post
      * @param user user who posted
      * @param post post data
@@ -64,20 +92,6 @@ export class PostsService {
         }).catch(err => {
             throw new InternalServerErrorException({ message: `Posting Error Occured ${err}` });
         });
-    }
-
-    /**
-     * gets all user posts
-     */
-    async getPosts(): Promise<UserPost[]> {
-        try {
-            const posts = await this.postModel.find({})
-                .populate('user')
-                .sort({ createdAt: -1 });
-            return posts;
-        } catch (err) {
-            throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
-        }
     }
 
     /**
@@ -143,6 +157,31 @@ export class PostsService {
             return JSON.stringify(postId);
         }).catch(err => {
             throw new InternalServerErrorException({ message: `Dislike Error Occured ${err}`});
+        });
+    }
+
+    /**
+     * adds comment to a post
+     * @param user user adding comment
+     * @param postId id of post where comment is being added
+     * @param comment comment being added to post
+     */
+    async addComment(user: User, postId: string, comment: string): Promise<string> {
+        return await this.postModel.updateOne({
+            _id: postId,
+        }, {
+            $push: {
+                comments: {
+                    userId: user._id,
+                    username: user.username,
+                    comment,
+                    createdAt: new Date(),
+                },
+            },
+        }).then(() => {
+            return JSON.stringify(postId);
+        }).catch(err => {
+            throw new InternalServerErrorException({ message: `Add comment Error Occured ${err}`});
         });
     }
 }

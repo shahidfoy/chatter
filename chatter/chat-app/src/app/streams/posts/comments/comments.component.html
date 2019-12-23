@@ -1,20 +1,41 @@
+<div>
+  {{ post?.username }}
+  {{ post?.post }}
+  {{ post?.tags }}
+</div>
+
 <div class="container">
-  <form class="full-width">
+  <form class="full-width" [formGroup]="commentForm" (ngSubmit)="addNewComment()">
     <nz-comment>
       <nz-comment-content>
         <nz-form-item>
-          <textarea nz-input formControlName="post" rows="4" placeholder="What's on your mind.."></textarea>
+          <textarea nz-input formControlName="comment" rows="3" placeholder="add comment.."></textarea>
         </nz-form-item>
         <nz-form-item>
           <button
             nz-button
             [nzType]="'primary'"
             class="float-right"
-            [nzLoading]="isLoading">
+            [nzLoading]="isLoading"
+            [disabled]="!commentForm.valid">
             Comment
           </button>
         </nz-form-item>
       </nz-comment-content>
     </nz-comment>
   </form>
+</div>
+
+<div>
+  <ul>
+    <li *ngFor="let comment of commentsArray">
+      <nz-avatar
+        nz-comment-avatar
+        nzIcon="user"
+        [nzShape]="'square'"
+        [nzSize]="'large'"
+      ></nz-avatar>
+      {{ comment.username }} | {{ comment.comment }} | {{ comment.createdAt }}
+    </li>
+  </ul>
 </div>
