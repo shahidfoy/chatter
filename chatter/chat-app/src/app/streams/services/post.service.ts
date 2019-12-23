@@ -12,6 +12,7 @@ import { Socket } from 'ngx-socket-io';
 export class PostService {
 
   private readonly WEBSOCKET_POST: string = 'post';
+  private readonly WEBSOCKET_COMMENT: string = 'comment';
 
   constructor(
     private socket: Socket,
@@ -55,5 +56,13 @@ export class PostService {
 
   receiveNewPostSocket(): Observable<{}> {
     return this.socket.fromEvent(this.WEBSOCKET_POST);
+  }
+
+  emitNewCommentSocket() {
+    this.socket.emit(this.WEBSOCKET_COMMENT);
+  }
+
+  receiveNewCommentSocket(): Observable<{}> {
+    return this.socket.fromEvent(this.WEBSOCKET_COMMENT);
   }
 }

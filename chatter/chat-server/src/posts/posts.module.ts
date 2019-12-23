@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TagSchema } from './models/tag.model';
 import { UserSchema } from '../users/models/user.model';
 import { PostsGateway } from './gateways/posts.gateway';
+import { CommentsGateway } from './gateways/comments.gateway';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { PostsGateway } from './gateways/posts.gateway';
     ]),
   ],
   controllers: [PostsController],
-  providers: [PostsService, PostsGateway],
+  providers: [PostsService, PostsGateway, CommentsGateway],
 })
 export class PostsModule {}

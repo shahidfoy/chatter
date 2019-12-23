@@ -2,23 +2,24 @@ import { WebSocketGateway, OnGatewayConnection, OnGatewayDisconnect, WebSocketSe
 import { Socket, Server } from 'socket.io';
 
 @WebSocketGateway()
-export class PostsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class CommentsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     @WebSocketServer() server: Server;
+
     counter = 0;
 
     async handleConnection() {
         this.counter++;
-        console.log('socket handling connections', this.counter);
+        console.log('comment socket handling connections', this.counter);
     }
 
     async handleDisconnect() {
         this.counter--;
-        console.log('socket disconnecting', this.counter);
+        console.log('comment socket disconnecting', this.counter);
     }
 
-    @SubscribeMessage('post')
-    async onPost(client: Socket) {
-        this.server.emit('post');
+    @SubscribeMessage('comment')
+    async onComment(client: Socket) {
+        this.server.emit('comment');
     }
 }

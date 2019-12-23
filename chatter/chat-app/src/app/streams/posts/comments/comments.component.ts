@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PostService } from '../../services/post.service';
 import { ActivatedRoute } from '@angular/router';
 import { Post, UserComment } from '../../../../app/interfaces/post.interface';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-comments',
@@ -30,23 +31,32 @@ export class CommentsComponent implements OnInit {
     });
 
     this.getPost();
+    this.postService.receiveNewCommentSocket().subscribe(() => {
+      this.getPost();
+    });
   }
 
   // TODO:: limit comment length
 
   addNewComment() {
-    console.log(this.commentForm.value);
-    this.postService.addComment(this.postId, this.commentForm.value.comment).subscribe(data => {
-      console.log('comment data', data);
+    this.postService.addComment(this.postId, this.commentForm.value.comment).subscribe(() => {
       this.commentForm.reset();
+      this.postService.emitNewCommentSocket();
     });
+  }
+
+  /**
+   * uses moment to customize time output
+   * @param time time stamp
+   */
+  timeFromNow(time: Date) {
+    return moment(time).fromNow();
   }
 
   private getPost() {
     this.postService.getPost(this.postId).subscribe((post: Post) => {
-      console.log(post);
       this.post = post;
-      this.commentsArray = post.comments;
+      this.commentsArray = post.comments.reverse();
     });
   }
 }
