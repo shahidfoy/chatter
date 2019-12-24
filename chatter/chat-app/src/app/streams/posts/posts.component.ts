@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationStateService } from 'src/app/services/application-state.service';
 import { distanceInWords } from 'date-fns';
 import { PostService } from '../services/post.service';
-import { Post, UsernameObj } from 'src/app/interfaces/post.interface';
+import { Post, UsernameObj, UserComment } from 'src/app/interfaces/post.interface';
 import * as moment from 'moment';
 import { NzNotificationService } from 'ng-zorro-antd';
 import * as _ from 'lodash';
-import { TokenService } from 'src/app/services/token.service';
-import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
+import { TokenService } from '../../../app/services/token.service';
+import { PayloadData } from '../../../app/interfaces/jwt-payload.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -86,21 +86,12 @@ export class PostsComponent implements OnInit {
   }
 
   /**
-   * check if the user is in the likes array
-   * @param likesArray array of likes
-   * @param username user who liked post
+   * check if the user is in the username array
+   * @param array array of usernames
+   * @param username user
    */
-  checkUserInLikesArray(likesArray: UsernameObj[], username: string) {
-    return _.some(likesArray, { username });
-  }
-
-  /**
-   * check if the user is in the dislikes array
-   * @param dislikesArray array of dislikes
-   * @param username user who disliked post
-   */
-  checkUserInDislikesArray(dislikesArray: UsernameObj[], username: string) {
-    return _.some(dislikesArray, { username });
+  checkUserInArray(array: any[], username: string) {
+    return _.some(array, { username });
   }
 
   /**

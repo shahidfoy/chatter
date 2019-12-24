@@ -25,7 +25,7 @@
                 nzTitle="Like"
                 nz-icon
                 nzType="like"
-                [theme]="checkUserInLikesArray(post.likes, username) ? 'twotone' : 'outline'"
+                [theme]="checkUserInArray(post.likes, username) ? 'twotone' : 'outline'"
                 (click)="like(post)"
               ></i>
               <span class="count like">{{ post.totalLikes }}</span>
@@ -36,12 +36,20 @@
                 nzTitle="Dislike"
                 nz-icon
                 nzType="dislike"
-                [theme]="checkUserInDislikesArray(post.dislikes, username) ? 'twotone' : 'outline'"
+                [theme]="checkUserInArray(post.dislikes, username) ? 'twotone' : 'outline'"
                 (click)="dislike(post)"
               ></i>
               <span class="count dislike">{{ post.totalDislikes }}</span>
             </nz-comment-action>
-            <nz-comment-action ><span (click)="openComments(post)"><i nz-icon nzType="message"></i> comments {{ post.comments.length }}</span></nz-comment-action>
+            <nz-comment-action >
+              <span (click)="openComments(post)">
+                <i
+                  nz-icon
+                  nzType="message"
+                  [theme]="checkUserInArray(post.comments, username) ? 'twotone' : 'outline'">
+                </i> comments {{ post.comments.length }}
+              </span>
+            </nz-comment-action>
           </nz-comment>
       </div>
     </div>
