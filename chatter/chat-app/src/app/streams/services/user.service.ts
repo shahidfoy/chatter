@@ -19,4 +19,10 @@ export class UserService {
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${environment.BASEURL}/api/users`);
   }
+
+  followUser(followUserId: string): Observable<string> {
+    return this.http.post<string>(`${environment.BASEURL}/api/users/follow-user`, {
+      followUserId
+    });
+  }
 }

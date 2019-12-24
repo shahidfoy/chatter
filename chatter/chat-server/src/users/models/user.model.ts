@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { UsernameObj } from 'src/interfaces/username-obj.interface';
 
 export const UserSchema =  new mongoose.Schema({
     username: { type: String, required: true },
@@ -24,5 +25,13 @@ export interface User extends mongoose.Document {
     username: string;
     email: string;
     password: string;
-    posts: any[]; // may replace with interface later
+    posts: UserPost[]; // may replace with interface later
+    following: UsernameObj[];
+    followers: UsernameObj[];
+}
+
+export interface UserPost {
+    postId: string;
+    post: string;
+    createdAt: Date;
 }

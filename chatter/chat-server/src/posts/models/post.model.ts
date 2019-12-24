@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
 import { User } from 'src/users/models/user.model';
+import { UsernameObj } from 'src/interfaces/username-obj.interface';
 
 export const PostSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types. ObjectId, ref: 'User' },
@@ -44,8 +45,4 @@ export interface UserComment {
     username: string;
     comment: string;
     createdAt: Date;
-}
-
-export interface UsernameObj {
-    username: string;
 }

@@ -1,4 +1,5 @@
 import { User } from './user.interface';
+import { UsernameObj } from './username-obj.interface';
 
 export interface Post {
   _id: string;
@@ -19,8 +20,4 @@ export interface UserComment {
   username: string;
   comment: string;
   createdAt: Date;
-}
-
-export interface UsernameObj {
-  username: string;
 }

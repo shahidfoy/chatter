@@ -12,11 +12,14 @@
       <ng-template #avatarTemplate>
         <!-- TODO:: replace image with user profile image -->
         <a [routerLink]="['/streams/profile/', user.username]">
-          <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+          <nz-avatar nzSrc=""></nz-avatar>
         </a>
       </ng-template>
       <ng-template #actionFollow>
-        <i class="fas fa-plus"></i>
+        <i nz-icon
+          nzType="plus-circle"
+          [theme]="checkUserInArray(user.followers, loggedInUser._id) ? 'twotone' : 'outline'"
+          (click)="followUser(user._id)"></i>
       </ng-template>
       <ng-template #actionProfile>
         <a [routerLink]="['/streams/profile/', user.username]">

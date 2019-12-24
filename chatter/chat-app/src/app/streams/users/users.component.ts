@@ -22,10 +22,29 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUser = this.tokenService.getPayload();
+    console.log('user Id', this.loggedInUser._id);
     this.userService.getUsers().subscribe((users: User[]) => {
+      console.log(users);
       _.remove(users, { username: this.loggedInUser.username });
       this.users = users;
     });
   }
 
+  followUser(userId: string) {
+    console.log(userId);
+    this.userService.followUser(userId).subscribe((followingUserId: string) => {
+      console.log('following', followingUserId);
+    });
+  }
+
+  /**
+   * uses lodash to check if the user is in the username array
+   * @param array array of usernames
+   * @param username user
+   */
+  checkUserInArray(array: any[], userId: string) {
+    console.log(array);
+    console.log(_.some(array, { userId }));
+    return _.some(array, { userFollower: userId });
+  }
 }

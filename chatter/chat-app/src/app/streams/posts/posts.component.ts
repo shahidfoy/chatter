@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationStateService } from 'src/app/services/application-state.service';
 import { distanceInWords } from 'date-fns';
 import { PostService } from '../services/post.service';
-import { Post, UsernameObj, UserComment } from 'src/app/interfaces/post.interface';
+import { Post } from 'src/app/interfaces/post.interface';
 import * as moment from 'moment';
 import { NzNotificationService } from 'ng-zorro-antd';
 import * as _ from 'lodash';
