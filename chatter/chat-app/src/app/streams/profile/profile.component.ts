@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TokenService } from '../../../app/services/token.service';
 import { PayloadData } from '../../../app/interfaces/jwt-payload.interface';
 import { UserPost } from 'src/app/interfaces/user.interface';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -13,14 +14,22 @@ export class ProfileComponent implements OnInit {
   payload: PayloadData;
   username: string;
   posts: UserPost[];
+  onUsersProfile = false;
 
-  constructor(private tokenService: TokenService) { }
+  constructor(
+    private tokenService: TokenService,
+    private router: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
-    this.payload = this.tokenService.getPayload();
-    this.username = this.payload.username;
-    this.posts = this.payload.posts;
+    this.username = this.router.snapshot.params.username;
+    this.onUsersProfile = false;
+    if (!this.username) {
+      this.payload = this.tokenService.getPayload();
+      this.username = this.payload.username;
+      this.posts = this.payload.posts;
+      this.onUsersProfile = true;
+    }
 
-    console.log(this.payload);
   }
 }

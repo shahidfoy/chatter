@@ -17,6 +17,7 @@ const routes: Routes = [
       { path: 'post/:id', component: CommentsComponent, canActivate: [AuthGuard] },
       { path: 'posts', component: PostsComponent },
       { path: 'profile', component: ProfileComponent },
+      { path: 'profile/:username', component: ProfileComponent },
       { path: 'users', component: UsersComponent },
     ]
   },

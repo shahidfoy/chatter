@@ -74,10 +74,15 @@ nz-content {
   justify-content: center;
 }
 
+// card border
+.ant-card-bordered {
+  border: transparent;
+}
+
 // card actions
 .ant-card-actions {
-  background: #545754;
-  border: solid 0.1px #fff;
+  background: #525552;
+  border: transparent;
 }
 
 /////////////////////////////////////////////
