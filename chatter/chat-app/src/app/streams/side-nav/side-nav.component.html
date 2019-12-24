@@ -36,9 +36,11 @@
           <i class="fas fa-users"></i>
           <span> Followers - 404</span>
         </li>
-        <li nz-menu-item>
-          <i nz-icon nzType="search"></i>
-          <span>Search</span>
+        <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
+          <a [routerLink]="['/streams/users']">
+            <i nz-icon nzType="search"></i>
+            <span>Search</span>
+          </a>
         </li>
     </ul>
   </li>

@@ -15,6 +15,7 @@ import { PostService } from './services/post.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommentsComponent } from './posts/comments/comments.component';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { CommentsComponent } from './posts/comments/comments.component';
     ActionBarComponent,
     PostFormComponent,
     ProfileComponent,
-    CommentsComponent
+    CommentsComponent,
+    UsersComponent
   ],
   imports: [
     CommonModule,

@@ -103,7 +103,7 @@ export class PostsComponent implements OnInit {
     }, (err: HttpErrorResponse) => {
       if (err.error.jwtToken) {
         this.tokenService.deleteToken();
-        this.router.navigate(['']);
+        this.router.navigate(['/']);
       }
     });
   }

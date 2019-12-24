@@ -6,6 +6,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { PostsComponent } from './posts/posts.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CommentsComponent } from './posts/comments/comments.component';
+import { UsersComponent } from './users/users.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'posts', pathMatch: 'full' },
       { path: 'post/:id', component: CommentsComponent, canActivate: [AuthGuard] },
       { path: 'posts', component: PostsComponent },
-      { path: 'profile', component: ProfileComponent }
+      { path: 'profile', component: ProfileComponent },
+      { path: 'users', component: UsersComponent },
     ]
   },
   // {
