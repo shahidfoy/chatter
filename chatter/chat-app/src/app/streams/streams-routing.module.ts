@@ -21,11 +21,6 @@ const routes: Routes = [
       { path: 'users', component: UsersComponent },
     ]
   },
-  // {
-  //   path: 'post/:id',
-  //   component: CommentsComponent,
-  //   canActivate: [AuthGuard]
-  // }
 ];
 
 @NgModule({
