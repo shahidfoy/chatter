@@ -2,108 +2,27 @@
   <!-- TODO ADD USER SEARCH FEATURE -->
   <div class="users padding-bottom-88">
 
-    <nz-card [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+    <nz-card *ngFor="let user of users" [nzActions]="[actionFollow, actionProfile, actionChat]">
       <nz-card-meta
-        nzTitle="Card title"
-        nzDescription="This is the description"
+        [nzTitle]="user.username"
+        [nzDescription]="user.email"
         [nzAvatar]="avatarTemplate"
       ></nz-card-meta>
+
+      <ng-template #avatarTemplate>
+        <!-- TODO:: replace image with user profile image -->
+        <a [routerLink]="['/streams/profile/', user.username]"><nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar></a>
+      </ng-template>
+      <ng-template #actionFollow>
+        <i class="fas fa-plus"></i>
+      </ng-template>
+      <ng-template #actionProfile>
+        <i class="far fa-user"></i>
+      </ng-template>
+      <ng-template #actionChat>
+        <i class="far fa-comment-dots"></i>
+      </ng-template>
     </nz-card>
-    <ng-template #avatarTemplate>
-      <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
-    </ng-template>
-    <ng-template #actionSetting>
-      <i class="fas fa-plus"></i>
-    </ng-template>
-    <ng-template #actionEdit>
-      <i class="far fa-user"></i>
-    </ng-template>
-    <ng-template #actionEllipsis>
-      <i class="far fa-comment-dots"></i>
-    </ng-template>
-
-    <nz-card [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
-      <nz-card-meta
-        nzTitle="Card title"
-        nzDescription="This is the description"
-        [nzAvatar]="avatarTemplate"
-      ></nz-card-meta>
-    </nz-card>
-    <ng-template #avatarTemplate>
-      <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
-    </ng-template>
-    <ng-template #actionSetting>
-      <i class="fas fa-plus"></i>
-    </ng-template>
-    <ng-template #actionEdit>
-      <i class="far fa-user"></i>
-    </ng-template>
-    <ng-template #actionEllipsis>
-      <i class="far fa-comment-dots"></i>
-    </ng-template>
-
-
-    <nz-card [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
-      <nz-card-meta
-        nzTitle="Card title"
-        nzDescription="This is the description"
-        [nzAvatar]="avatarTemplate"
-      ></nz-card-meta>
-    </nz-card>
-    <ng-template #avatarTemplate>
-      <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
-    </ng-template>
-    <ng-template #actionSetting>
-      <i class="fas fa-plus"></i>
-    </ng-template>
-    <ng-template #actionEdit>
-      <i class="far fa-user"></i>
-    </ng-template>
-    <ng-template #actionEllipsis>
-      <i class="far fa-comment-dots"></i>
-    </ng-template>
-
-    <nz-card [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
-      <nz-card-meta
-        nzTitle="Card title"
-        nzDescription="This is the description"
-        [nzAvatar]="avatarTemplate"
-      ></nz-card-meta>
-    </nz-card>
-    <ng-template #avatarTemplate>
-      <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
-    </ng-template>
-    <ng-template #actionSetting>
-      <i class="fas fa-plus"></i>
-    </ng-template>
-    <ng-template #actionEdit>
-      <i class="far fa-user"></i>
-    </ng-template>
-    <ng-template #actionEllipsis>
-      <i class="far fa-comment-dots"></i>
-    </ng-template>
-
-    <nz-card [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
-      <nz-card-meta
-        nzTitle="Card title"
-        nzDescription="This is the description"
-        [nzAvatar]="avatarTemplate"
-      ></nz-card-meta>
-    </nz-card>
-    <ng-template #avatarTemplate>
-      <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
-    </ng-template>
-    <ng-template #actionSetting>
-      <i class="fas fa-plus"></i>
-    </ng-template>
-    <ng-template #actionEdit>
-      <i class="far fa-user"></i>
-    </ng-template>
-    <ng-template #actionEllipsis>
-      <i class="far fa-comment-dots"></i>
-    </ng-template>
-
-
   </div>
 
 </nz-content>

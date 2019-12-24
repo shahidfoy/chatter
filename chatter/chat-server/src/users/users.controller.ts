@@ -1,5 +1,6 @@
 import { Controller, Post, Get, Body, InternalServerErrorException } from '@nestjs/common';
 import { UsersService, Token } from './users.service';
+import { User } from './models/user.model';
 
 @Controller('users')
 export class UsersController {
@@ -36,8 +37,12 @@ export class UsersController {
         return await this.usersService.loginUser(email, password);
     }
 
+    /**
+     * gets all users
+     * TODO:: IMPLEMENT PAGAINATION
+     */
     @Get()
-    getUsers() {
-        return 'getting users';
+    async getUsers(): Promise<User[]> {
+        return await this.usersService.getUsers();
     }
 }
