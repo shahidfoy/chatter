@@ -1,15 +1,23 @@
 <nz-content>
   <div>
-    {{ post?.username }}
-    {{ post?.post }}
-    {{ post?.tags }}
-
+    <nz-comment
+      class="post-content"
+      [nzAuthor]="post?.username"
+      [nzDatetime]="timeFromNow(post?.createdAt)">
+      <nz-avatar nz-comment-avatar nzIcon="user" [nzSize]="64"></nz-avatar>
+      <nz-comment-content>
+        <p>{{ post?.post }}</p>
+        <nz-tag *ngFor="let tag of post?.tags">{{tag}}</nz-tag>
+      </nz-comment-content>
+    </nz-comment>
+    <hr>
     <div class="container">
       <form class="full-width" [formGroup]="commentForm" (ngSubmit)="addNewComment()">
         <nz-comment>
+          <!-- change comment style make text area and button align -->
           <nz-comment-content>
             <nz-form-item>
-              <textarea nz-input formControlName="comment" rows="3" placeholder="add comment.."></textarea>
+              <textarea nz-input formControlName="comment" rows="1" placeholder="add comment.."></textarea>
             </nz-form-item>
             <nz-form-item>
               <button

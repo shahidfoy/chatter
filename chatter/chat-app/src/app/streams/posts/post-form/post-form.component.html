@@ -1,7 +1,7 @@
 <div class="container">
   <form [formGroup]="postForm" novalidate (ngSubmit)="submitPost()" class="full-width">
     <nz-comment>
-      <nz-avatar *ngIf="!isMobile" nz-comment-avatar nzIcon="user" [nzShape]="'square'" [nzSize]="64"></nz-avatar>
+      <nz-avatar *ngIf="!isMobile" nz-comment-avatar nzIcon="user" [nzSize]="64"></nz-avatar>
 
       <nz-comment-content>
         <nz-form-item>
