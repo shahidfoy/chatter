@@ -68,9 +68,16 @@ nz-badge {
   margin-bottom: 2px;
 }
 
+// content
 nz-content {
   display: flex;
   justify-content: center;
+}
+
+// card actions
+.ant-card-actions {
+  background: #545754;
+  border: solid 0.1px #fff;
 }
 
 /////////////////////////////////////////////
