@@ -13,10 +13,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   resgisterUser(body: User): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>(`${environment.BASEURL}/api/users/register`, body);
+    return this.http.post<TokenResponse>(`${environment.BASEURL}/api/auth/register`, body);
   }
 
   loginUser(body: Partial<User>): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>(`${environment.BASEURL}/api/users/login`, body);
+    return this.http.post<TokenResponse>(`${environment.BASEURL}/api/auth/login`, body);
   }
 }

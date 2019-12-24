@@ -11,6 +11,12 @@ export const UserSchema =  new mongoose.Schema({
             createdAt: { type: Date, default: Date.now() },
         },
     ],
+    following: [
+        { userFollowed: { type: mongoose.Schema.Types.ObjectId, ref: 'User'} },
+    ],
+    followers: [
+        { userFollower: { type: mongoose.Schema.Types.ObjectId, ref: 'User'} },
+    ],
 });
 
 export interface User extends mongoose.Document {

@@ -11,13 +11,17 @@
 
       <ng-template #avatarTemplate>
         <!-- TODO:: replace image with user profile image -->
-        <a [routerLink]="['/streams/profile/', user.username]"><nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar></a>
+        <a [routerLink]="['/streams/profile/', user.username]">
+          <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+        </a>
       </ng-template>
       <ng-template #actionFollow>
         <i class="fas fa-plus"></i>
       </ng-template>
       <ng-template #actionProfile>
-        <i class="far fa-user"></i>
+        <a [routerLink]="['/streams/profile/', user.username]">
+          <i class="far fa-user"></i>
+        </a>
       </ng-template>
       <ng-template #actionChat>
         <i class="far fa-comment-dots"></i>
