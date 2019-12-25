@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ApplicationStateService } from 'src/app/services/application-state.service';
+import { ApplicationStateService } from '../../services/application-state.service';
 import { distanceInWords } from 'date-fns';
 import { PostService } from '../services/post.service';
-import { Post } from 'src/app/streams/interfaces/post.interface';
+import { Post } from '../../streams/interfaces/post.interface';
 import * as moment from 'moment';
 import { NzNotificationService } from 'ng-zorro-antd';
 import * as _ from 'lodash';
-import { TokenService } from '../../../app/services/token.service';
-import { PayloadData } from '../../../app/interfaces/jwt-payload.interface';
+import { TokenService } from '../../services/token.service';
+import { PayloadData } from '../../interfaces/jwt-payload.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 

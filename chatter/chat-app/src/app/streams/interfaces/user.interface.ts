@@ -1,4 +1,3 @@
-import { UsernameObj } from './username-obj.interface';
 import { UserFollowed } from './user-followed.interface';
 import { UserFollowing } from './user-following.interface';
 

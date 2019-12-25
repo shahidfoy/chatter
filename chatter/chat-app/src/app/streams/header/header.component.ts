@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
+import { PayloadData } from '../../interfaces/jwt-payload.interface';
 
 @Component({
   selector: 'app-header',
