@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Post } from '../../interfaces/post.interface';
+import { Post } from '../interfaces/post.interface';
 import { Socket } from 'ngx-socket-io';
 
 

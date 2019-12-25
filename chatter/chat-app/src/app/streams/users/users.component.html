@@ -1,6 +1,7 @@
-<nz-content>
+<nz-content class="padding-bottom-88">
+  <h3>USERS</h3>
   <!-- TODO ADD USER SEARCH FEATURE -->
-  <div class="users padding-bottom-88">
+  <div class="users">
 
     <nz-card *ngFor="let user of users" [nzActions]="[actionFollow, actionProfile, actionChat]">
       <nz-card-meta
@@ -18,7 +19,7 @@
       <ng-template #actionFollow>
         <i nz-icon
           nzType="plus-circle"
-          [theme]="checkUserInArray(loggedInUserData.following, user._id) ? 'twotone' : 'outline'"
+          [theme]="checkUserInFollowedArray(loggedInUserData?.following, user._id) ? 'twotone' : 'outline'"
           (click)="followUser(user._id)"></i>
       </ng-template>
       <ng-template #actionProfile>

@@ -11,6 +11,7 @@ async function bootstrap() {
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Methods', 'GET', 'POST', 'DELETE', 'PUT');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Set-Cookie', 'HttpOnly; Secure; SameSite=Strict');
     next();
   });
   await app.listen(3000);

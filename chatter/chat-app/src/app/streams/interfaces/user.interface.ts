@@ -1,4 +1,6 @@
 import { UsernameObj } from './username-obj.interface';
+import { UserFollowed } from './user-followed.interface';
+import { UserFollowing } from './user-following.interface';
 
 export interface User {
   _id: string;
@@ -6,8 +8,8 @@ export interface User {
   email: string;
   password: string;
   posts: UserPost[];
-  following: UsernameObj[];
-  followers: UsernameObj[];
+  following: UserFollowed[];
+  followers: UserFollowing[];
 }
 
 export interface UserPost {

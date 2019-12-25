@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PostService } from '../../services/post.service';
 import { ActivatedRoute } from '@angular/router';
-import { Post, UserComment } from '../../../../app/interfaces/post.interface';
+import { Post, UserComment } from '../../interfaces/post.interface';
 import * as moment from 'moment';
 
 @Component({

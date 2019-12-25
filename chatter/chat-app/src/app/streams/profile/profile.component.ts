@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenService } from '../../../app/services/token.service';
 import { PayloadData } from '../../../app/interfaces/jwt-payload.interface';
-import { UserPost } from 'src/app/interfaces/user.interface';
+import { UserPost } from 'src/app/streams/interfaces/user.interface';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

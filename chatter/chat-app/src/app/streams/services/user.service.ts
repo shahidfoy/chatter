@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../../../app/interfaces/user.interface';
+import { User } from '../interfaces/user.interface';
 import { environment } from '../../../environments/environment';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
+  private readonly WEBSOCKET_FOLLOW: string = 'follow';
+
   constructor(
     private http: HttpClient,
+    private socket: Socket,
   ) { }
 
   /**
@@ -45,4 +49,23 @@ export class UserService {
       followUserId
     });
   }
+
+  ///////////////////////////////////////////
+  /// *** WEBSOCKETS
+  ///////////////////////////////////////////
+
+  /**
+   * emits on new follow
+   */
+  emitNewFollowSocket() {
+    this.socket.emit(this.WEBSOCKET_FOLLOW);
+  }
+
+  /**
+   * receives new follow
+   */
+  receiveNewFollowSocket(): Observable<{}> {
+    return this.socket.fromEvent(this.WEBSOCKET_FOLLOW);
+  }
+
 }

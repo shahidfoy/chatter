@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
-import { User } from '../../../app/interfaces/user.interface';
+import { User } from '../interfaces/user.interface';
 import * as _ from 'lodash';
 import { TokenService } from 'src/app/services/token.service';
 import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
+import { UserFollowed } from '../interfaces/user-followed.interface';
 
 @Component({
   selector: 'app-users',
@@ -25,15 +26,10 @@ export class UsersComponent implements OnInit {
     this.loggedInUser = this.tokenService.getPayload();
     this.getLoggedInUser(this.loggedInUser._id);
     this.getUsers();
-  }
 
-  /**
-   * gets user by id
-   * @param userId user's id
-   */
-  getUserById(userId: string) {
-    this.userService.getUserById(userId).subscribe((user: User) => {
-      console.log(user);
+    this.userService.receiveNewFollowSocket().subscribe(() => {
+      this.getLoggedInUser(this.loggedInUser._id);
+      this.getUsers();
     });
   }
 
@@ -43,17 +39,20 @@ export class UsersComponent implements OnInit {
    */
   followUser(userId: string) {
     this.userService.followUser(userId).subscribe((followingUserId: string) => {
-      console.log('following', followingUserId);
       // TODO:: NOIFY USER THAT THEY ARE FOLLOWING THE OTHER USER
+
+      // this.loggedInUserData.following.push({ userFollowed: { _id: userId } });
+      // note:: emitting might use above method to pass the data
+      this.userService.emitNewFollowSocket();
     });
   }
 
   /**
-   * uses lodash to check if the user is in the username array
-   * @param array array of usernames
-   * @param username user
+   * uses lodash to check if the user id is in the logged in users following array
+   * @param array array of followed users
+   * @param userId users id
    */
-  checkUserInArray(array: any[], userId: string) {
+  checkUserInFollowedArray(array: UserFollowed[], userId: string) {
     return _.find(array, [ 'userFollowed._id', userId ]);
   }
 
@@ -74,7 +73,6 @@ export class UsersComponent implements OnInit {
    */
   private getLoggedInUser(userId: string) {
     this.userService.getUserById(userId).subscribe((user: User) => {
-      console.log(user);
       this.loggedInUserData = user;
     });
   }

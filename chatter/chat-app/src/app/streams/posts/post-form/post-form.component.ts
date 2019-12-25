@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PostService } from '../../services/post.service';
-import { Post } from '../../../interfaces/post.interface';
+import { Post } from '../../interfaces/post.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NzNotificationService } from 'ng-zorro-antd';
 
