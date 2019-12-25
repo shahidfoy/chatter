@@ -23,6 +23,45 @@ export class UsersService {
                                     });
     }
 
+    /**
+     * get user by id
+     * @param userId user's id
+     */
+    async getUserById(userId: string): Promise<User> {
+        return await this.userModel.findOne({ _id: userId })
+                                    .populate('posts.postId')
+                                    .populate('following.userFollowed')
+                                    .populate('followers.userFollower')
+                                    .then((user: User) => {
+                                        return user;
+                                    })
+                                    .catch((err) => {
+                                        throw new InternalServerErrorException({ message: `Error getting user by id ${err}` });
+                                    });
+    }
+
+    /**
+     * get user by username
+     * @param userId user's username
+     */
+    async getUserByUsername(username: string): Promise<User> {
+        return await this.userModel.findOne({ username })
+                                    .populate('posts.postId')
+                                    .populate('following.userFollowed')
+                                    .populate('followers.userFollower')
+                                    .then((user: User) => {
+                                        return user;
+                                    })
+                                    .catch((err) => {
+                                        throw new InternalServerErrorException({ message: `Error getting user by username ${err}` });
+                                    });
+    }
+
+    /**
+     * follows another user and updates both user's arrays for following and followers
+     * @param user logged in user
+     * @param requestToFollowUserId follow request for another user
+     */
     async followUser(user: User, requestToFollowUserId: string): Promise<string> {
         const followUser = async () => {
             await this.userModel.updateOne({
