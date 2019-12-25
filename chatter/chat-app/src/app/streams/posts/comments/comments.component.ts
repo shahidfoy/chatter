@@ -56,6 +56,9 @@ export class CommentsComponent implements OnInit {
     return moment(time).fromNow();
   }
 
+  /**
+   * gets post by post id
+   */
   private getPost() {
     this.postService.getPost(this.postId).subscribe((post: Post) => {
       this.post = post;
