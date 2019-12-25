@@ -38,6 +38,9 @@ export class CommentsComponent implements OnInit {
 
   // TODO:: limit comment length
 
+  /**
+   * adds a new comment to post
+   */
   addNewComment() {
     this.postService.addComment(this.postId, this.commentForm.value.comment).subscribe(() => {
       this.commentForm.reset();

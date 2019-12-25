@@ -20,6 +20,26 @@ export class UserService {
     return this.http.get<User[]>(`${environment.BASEURL}/api/users`);
   }
 
+  /**
+   * gets user by id
+   * @param userId user's id
+   */
+  getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(`${environment.BASEURL}/api/users/id/${userId}`);
+  }
+
+  /**
+   * gets user by username
+   * @param username user's username
+   */
+  getUserByUsername(username: string): Observable<User> {
+    return this.http.get<User>(`${environment.BASEURL}/api/users/username/${username}`);
+  }
+
+  /**
+   * follows selected user
+   * @param followUserId requested user id to follow
+   */
   followUser(followUserId: string): Observable<string> {
     return this.http.post<string>(`${environment.BASEURL}/api/users/follow-user`, {
       followUserId

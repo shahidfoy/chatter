@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NZ_I18N, en_US, NZ_ICON_DEFAULT_TWOTONE_COLOR } from 'ng-zorro-antd';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NZ_I18N, en_US } from 'ng-zorro-antd';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
@@ -39,7 +39,6 @@ const socketConfig: SocketIoConfig = { url: `${environment.BASEURL}`, options: {
   ],
   providers: [
     CookieService,
-    { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#7fff7f' },
     { provide: NZ_I18N, useValue: en_US },
     {
       provide: HTTP_INTERCEPTORS,

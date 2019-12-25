@@ -14,6 +14,7 @@ export class UsersComponent implements OnInit {
 
   users: User[];
   loggedInUser: PayloadData;
+  loggedInUserData: User;
 
   constructor(
     private userService: UserService,
@@ -22,12 +23,24 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUser = this.tokenService.getPayload();
-    this.userService.getUsers().subscribe((users: User[]) => {
-      _.remove(users, { username: this.loggedInUser.username });
-      this.users = users;
+    this.getLoggedInUser(this.loggedInUser._id);
+    this.getUsers();
+  }
+
+  /**
+   * gets user by id
+   * @param userId user's id
+   */
+  getUserById(userId: string) {
+    this.userService.getUserById(userId).subscribe((user: User) => {
+      console.log(user);
     });
   }
 
+  /**
+   * follows selected user
+   * @param userId follow request user id
+   */
   followUser(userId: string) {
     this.userService.followUser(userId).subscribe((followingUserId: string) => {
       console.log('following', followingUserId);
@@ -41,8 +54,28 @@ export class UsersComponent implements OnInit {
    * @param username user
    */
   checkUserInArray(array: any[], userId: string) {
-    console.log(array);
-    console.log(_.some(array, { userId }));
-    return _.some(array, { userFollower: userId });
+    return _.find(array, [ 'userFollowed._id', userId ]);
+  }
+
+  /**
+   * gets all users
+   * TODO:: add pagination
+   */
+  private getUsers() {
+    this.userService.getUsers().subscribe((users: User[]) => {
+      _.remove(users, { username: this.loggedInUser.username });
+      this.users = users;
+    });
+  }
+
+  /**
+   * gets logged in user
+   * @param userId logged in user id
+   */
+  private getLoggedInUser(userId: string) {
+    this.userService.getUserById(userId).subscribe((user: User) => {
+      console.log(user);
+      this.loggedInUserData = user;
+    });
   }
 }

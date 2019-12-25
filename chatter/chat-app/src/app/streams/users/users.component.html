@@ -18,7 +18,7 @@
       <ng-template #actionFollow>
         <i nz-icon
           nzType="plus-circle"
-          [theme]="checkUserInArray(user.followers, loggedInUser._id) ? 'twotone' : 'outline'"
+          [theme]="checkUserInArray(loggedInUserData.following, user._id) ? 'twotone' : 'outline'"
           (click)="followUser(user._id)"></i>
       </ng-template>
       <ng-template #actionProfile>
