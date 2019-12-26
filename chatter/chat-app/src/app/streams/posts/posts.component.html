@@ -13,11 +13,11 @@
                 [nzSize]="'large'"
               ></nz-avatar>
             </nz-comment>
-            <hr>
+
             <nz-comment>
               <nz-comment-content>
-                <!-- <img src="../../../assets/logo6.png"/> -->
                 <p class="post">{{ post.post }}</p>
+                <!-- <img style="padding-bottom: 8px; width: 80%;" src="../../../assets/logo6.png"/> -->
                 <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag>
               </nz-comment-content>
               <nz-comment-action>

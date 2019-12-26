@@ -1,0 +1,9 @@
+.followers {
+  display: flex;
+  flex-wrap: wrap;
+
+  nz-card {
+    margin: 8px;
+    width:320px;
+  }
+}

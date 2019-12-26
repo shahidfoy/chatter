@@ -6,6 +6,8 @@ import { PostsComponent } from './posts/posts.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CommentsComponent } from './posts/comments/comments.component';
 import { UsersComponent } from './users/users.component';
+import { FollowersComponent } from './users/followers/followers.component';
+import { FollowingComponent } from './users/following/following.component';
 
 const routes: Routes = [
   {
@@ -18,7 +20,11 @@ const routes: Routes = [
       { path: 'posts', component: PostsComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'profile/:username', component: ProfileComponent },
-      { path: 'users', component: UsersComponent },
+      { path: 'users/followers', component: FollowersComponent },
+      { path: 'users/followers/:username', component: FollowersComponent },
+      { path: 'users/following', component: FollowingComponent },
+      { path: 'users/following/:username', component: FollowingComponent },
+      { path: 'users', component: UsersComponent  },
     ]
   },
 ];

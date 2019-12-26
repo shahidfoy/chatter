@@ -1,0 +1,36 @@
+<nz-content class="padding-bottom-88">
+  <h3>FOLLOWING</h3>
+  <!-- TODO ADD USER SEARCH FEATURE -->
+  <div class="following">
+
+    <nz-card *ngFor="let user of users" [nzActions]="[actionFollow, actionProfile, actionChat]">
+      <nz-card-meta
+        [nzTitle]="user.username"
+        [nzDescription]="user.email"
+        [nzAvatar]="avatarTemplate"
+      ></nz-card-meta>
+
+      <ng-template #avatarTemplate>
+        <!-- TODO:: replace image with user profile image -->
+        <a [routerLink]="['/streams/profile/', user.username]">
+          <nz-avatar nzSrc=""></nz-avatar>
+        </a>
+      </ng-template>
+      <ng-template #actionFollow>
+        <i nz-icon
+          nzType="plus-circle"
+          [theme]="checkUserInFollowedArray(loggedInUserData?.following, user._id) ? 'twotone' : 'outline'"
+          (click)="followUser(user._id)"></i>
+      </ng-template>
+      <ng-template #actionProfile>
+        <a [routerLink]="['/streams/profile/', user.username]">
+          <i class="far fa-user"></i>
+        </a>
+      </ng-template>
+      <ng-template #actionChat>
+        <i class="far fa-comment-dots"></i>
+      </ng-template>
+    </nz-card>
+  </div>
+
+</nz-content>

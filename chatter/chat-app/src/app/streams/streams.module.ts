@@ -16,6 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommentsComponent } from './posts/comments/comments.component';
 import { UsersComponent } from './users/users.component';
+import { FollowingComponent } from './users/following/following.component';
+import { FollowersComponent } from './users/followers/followers.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { UsersComponent } from './users/users.component';
     PostFormComponent,
     ProfileComponent,
     CommentsComponent,
-    UsersComponent
+    UsersComponent,
+    FollowingComponent,
+    FollowersComponent
   ],
   imports: [
     CommonModule,
