@@ -4,6 +4,9 @@ import { User } from '../../interfaces/user.interface';
 import { PayloadData } from '../../../interfaces/jwt-payload.interface';
 import { UserFollowed } from '../../interfaces/user-followed.interface';
 import * as _ from 'lodash';
+import { UserFollowing } from '../../interfaces/user-following.interface';
+import { TokenService } from 'src/app/services/token.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-followers',
@@ -13,14 +16,23 @@ import * as _ from 'lodash';
 export class FollowersComponent implements OnInit {
 
   users: User[];
-  loggedInUser: PayloadData;
+  loggedInUserToken: PayloadData;
   loggedInUserData: User;
+  userData: User;
 
   constructor(
     private userService: UserService,
+    private tokenService: TokenService,
+    private router: ActivatedRoute,
   ) { }
 
   ngOnInit() {
+    this.loggedInUserToken = this.tokenService.getPayload();
+    this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
+      this.loggedInUserData = user;
+    });
+
+    this.populateFollowersListByUsername();
   }
 
   /**
@@ -28,13 +40,16 @@ export class FollowersComponent implements OnInit {
    * @param userId follow request user id
    */
   followUser(userId: string) {
-    this.userService.followUser(userId).subscribe((followingUserId: string) => {
-      // TODO:: NOIFY USER THAT THEY ARE FOLLOWING THE OTHER USER
-
-      // this.loggedInUserData.following.push({ userFollowed: { _id: userId } });
-      // note:: emitting might use above method to pass the data
-      this.userService.emitNewFollowSocket();
-    });
+    const userInFollowingArray = this.checkUserInFollowedArray(this.loggedInUserData.following, userId);
+    if (!userInFollowingArray) {
+      this.userService.followUser(userId).subscribe((followingUserId: string) => {
+        this.userService.emitNewFollowSocket();
+      });
+    } else {
+      this.userService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
+        this.userService.emitNewFollowSocket();
+      });
+    }
   }
 
   /**
@@ -46,4 +61,42 @@ export class FollowersComponent implements OnInit {
     return _.find(array, [ 'userFollowed._id', userId ]);
   }
 
+  /**
+   * populates followers list by username
+   */
+  private populateFollowersListByUsername() {
+    const usernameParam = this.router.snapshot.params.username;
+    if (usernameParam) {
+      this.userFollowersList(usernameParam);
+
+      this.userService.receiveNewFollowSocket().subscribe(() => {
+        this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
+          this.loggedInUserData = user;
+        });
+        this.userFollowersList(usernameParam);
+      });
+    } else {
+      this.userFollowersList(this.loggedInUserToken.username);
+
+      this.userService.receiveNewFollowSocket().subscribe(() => {
+        this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
+          this.loggedInUserData = user;
+        });
+        this.userFollowersList(this.loggedInUserToken.username);
+      });
+    }
+  }
+
+  /**
+   * gets the list of people who follow the user
+   */
+  private userFollowersList(username: string) {
+    this.userService.getUserByUsername(username).subscribe((user: User) => {
+      this.userData = user;
+      this.users = this.userData.followers
+                    .map((userFollowing: UserFollowing) => userFollowing.userFollower);
+      _.remove(this.users, { username: this.userData.username });
+      _.remove(this.users, { username: this.loggedInUserData.username });
+    });
+  }
 }

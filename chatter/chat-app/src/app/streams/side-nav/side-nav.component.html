@@ -29,15 +29,15 @@
   <li nz-submenu nzTitle="Users" nzIcon="team">
     <ul>
       <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
-          <a [routerLink]="['/streams/users/following']">
+        <a [routerLink]="['/streams/followers']">
+          <i class="fas fa-users"></i>
+          <span> Followers</span>
+        </a>
+      </li>
+      <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
+          <a [routerLink]="['/streams/following']">
             <i class="fas fa-address-book"></i>
             <span> Following</span>
-          </a>
-        </li>
-        <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
-          <a [routerLink]="['/streams/users/followers']">
-            <i class="fas fa-users"></i>
-            <span> Followers</span>
           </a>
         </li>
         <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">

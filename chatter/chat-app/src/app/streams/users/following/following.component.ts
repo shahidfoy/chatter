@@ -5,6 +5,8 @@ import { UserService } from '../../services/user.service';
 import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
 import * as _ from 'lodash';
 import { TokenService } from 'src/app/services/token.service';
+import { ActivatedRoute } from '@angular/router';
+import { ɵINTERNAL_BROWSER_PLATFORM_PROVIDERS } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-following',
@@ -15,20 +17,22 @@ export class FollowingComponent implements OnInit {
 
   users: User[];
   loggedInUserToken: PayloadData;
-  loggedInUser: User;
+  loggedInUserData: User;
+  userData: User;
 
   constructor(
     private userService: UserService,
     private tokenService: TokenService,
+    private router: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.loggedInUserToken = this.tokenService.getPayload();
-    this.userIsFollowingList();
-
-    this.userService.receiveNewFollowSocket().subscribe(() => {
-      this.userIsFollowingList();
+    this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
+      this.loggedInUserData = user;
     });
+
+    this.populateFollowingListByUsername();
   }
 
   /**
@@ -36,7 +40,7 @@ export class FollowingComponent implements OnInit {
    * @param userId follow request user id
    */
   followUser(userId: string) {
-    const userInFollowedArray = this.checkUserInFollowedArray(this.loggedInUser.following, userId);
+    const userInFollowedArray = this.checkUserInFollowedArray(this.loggedInUserData.following, userId);
 
     if (!userInFollowedArray) {
       this.userService.followUser(userId).subscribe((followingUserId: string) => {
@@ -59,13 +63,41 @@ export class FollowingComponent implements OnInit {
   }
 
   /**
+   * populates followers list by username
+   */
+  private populateFollowingListByUsername() {
+    const usernameParam = this.router.snapshot.params.username;
+    if (usernameParam) {
+      this.userIsFollowingList(usernameParam);
+
+      this.userService.receiveNewFollowSocket().subscribe(() => {
+        this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
+          this.loggedInUserData = user;
+        });
+        this.userIsFollowingList(usernameParam);
+      });
+    } else {
+      this.userIsFollowingList(this.loggedInUserToken.username);
+
+      this.userService.receiveNewFollowSocket().subscribe(() => {
+        this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
+          this.loggedInUserData = user;
+        });
+        this.userIsFollowingList(this.loggedInUserToken.username);
+      });
+    }
+  }
+
+  /**
    * gets the list of people who the user is following
    */
-  private userIsFollowingList() {
-    this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
-      this.loggedInUser = user;
-      this.users = this.loggedInUser.following
-                    .map((userFollowed: UserFollowed) => userFollowed.userFollowed);
+  private userIsFollowingList(username: string) {
+    this.userService.getUserByUsername(username).subscribe((user: User) => {
+      this.userData = user;
+      this.users = this.userData.following
+                    .map((userFollow: UserFollowed) => userFollow.userFollowed);
+      _.remove(this.users, { username: this.userData.username });
+      _.remove(this.users, { username: this.loggedInUserData.username });
     });
   }
 
