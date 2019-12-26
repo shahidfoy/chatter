@@ -95,4 +95,43 @@ export class UsersService {
                 throw new InternalServerErrorException({ message: `Following user Error Occured ${err}` });
             });
     }
+
+    /**
+     * unfollows another user and updates both user's arrays for following and followers
+     * @param user logged in user
+     * @param requestToUnfollowUserId unfollow request for another user
+     */
+    async unfollowUser(user: User, requestToUnfollowUserId: string): Promise<string> {
+        const unfollowUser = async () => {
+            await this.userModel.updateOne({
+                '_id': user._id,
+                'following.userFollowed': { $eq: requestToUnfollowUserId },
+            }, {
+                $pull: {
+                    following: {
+                        userFollowed: requestToUnfollowUserId,
+                    },
+                },
+            });
+
+            await this.userModel.updateOne({
+                '_id': requestToUnfollowUserId,
+                'followers.userFollower': { $eq: user._id },
+            }, {
+                $pull: {
+                    followers: {
+                        userFollower: user._id,
+                    },
+                },
+            });
+        };
+
+        return unfollowUser()
+            .then(() => {
+                return JSON.stringify(requestToUnfollowUserId);
+            })
+            .catch((err) => {
+                throw new InternalServerErrorException({ message: `Following user Error Occured ${err}` });
+            });
+    }
 }

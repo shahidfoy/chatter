@@ -52,4 +52,17 @@ export class UsersController {
     ): Promise<string> {
         return await this.usersService.followUser(req.user, requestToFollowUserId);
     }
+
+    /**
+     * lets logged in user unfollow another user
+     * @param req custom request
+     * @param requestToUnfollowUserId id of requested user to unfollow
+     */
+    @Post('unfollow-user')
+    async unfollowUser(
+        @Req() req: CustomRequest,
+        @Body('unfollowUserId') requestToUnFollowUserId: string,
+    ): Promise<string> {
+        return await this.usersService.unfollowUser(req.user, requestToUnFollowUserId);
+    }
 }
