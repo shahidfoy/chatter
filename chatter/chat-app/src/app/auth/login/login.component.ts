@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private displayError(message: string) {
+  displayError(message: string) {
     this.isLoading = false;
     this.notification.create('warning', 'Log in Error', message);
   }

@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { TokenService } from '../../services/token.service';
 import { PayloadData } from '../../interfaces/jwt-payload.interface';
 import { UserFollowed } from '../interfaces/user-followed.interface';
+import { NzNotificationService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-users',
@@ -19,7 +20,8 @@ export class UsersComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private notification: NzNotificationService,
   ) { }
 
   ngOnInit() {
@@ -46,12 +48,26 @@ export class UsersComponent implements OnInit {
         // this.loggedInUserData.following.push({ userFollowed: { _id: userId } });
         // note:: emitting might use above method to pass the data
         this.userService.emitNewFollowSocket();
+        this.displayNotification('success', 'following user');
       });
     } else {
       this.userService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
         this.userService.emitNewFollowSocket();
+        this.displayNotification('warning', 'unfollowing user');
       });
     }
+  }
+
+  /**
+   * displays notifications
+   * @param type type of notification
+   * @param message message to be displayed
+   */
+  displayNotification(type: string, message: string) {
+    this.notification.config({
+      nzPlacement: 'bottomRight'
+    });
+    this.notification.create(type, message, '');
   }
 
   /**
