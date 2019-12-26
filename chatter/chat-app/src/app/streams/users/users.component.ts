@@ -14,8 +14,8 @@ import { UserFollowed } from '../interfaces/user-followed.interface';
 export class UsersComponent implements OnInit {
 
   users: User[];
-  loggedInUser: PayloadData;
-  loggedInUserData: User;
+  loggedInUserToken: PayloadData;
+  loggedInUser: User;
 
   constructor(
     private userService: UserService,
@@ -23,28 +23,35 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loggedInUser = this.tokenService.getPayload();
-    this.getLoggedInUser(this.loggedInUser._id);
+    this.loggedInUserToken = this.tokenService.getPayload();
+    this.getLoggedInUser(this.loggedInUserToken._id);
     this.getUsers();
 
     this.userService.receiveNewFollowSocket().subscribe(() => {
-      this.getLoggedInUser(this.loggedInUser._id);
+      this.getLoggedInUser(this.loggedInUserToken._id);
       this.getUsers();
     });
   }
 
   /**
-   * follows selected user
+   * follows or unfollows selected user
    * @param userId follow request user id
    */
   followUser(userId: string) {
-    this.userService.followUser(userId).subscribe((followingUserId: string) => {
-      // TODO:: NOIFY USER THAT THEY ARE FOLLOWING THE OTHER USER
+    const userInFollowedArray = this.checkUserInFollowedArray(this.loggedInUser.following, userId);
 
-      // this.loggedInUserData.following.push({ userFollowed: { _id: userId } });
-      // note:: emitting might use above method to pass the data
-      this.userService.emitNewFollowSocket();
-    });
+    if (!userInFollowedArray) {
+      this.userService.followUser(userId).subscribe((followingUserId: string) => {
+        // TODO:: NOIFY USER THAT THEY ARE FOLLOWING THE OTHER USER
+        // this.loggedInUserData.following.push({ userFollowed: { _id: userId } });
+        // note:: emitting might use above method to pass the data
+        this.userService.emitNewFollowSocket();
+      });
+    } else {
+      this.userService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
+        this.userService.emitNewFollowSocket();
+      });
+    }
   }
 
   /**
@@ -62,7 +69,7 @@ export class UsersComponent implements OnInit {
    */
   private getUsers() {
     this.userService.getUsers().subscribe((users: User[]) => {
-      _.remove(users, { username: this.loggedInUser.username });
+      _.remove(users, { username: this.loggedInUserToken.username });
       this.users = users;
     });
   }
@@ -73,7 +80,7 @@ export class UsersComponent implements OnInit {
    */
   private getLoggedInUser(userId: string) {
     this.userService.getUserById(userId).subscribe((user: User) => {
-      this.loggedInUserData = user;
+      this.loggedInUser = user;
     });
   }
 }

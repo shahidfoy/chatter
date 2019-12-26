@@ -50,6 +50,16 @@ export class UserService {
     });
   }
 
+  /**
+   * unfollows selected user
+   * @param unfollowUserId requested user id to unfollow
+   */
+  unFollowUser(unfollowUserId: string): Observable<string> {
+    return this.http.post<string>(`${environment.BASEURL}/api/users/unfollow-user`, {
+      unfollowUserId
+    });
+  }
+
   ///////////////////////////////////////////
   /// *** WEBSOCKETS
   ///////////////////////////////////////////

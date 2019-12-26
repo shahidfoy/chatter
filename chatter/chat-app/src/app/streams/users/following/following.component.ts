@@ -4,6 +4,7 @@ import { UserFollowed } from '../../interfaces/user-followed.interface';
 import { UserService } from '../../services/user.service';
 import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
 import * as _ from 'lodash';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-following',
@@ -13,28 +14,39 @@ import * as _ from 'lodash';
 export class FollowingComponent implements OnInit {
 
   users: User[];
-  loggedInUser: PayloadData;
-  loggedInUserData: User;
+  loggedInUserToken: PayloadData;
+  loggedInUser: User;
 
   constructor(
     private userService: UserService,
+    private tokenService: TokenService,
   ) { }
 
   ngOnInit() {
+    this.loggedInUserToken = this.tokenService.getPayload();
+    this.userIsFollowingList();
+
+    this.userService.receiveNewFollowSocket().subscribe(() => {
+      this.userIsFollowingList();
+    });
   }
 
   /**
-   * follows selected user
+   * follows or unfollows selected user
    * @param userId follow request user id
    */
   followUser(userId: string) {
-    this.userService.followUser(userId).subscribe((followingUserId: string) => {
-      // TODO:: NOIFY USER THAT THEY ARE FOLLOWING THE OTHER USER
+    const userInFollowedArray = this.checkUserInFollowedArray(this.loggedInUser.following, userId);
 
-      // this.loggedInUserData.following.push({ userFollowed: { _id: userId } });
-      // note:: emitting might use above method to pass the data
-      this.userService.emitNewFollowSocket();
-    });
+    if (!userInFollowedArray) {
+      this.userService.followUser(userId).subscribe((followingUserId: string) => {
+        this.userService.emitNewFollowSocket();
+      });
+    } else {
+      this.userService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
+        this.userService.emitNewFollowSocket();
+      });
+    }
   }
 
   /**
@@ -44,6 +56,17 @@ export class FollowingComponent implements OnInit {
    */
   checkUserInFollowedArray(array: UserFollowed[], userId: string) {
     return _.find(array, [ 'userFollowed._id', userId ]);
+  }
+
+  /**
+   * gets the list of people who the user is following
+   */
+  private userIsFollowingList() {
+    this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
+      this.loggedInUser = user;
+      this.users = this.loggedInUser.following
+                    .map((userFollowed: UserFollowed) => userFollowed.userFollowed);
+    });
   }
 
 }
