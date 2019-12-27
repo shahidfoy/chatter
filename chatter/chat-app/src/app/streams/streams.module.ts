@@ -18,6 +18,7 @@ import { CommentsComponent } from './posts/comments/comments.component';
 import { UsersComponent } from './users/users.component';
 import { FollowingComponent } from './users/following/following.component';
 import { FollowersComponent } from './users/followers/followers.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { FollowersComponent } from './users/followers/followers.component';
     CommentsComponent,
     UsersComponent,
     FollowingComponent,
-    FollowersComponent
+    FollowersComponent,
+    NotificationsComponent
   ],
   imports: [
     CommonModule,

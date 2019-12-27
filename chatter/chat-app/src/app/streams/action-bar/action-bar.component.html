@@ -5,9 +5,10 @@
   <li nz-menu-item>
     <i nz-icon class="icon-size-lg" nzType="message"></i>
   </li>
-  <li nz-menu-item>
-    <nz-badge [nzCount]="5">
-    </nz-badge>
-    <i nz-icon class="icon-size-lg" nzType="book"></i>
+  <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
+    <a [routerLink]="['/streams/notifications']">
+      <nz-badge [nzCount]="5"></nz-badge>
+      <i nz-icon class="icon-size-lg" nzType="book"></i>
+    </a>
   </li>
 </ul>

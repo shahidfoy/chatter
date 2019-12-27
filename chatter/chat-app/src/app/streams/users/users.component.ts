@@ -68,9 +68,6 @@ export class UsersComponent implements OnInit {
    * @param message message to be displayed
    */
   displayNotification(type: string, message: string) {
-    this.notification.config({
-      nzPlacement: 'bottomRight'
-    });
     this.notification.create(type, message, '');
   }
 

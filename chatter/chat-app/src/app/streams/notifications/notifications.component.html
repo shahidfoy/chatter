@@ -1,0 +1,36 @@
+<div class="padding-bottom-88">
+  <!-- add to nz-list for pagination [nzLoadMore]="loadMore" -->
+  <nz-list
+    class="demo-loadmore-list"
+    [nzDataSource]="list"
+    [nzItemLayout]="'horizontal'"
+    [nzLoading]="initLoading"
+    [nzRenderItem]="item"
+  >
+    <ng-template #item let-item>
+      <nz-list-item
+        [nzContent]="item.loading ? '' : 'content'"
+        [nzActions]="item.loading ? [] : [editAction]"
+      >
+        <nz-skeleton [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="item.loading">
+          <ng-template #editAction><a (click)="edit(item)">view profile</a></ng-template>
+          <nz-list-item-meta
+            [nzTitle]="nzTitle"
+            nzIcon="user"
+            nzAvatar="../../"
+            nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
+          >
+            <ng-template #nzTitle>
+              <a href="https://ng.ant.design">{{ item.name.last }}</a>
+            </ng-template>
+          </nz-list-item-meta>
+        </nz-skeleton>
+      </nz-list-item>
+    </ng-template>
+    <!-- <ng-template #loadMore>
+      <div class="loadmore">
+        <button nz-button *ngIf="!loadingMore" (click)="onLoadMore()">loading more</button>
+      </div>
+    </ng-template> -->
+  </nz-list>
+</div>

@@ -6,7 +6,7 @@ import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
 import * as _ from 'lodash';
 import { TokenService } from 'src/app/services/token.service';
 import { ActivatedRoute } from '@angular/router';
-import { NzNotificationService } from 'ng-zorro-antd';
+import { NzNotificationService, NzConfigService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-following',
@@ -25,6 +25,7 @@ export class FollowingComponent implements OnInit {
     private tokenService: TokenService,
     private router: ActivatedRoute,
     private notification: NzNotificationService,
+    private nzConfigService: NzConfigService,
   ) { }
 
   ngOnInit() {
@@ -66,9 +67,6 @@ export class FollowingComponent implements OnInit {
    * @param message message to be displayed
    */
   displayNotification(type: string, message: string) {
-    this.notification.config({
-      nzPlacement: 'bottomRight'
-    });
     this.notification.create(type, message, '');
   }
 
