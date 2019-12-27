@@ -46,10 +46,16 @@ export class FollowingComponent implements OnInit {
     if (!userInFollowedArray) {
       this.userService.followUser(userId).subscribe((followingUserId: string) => {
         this.userService.emitNewFollowSocket();
+        this.displayNotification('success', 'following user');
+      }, err => {
+        this.displayNotification('error', err.error.message);
       });
     } else {
       this.userService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
         this.userService.emitNewFollowSocket();
+        this.displayNotification('warning', 'unfollowing user');
+      }, err => {
+        this.displayNotification('error', err.error.message);
       });
     }
   }
