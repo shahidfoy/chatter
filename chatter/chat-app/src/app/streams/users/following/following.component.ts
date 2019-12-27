@@ -6,7 +6,6 @@ import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
 import * as _ from 'lodash';
 import { TokenService } from 'src/app/services/token.service';
 import { ActivatedRoute } from '@angular/router';
-import { ɵINTERNAL_BROWSER_PLATFORM_PROVIDERS } from '@angular/platform-browser';
 import { NzNotificationService } from 'ng-zorro-antd';
 
 @Component({
