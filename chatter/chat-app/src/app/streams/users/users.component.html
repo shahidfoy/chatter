@@ -20,15 +20,26 @@
         <i nz-icon
           nzType="plus-circle"
           [theme]="checkUserInFollowedArray(loggedInUser?.following, user._id) ? 'twotone' : 'outline'"
-          (click)="followUser(user._id)"></i>
+          (click)="followUser(user._id)"
+          nz-popover
+          nzPopoverContent="follow"
+          nzPopoverPlacement="top"></i>
       </ng-template>
       <ng-template #actionProfile>
         <a [routerLink]="['/streams/profile/', user.username]">
-          <i class="far fa-user"></i>
+          <i
+            class="far fa-user"
+            nz-popover
+            nzPopoverContent="profile"
+            nzPopoverPlacement="top"></i>
         </a>
       </ng-template>
       <ng-template #actionChat>
-        <i class="far fa-comment-dots"></i>
+        <i
+          class="far fa-comment-dots"
+          nz-popover
+          nzPopoverContent="chat"
+          nzPopoverPlacement="top"></i>
       </ng-template>
     </nz-card>
   </div>

@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { TokenService } from 'src/app/services/token.service';
 import { ActivatedRoute } from '@angular/router';
 import { ɵINTERNAL_BROWSER_PLATFORM_PROVIDERS } from '@angular/platform-browser';
+import { NzNotificationService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-following',
@@ -24,6 +25,7 @@ export class FollowingComponent implements OnInit {
     private userService: UserService,
     private tokenService: TokenService,
     private router: ActivatedRoute,
+    private notification: NzNotificationService,
   ) { }
 
   ngOnInit() {
@@ -51,6 +53,18 @@ export class FollowingComponent implements OnInit {
         this.userService.emitNewFollowSocket();
       });
     }
+  }
+
+  /**
+   * displays notifications
+   * @param type type of notification
+   * @param message message to be displayed
+   */
+  displayNotification(type: string, message: string) {
+    this.notification.config({
+      nzPlacement: 'bottomRight'
+    });
+    this.notification.create(type, message, '');
   }
 
   /**

@@ -49,11 +49,15 @@ export class UsersComponent implements OnInit {
         // note:: emitting might use above method to pass the data
         this.userService.emitNewFollowSocket();
         this.displayNotification('success', 'following user');
+      }, err => {
+        this.displayNotification('error', err.error.message);
       });
     } else {
       this.userService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
         this.userService.emitNewFollowSocket();
         this.displayNotification('warning', 'unfollowing user');
+      }, err => {
+        this.displayNotification('error', err.error.message);
       });
     }
   }
