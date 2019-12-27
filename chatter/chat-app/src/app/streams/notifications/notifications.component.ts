@@ -1,112 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd';
-import { HttpClient } from '@angular/common/http';
-
-const count = 5;
-const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo';
-
-const fakeData = [
-  {
-    gender: 'male',
-    name: {
-    title: 'Mr',
-    first: 'Ryan',
-    last: 'Lowe'
-    },
-    email: 'ryan.lowe@example.com',
-    nat: 'AU'
-    },
-    {
-    gender: 'female',
-    name: {
-    title: 'Ms',
-    first: 'Annabelle',
-    last: 'Ross'
-    },
-    email: 'annabelle.ross@example.com',
-    nat: 'CA'
-    },
-    {
-    gender: 'female',
-    name: {
-    title: 'Mrs',
-    first: 'Silviara',
-    last: 'Nascimento'
-    },
-    email: 'silviara.nascimento@example.com',
-    nat: 'BR'
-    },
-    {
-    gender: 'female',
-    name: {
-    title: 'Ms',
-    first: 'Sofie',
-    last: 'Hansen'
-    },
-    email: 'sofie.hansen@example.com',
-    nat: 'DK'
-    },
-    {
-    gender: 'male',
-    name: {
-    title: 'Mr',
-    first: 'Dale',
-    last: 'Anderson'
-    },
-    email: 'dale.anderson@example.com',
-    nat: 'IE'
-    },
-    {
-      gender: 'male',
-      name: {
-      title: 'Mr',
-      first: 'Ryan',
-      last: 'Lowe'
-      },
-      email: 'ryan.lowe@example.com',
-      nat: 'AU'
-      },
-      {
-      gender: 'female',
-      name: {
-      title: 'Ms',
-      first: 'Annabelle',
-      last: 'Ross'
-      },
-      email: 'annabelle.ross@example.com',
-      nat: 'CA'
-      },
-      {
-      gender: 'female',
-      name: {
-      title: 'Mrs',
-      first: 'Silviara',
-      last: 'Nascimento'
-      },
-      email: 'silviara.nascimento@example.com',
-      nat: 'BR'
-      },
-      {
-      gender: 'female',
-      name: {
-      title: 'Ms',
-      first: 'Sofie',
-      last: 'Hansen'
-      },
-      email: 'sofie.hansen@example.com',
-      nat: 'DK'
-      },
-      {
-      gender: 'male',
-      name: {
-      title: 'Mr',
-      first: 'Dale',
-      last: 'Anderson'
-      },
-      email: 'dale.anderson@example.com',
-      nat: 'IE'
-      }
-];
+import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
+import { NotificationsObj, User } from 'src/app/interfaces/user.interface';
+import { UserService } from '../services/user.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-notifications',
@@ -115,27 +11,27 @@ const fakeData = [
 })
 export class NotificationsComponent implements OnInit {
 
-  initLoading = true; // bug
-  loadingMore = false;
+  initLoading: boolean;
+  loadingMore: boolean;
   data: any[] = [];
-  list: Array<{ loading: boolean; name: any }> = [];
+  list: Array<{ loading: boolean; notification: NotificationsObj }> = [];
 
-  constructor(private http: HttpClient, private msg: NzMessageService) {}
+  loggedInUser: PayloadData;
+  loggedInUserData: User;
+  notifications: NotificationsObj[];
+
+  constructor(
+    private userService: UserService,
+    private tokenService: TokenService,
+  ) {}
 
   ngOnInit() {
-    this.getData((res: any) => {
-      this.data = fakeData;
-      this.list = res.results;
-      this.initLoading = false;
-    });
-  }
+    this.loggedInUser = this.tokenService.getPayload();
+    this.getLoggedInUsersNotifications();
 
-  getData(callback: (res: any) => void): void {
-    // this.http.get(fakeDataUrl).subscribe((res: any) => callback(res));
-    this.data = fakeData;
-    this.data.concat(this.data);
-    this.list = [...this.data];
-    this.initLoading = false;
+    this.userService.receiveNewFollowSocket().subscribe(() => {
+      this.getLoggedInUsersNotifications();
+    });
   }
 
   // onLoadMore(): void {
@@ -148,7 +44,12 @@ export class NotificationsComponent implements OnInit {
   //   });
   // }
 
-  edit(item: any): void {
-    this.msg.success(item.email);
+  private getLoggedInUsersNotifications() {
+    this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
+      this.loggedInUserData = user;
+      this.notifications = user.notifications;
+      this.list = this.notifications.map(notification => ({ loading: false, notification }));
+      this.initLoading = false;
+    });
   }
 }

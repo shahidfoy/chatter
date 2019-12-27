@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../interfaces/user.interface';
+import { User } from '../../../interfaces/user.interface';
 import { UserFollowed } from '../../interfaces/user-followed.interface';
 import { UserService } from '../../services/user.service';
 import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';

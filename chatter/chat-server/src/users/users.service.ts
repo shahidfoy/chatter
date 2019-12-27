@@ -1,8 +1,7 @@
-import { Injectable, InternalServerErrorException, HttpStatus } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './models/user.model';
-import { Token } from 'src/interfaces/response-token.interface';
 
 @Injectable()
 export class UsersService {
@@ -82,6 +81,11 @@ export class UsersService {
                 $push: {
                     followers: {
                         userFollower: user._id,
+                    },
+                    notifications: {
+                        senderId: user._id,
+                        senderUsername: user.username,
+                        message: `${user.username} is now following you.`,
                     },
                 },
             });

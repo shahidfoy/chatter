@@ -100,7 +100,7 @@ export class PostsService {
      * @param postId post id
      */
     async addLike(user: User, postId: string): Promise<string> {
-        const userDisliked = await this.postModel.find({ 'likes.username': user.username });
+        const userDisliked = await this.postModel.find({ 'dislikes.username': user.username });
 
         if (userDisliked) {
             this.postModel.updateOne({

@@ -18,6 +18,17 @@ export const UserSchema =  new mongoose.Schema({
     followers: [
         { userFollower: { type: mongoose.Schema.Types.ObjectId, ref: 'User'} },
     ],
+    notifications: [
+        {
+            senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+            senderUsername: { type: String },
+            message: { type: String },
+            viewProfile: { type: Boolean, default: false },
+            createdAt: { type: Date, default: Date.now() },
+            read: { type: Boolean, default: false },
+            date: { type: String, default: '' },
+        },
+    ],
 });
 
 export interface User extends mongoose.Document {
@@ -28,10 +39,21 @@ export interface User extends mongoose.Document {
     posts: UserPost[]; // may replace with interface later
     following: UsernameObj[];
     followers: UsernameObj[];
+    notifications: NotificationsObj[];
 }
 
 export interface UserPost {
     postId: string;
     post: string;
     createdAt: Date;
+}
+
+export interface NotificationsObj {
+    senderId: string;
+    senderUsername: string;
+    message: string;
+    viewProfile: boolean;
+    createdAt: Date;
+    read: boolean;
+    date: string;
 }

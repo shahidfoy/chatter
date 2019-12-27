@@ -1,4 +1,4 @@
-import { User } from './user.interface';
+import { User } from '../../interfaces/user.interface';
 
 export interface UserFollowed {
   _id?: string;

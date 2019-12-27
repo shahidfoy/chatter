@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
-import { User } from '../interfaces/user.interface';
+import { User } from '../../interfaces/user.interface';
 import * as _ from 'lodash';
 import { TokenService } from '../../services/token.service';
 import { PayloadData } from '../../interfaces/jwt-payload.interface';

@@ -1,4 +1,4 @@
-import { User } from '../streams/interfaces/user.interface';
+import { User } from './user.interface';
 
 export interface CustomRequest extends Request {
     headers: CustomHeaders;

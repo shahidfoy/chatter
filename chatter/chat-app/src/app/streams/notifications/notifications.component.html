@@ -9,24 +9,29 @@
   >
     <ng-template #item let-item>
       <nz-list-item
-        [nzContent]="item.loading ? '' : 'content'"
+        [nzContent]="item.loading ? [] : notificationType"
         [nzActions]="item.loading ? [] : [editAction]"
       >
         <nz-skeleton [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="item.loading">
-          <ng-template #editAction><a (click)="edit(item)">view profile</a></ng-template>
+          <ng-template #notificationType>
+            <i nz-icon [nzType]="'mail'"></i>
+          </ng-template>
+          <ng-template #editAction><a [routerLink]="['/streams/profile', item.notification.senderUsername]">view profile</a></ng-template>
           <nz-list-item-meta
             [nzTitle]="nzTitle"
             nzIcon="user"
             nzAvatar="../../"
-            nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
+            [nzDescription]="item.notification.createdAt"
           >
             <ng-template #nzTitle>
-              <a href="https://ng.ant.design">{{ item.name.last }}</a>
+              <a [routerLink]="['/streams/profile', item.notification.senderUsername]">{{ item.notification.message }}</a>
             </ng-template>
           </nz-list-item-meta>
         </nz-skeleton>
       </nz-list-item>
     </ng-template>
+
+
     <!-- <ng-template #loadMore>
       <div class="loadmore">
         <button nz-button *ngIf="!loadingMore" (click)="onLoadMore()">loading more</button>
