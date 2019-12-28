@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
   submitForm() {
     this.authService.loginUser(this.validateForm.value).subscribe((data: TokenResponse) => {
       this.isLoading = true;
-      this.tokenService.deleteToken();
       this.tokenService.setToken(data.token);
       // localStorage.setItem('token', data.token);
       setTimeout(() => {

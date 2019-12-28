@@ -39,8 +39,9 @@ export class ActionBarComponent implements OnInit {
   getLoggedInUser() {
     this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
       this.loggedInUserData = user;
-      // this.notificationsLength = this.loggedInUserData.notifications.length;
-      this.notificationsLength = _.filter(this.loggedInUserData.notifications, ['read', false]).length;
+      if (this.loggedInUserData.notifications) {
+        this.notificationsLength = _.filter(this.loggedInUserData.notifications, ['read', false]).length;
+      }
     }, (err: HttpErrorResponse) => {
       if (err.error.jwtToken) {
         this.tokenService.deleteToken();
