@@ -3,7 +3,9 @@ import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
 import { User } from 'src/app/interfaces/user.interface';
 import { TokenService } from 'src/app/services/token.service';
 import { UserService } from '../services/user.service';
-import { NzTreeHigherOrderServiceToken } from 'ng-zorro-antd';
+import * as _ from 'lodash';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-action-bar',
@@ -19,6 +21,7 @@ export class ActionBarComponent implements OnInit {
   constructor(
     private tokenService: TokenService,
     private userService: UserService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -30,10 +33,19 @@ export class ActionBarComponent implements OnInit {
     });
   }
 
+  /**
+   * gets logged in user data
+   */
   getLoggedInUser() {
     this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
       this.loggedInUserData = user;
-      this.notificationsLength = this.loggedInUserData.notifications.length;
+      // this.notificationsLength = this.loggedInUserData.notifications.length;
+      this.notificationsLength = _.filter(this.loggedInUserData.notifications, ['read', false]).length;
+    }, (err: HttpErrorResponse) => {
+      if (err.error.jwtToken) {
+        this.tokenService.deleteToken();
+        this.router.navigate(['/']);
+      }
     });
   }
 

@@ -1,4 +1,11 @@
 <div class="padding-bottom-88">
+  <div class="padding-bottom-44">
+    <button
+      class="float-right"
+      nz-button
+      (click)="markAllNotifications()">Mark all as read</button>
+  </div>
+
   <!-- add to nz-list for pagination [nzLoadMore]="loadMore" -->
   <nz-list
     class="notifications-list"
@@ -51,9 +58,5 @@
         <button nz-button *ngIf="!loadingMore" (click)="onLoadMore()">loading more</button>
       </div>
     </ng-template> -->
-
-    <!-- <ng-template #markAllRead> -->
-      <button class="float-right" nz-button (click)="markAllNotifications()">Mark all as read</button>
-    <!-- </ng-template> -->
   </nz-list>
 </div>

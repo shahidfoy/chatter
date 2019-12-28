@@ -100,11 +100,6 @@ export class PostsComponent implements OnInit {
   private getAllPosts() {
     this.postService.getPosts().subscribe(posts => {
       this.posts = posts;
-    }, (err: HttpErrorResponse) => {
-      if (err.error.jwtToken) {
-        this.tokenService.deleteToken();
-        this.router.navigate(['/']);
-      }
     });
   }
 
