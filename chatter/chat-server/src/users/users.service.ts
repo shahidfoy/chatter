@@ -176,4 +176,22 @@ export class UsersService {
             throw new InternalServerErrorException({ message: `Deleting Notification Error Occured ${err}` });
         });
     }
+
+    /**
+     * marks all of logged in users notifications as read
+     */
+    async markAll(user: User): Promise<User> {
+        return await this.userModel.updateOne({
+            _id: user._id,
+        }, {
+            $set: { 'notifications.$[elem].read': true },
+        }, {
+            arrayFilters: [{ 'elem.read': false }],
+            multi: true,
+        }).then(() => {
+            return user;
+        }).catch((err) => {
+            throw new InternalServerErrorException({ message: `Marking All Error Occured ${err}` });
+        });
+    }
 }

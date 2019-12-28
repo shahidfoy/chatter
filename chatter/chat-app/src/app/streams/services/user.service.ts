@@ -65,7 +65,7 @@ export class UserService {
    * marks notification as read
    * @param notification notifiaction to be marked
    */
-  markNotification(notification: NotificationsObj) {
+  markNotification(notification: NotificationsObj): Observable<User> {
     return this.http.post<User>(`${environment.BASEURL}/api/users/mark-notification`, {
       notification
     });
@@ -75,10 +75,17 @@ export class UserService {
    * deletes notification
    * @param notification notification to be deleted
    */
-  deleteNotification(notification: NotificationsObj) {
+  deleteNotification(notification: NotificationsObj): Observable<User> {
     return this.http.post<User>(`${environment.BASEURL}/api/users/delete-notification`, {
       notification
     });
+  }
+
+  /**
+   * marks all notifications as read
+   */
+  markAllNotifications(): Observable<User> {
+    return this.http.post<User>(`${environment.BASEURL}/api/users/mark-all`, {});
   }
 
   ///////////////////////////////////////////

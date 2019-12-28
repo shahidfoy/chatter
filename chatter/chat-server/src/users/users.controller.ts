@@ -91,4 +91,14 @@ export class UsersController {
     ): Promise<User> {
         return await this.usersService.deleteNotification(req.user, notification);
     }
+
+    /**
+     * marks all notifications as read
+     */
+    @Post('mark-all')
+    async markAll(
+        @Req() req: CustomRequest,
+    ): Promise<User> {
+        return await this.usersService.markAll(req.user);
+    }
 }

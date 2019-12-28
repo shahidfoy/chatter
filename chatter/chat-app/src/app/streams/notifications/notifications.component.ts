@@ -63,6 +63,16 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
+  /**
+   * marks all notifications as read
+   */
+  markAllNotifications() {
+    console.log('marking all notifications');
+    this.userService.markAllNotifications().subscribe((user: User) => {
+      this.userService.emitNewNotificationActionSocket();
+    });
+  }
+
   // onLoadMore(): void {
   //   this.loadingMore = true;
   //   this.list = this.data.concat([...Array(count)].fill({}).map(() => ({ loading: true, name: {} })));

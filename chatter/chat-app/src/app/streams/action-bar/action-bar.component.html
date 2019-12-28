@@ -7,7 +7,7 @@
   </li>
   <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
     <a [routerLink]="['/streams/notifications']">
-      <nz-badge [nzCount]="loggedInUser.notifications.length"></nz-badge>
+      <nz-badge [nzCount]="notificationsLength"></nz-badge>
       <i nz-icon class="icon-size-lg" nzType="book"></i>
     </a>
   </li>
