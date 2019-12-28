@@ -42,6 +42,24 @@ nz-content {
   justify-content: center;
 }
 
+// descriptions
+.ant-descriptions-bordered .ant-descriptions-item-label {
+  background-color: transparent;
+  border-right: transparent;
+}
+
+.ant-descriptions-bordered .ant-descriptions-view {
+  border: 1px solid #505050;
+}
+
+.ant-descriptions-bordered .ant-descriptions-item-content {
+  border-right: transparent;
+}
+
+.ant-descriptions-bordered .ant-descriptions-row {
+  border: 1px solid #505050;
+}
+
 // icons
 .anticon {
   &:hover {
@@ -132,5 +150,13 @@ nz-content {
 
 .padding-bottom-88 {
   padding-bottom: 88px;
+}
+
+// hr
+hr {
+  height: 1px;
+  color: #505050;
+  background-color: #505050;
+  border: none;
 }
 

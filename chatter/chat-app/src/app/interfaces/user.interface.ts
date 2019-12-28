@@ -1,5 +1,6 @@
 import { UserFollowed } from '../streams/interfaces/user-followed.interface';
 import { UserFollowing } from '../streams/interfaces/user-following.interface';
+import { Post } from '../streams/interfaces/post.interface';
 
 export interface User {
   _id: string;
@@ -14,7 +15,7 @@ export interface User {
 
 export interface UserPost {
   _id: string;
-  postId: string;
+  postId: string | Post;
   post: string;
   createdAt: Date;
 }

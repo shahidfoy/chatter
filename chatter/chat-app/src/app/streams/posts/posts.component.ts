@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApplicationStateService } from '../../services/application-state.service';
 import { PostService } from '../services/post.service';
-import { Post } from '../../streams/interfaces/post.interface';
+import { Post } from '../interfaces/post.interface';
 import { NzNotificationService } from 'ng-zorro-antd';
 import * as _ from 'lodash';
 import { TokenService } from '../../services/token.service';

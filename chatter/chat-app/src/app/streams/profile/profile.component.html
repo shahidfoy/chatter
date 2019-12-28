@@ -1,4 +1,81 @@
-<h1><nz-spin nzSimple></nz-spin><strong>Profile | Contrivance Creations</strong></h1>
 
-{{ username }}
-{{ posts }}
+<nz-row [nzGutter]="16">
+  <nz-col [nzSpan]="8">
+    <h2 class="margin-left-24">{{ username }}</h2>
+  </nz-col>
+  <nz-col [nzSpan]="12" class="float-right">
+    <nz-descriptions nzBordered [nzSize]="'small'">
+      <nz-descriptions-item nzTitle="Followers">
+        <a [routerLink]="['/streams/followers', username]">
+          <i class="fas fa-users"></i> {{ user?.followers.length }}
+        </a>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Following">
+        <a [routerLink]="['/streams/following', username]">
+          <i class="fas fa-address-book"></i> {{ user?.following.length }}
+        </a>
+      </nz-descriptions-item>
+    </nz-descriptions>
+  </nz-col>
+</nz-row>
+<hr>
+
+<app-post-form [isMobile]="isMobile"></app-post-form>
+
+<nz-content>
+  <div class="posts padding-bottom-88">
+
+    <div class="inner-content" *ngFor="let post of posts" [ngClass]="{'mobile-content': isMobile}">
+        <div class="content">
+
+            <nz-comment [nzAuthor]="post.username" [nzDatetime]="timeFromNow(post.createdAt)">
+              <nz-avatar
+                nz-comment-avatar
+                nzIcon="user"
+                [nzSize]="'large'"
+              ></nz-avatar>
+            </nz-comment>
+
+            <nz-comment>
+              <nz-comment-content>
+                <p class="post">{{ post.post }}</p>
+                <!-- <img style="padding-bottom: 8px; width: 80%;" src="../../../assets/logo6.png"/> -->
+                <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag>
+              </nz-comment-content>
+              <nz-comment-action>
+                <i
+                  nz-tooltip
+                  nzTitle="Like"
+                  nz-icon
+                  nzType="like"
+                  [theme]="checkUserInArray(post.likes, username) ? 'twotone' : 'outline'"
+                  (click)="like(post)"
+                ></i>
+                <span class="count like">{{ post.totalLikes }}</span>
+              </nz-comment-action>
+              <nz-comment-action>
+                <i
+                  nz-tooltip
+                  nzTitle="Dislike"
+                  nz-icon
+                  nzType="dislike"
+                  [theme]="checkUserInArray(post.dislikes, username) ? 'twotone' : 'outline'"
+                  (click)="dislike(post)"
+                ></i>
+                <span class="count dislike">{{ post.totalDislikes }}</span>
+              </nz-comment-action>
+              <nz-comment-action >
+                <span (click)="openComments(post)">
+                  <i
+                    nz-icon
+                    nzType="message"
+                    [theme]="checkUserInArray(post.comments, username) ? 'twotone' : 'outline'">
+                  </i> comments {{ post.comments.length }}
+                </span>
+              </nz-comment-action>
+            </nz-comment>
+        </div>
+      </div>
+
+  </div>
+</nz-content>
