@@ -6,6 +6,7 @@
 
             <nz-comment [nzAuthor]="post.username" [nzDatetime]="timeFromNow(post.createdAt)">
               <nz-avatar
+                [routerLink]="['/streams/profile/', post.username]"
                 nz-comment-avatar
                 nzIcon="user"
                 [nzSize]="'large'"
