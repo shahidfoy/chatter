@@ -16,6 +16,14 @@ export class PostsController {
     }
 
     /**
+     * gets trending posts
+     */
+    @Get('trending')
+    async getTrendingPosts(): Promise<UserPost[]> {
+        return this.postsService.getTrendingPosts();
+    }
+
+    /**
      * gets posts by id
      * @param postId post id
      */

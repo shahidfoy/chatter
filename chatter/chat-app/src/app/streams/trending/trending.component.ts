@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { PayloadData } from '../../interfaces/jwt-payload.interface';
+import { Post } from '../interfaces/post.interface';
+import { TokenService } from '../../services/token.service';
 import { ApplicationStateService } from '../../services/application-state.service';
 import { PostService } from '../services/post.service';
-import { Post } from '../../streams/interfaces/post.interface';
 import { NzNotificationService } from 'ng-zorro-antd';
-import * as _ from 'lodash';
-import { TokenService } from '../../services/token.service';
-import { PayloadData } from '../../interfaces/jwt-payload.interface';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { timeFromNow } from 'src/app/shared/shared.utils';
+import { HttpErrorResponse } from '@angular/common/http';
+import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-posts',
-  templateUrl: './posts.component.html',
-  styleUrls: ['./posts.component.scss']
+  selector: 'app-trending',
+  templateUrl: './trending.component.html',
+  styleUrls: ['./trending.component.scss']
 })
-export class PostsComponent implements OnInit {
+export class TrendingComponent implements OnInit {
+
   isMobile: boolean;
   payload: PayloadData;
   username: string;
@@ -36,9 +37,9 @@ export class PostsComponent implements OnInit {
       this.isMobile = isMobile;
     });
 
-    this.getAllPosts();
+    this.getTrendingPosts();
     this.postService.receiveNewPostSocket().subscribe(() => {
-      this.getAllPosts();
+      this.getTrendingPosts();
     });
   }
 
@@ -94,8 +95,8 @@ export class PostsComponent implements OnInit {
   /**
    * gets all posts
    */
-  private getAllPosts() {
-    this.postService.getPosts().subscribe(posts => {
+  private getTrendingPosts() {
+    this.postService.getTrendingPosts().subscribe(posts => {
       this.posts = posts;
     });
   }
@@ -107,4 +108,5 @@ export class PostsComponent implements OnInit {
   private displayError(message: string) {
     this.notification.create('warning', 'unable to like post', message);
   }
+
 }

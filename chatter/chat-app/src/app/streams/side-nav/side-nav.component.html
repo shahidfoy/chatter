@@ -10,19 +10,21 @@
       <span>Posts</span>
     </a>
   </li>
-  <!-- <li nz-menu-item>
-    <i nz-icon nzType="shake"></i>
-    <span>Trending</span>
+  <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
+    <a [routerLink]="['/streams/trending']">
+      <i nz-icon nzType="shake"></i>
+      <span>Trending</span>
+    </a>
   </li>
-  <li nz-menu-item>
+  <!-- <li nz-menu-item>
     <i nz-icon nzType="appstore"></i>
     <span>Groups</span>
   </li>
   <li nz-menu-item>
     <i nz-icon nzType="camera"></i>
     <span>Photos</span>
-  </li>
-  -->
+  </li> -->
+
   <li nz-submenu nzTitle="Users" nzIcon="team">
     <ul>
       <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">

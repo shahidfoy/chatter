@@ -43,6 +43,13 @@ export class PostService {
   }
 
   /**
+   * gets trending posts
+   */
+  getTrendingPosts(): Observable<Post[]> {
+    return this.http.get<Post[]>(`${environment.BASEURL}/api/posts/trending`);
+  }
+
+  /**
    * adds like to post
    * @param body post
    */

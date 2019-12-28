@@ -9,6 +9,7 @@ import { UsersComponent } from './users/users.component';
 import { FollowersComponent } from './users/followers/followers.component';
 import { FollowingComponent } from './users/following/following.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { TrendingComponent } from './trending/trending.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'posts', pathMatch: 'full' },
       { path: 'post/:id', component: CommentsComponent, canActivate: [AuthGuard] },
       { path: 'posts', component: PostsComponent },
+      { path: 'trending', component: TrendingComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'profile/:username', component: ProfileComponent },
       { path: 'followers', component: FollowersComponent },

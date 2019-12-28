@@ -95,6 +95,21 @@ export class PostsService {
     }
 
     /**
+     * gets all trending posts
+     * currently gets most likes
+     */
+    async getTrendingPosts(): Promise<UserPost[]> {
+        try {
+            const posts = await this.postModel.find({ totalLikes: { $gte: 3 } })
+                .populate('user')
+                .sort({ createdAt: -1 });
+            return posts;
+        } catch (err) {
+            throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
+        }
+    }
+
+    /**
      * adds like to post
      * @param user user who liked post
      * @param postId post id
