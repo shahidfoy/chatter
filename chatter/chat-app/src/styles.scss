@@ -31,6 +31,10 @@ nz-badge {
   border: transparent;
 }
 
+.ant-card-actions > li:not(:last-child) {
+  border-right: transparent;
+}
+
 // comments and posts
 .ant-comment-inner {
   padding: 0;
