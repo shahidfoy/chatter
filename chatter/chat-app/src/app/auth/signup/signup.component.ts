@@ -32,6 +32,9 @@ export class SignupComponent implements OnInit {
     });
   }
 
+  /**
+   * submits sign up form
+   */
   submitForm() {
     this.authService.resgisterUser(this.validateForm.value).subscribe((data: TokenResponse) => {
       this.isLoading = true;
@@ -47,6 +50,10 @@ export class SignupComponent implements OnInit {
     });
   }
 
+  /**
+   * displays sign up error message
+   * @param message sign up error message
+   */
   private displayError(message: string) {
     this.isLoading = false;
     this.notification.create('warning', 'Sign up Error', message);

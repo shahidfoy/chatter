@@ -31,6 +31,9 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  /**
+   * submits form to login
+   */
   submitForm() {
     this.authService.loginUser(this.validateForm.value).subscribe((data: TokenResponse) => {
       this.isLoading = true;
@@ -46,6 +49,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  /**
+   * displays login error message
+   * @param message login error message
+   */
   displayError(message: string) {
     this.isLoading = false;
     this.notification.create('warning', 'Log in Error', message);
