@@ -1,7 +1,17 @@
 
 <nz-row [nzGutter]="16">
-  <nz-col [nzSpan]="8">
-    <h2 class="margin-left-24">{{ username }}</h2>
+  <nz-col [nzSpan]="4" class="margin-left-24">
+    <h2>
+      {{ username }}
+      <span *ngIf="!isLoggedInUser">
+        <button nz-button nzType="primary" *ngIf="!followingUser" (click)="followUser(payload._id)">
+          <i nz-icon nzType="plus" nzTheme="outline"></i>Follow
+        </button>
+        <button nz-button nzType="default" *ngIf="followingUser" (click)="followUser(payload._id)">
+          <i nz-icon nzType="minus" nzTheme="outline"></i>Unfollow
+        </button>
+      </span>
+    </h2>
   </nz-col>
   <nz-col [nzSpan]="12" class="float-right">
     <nz-descriptions nzBordered [nzSize]="'small'">
@@ -20,7 +30,7 @@
 </nz-row>
 <hr>
 
-<app-post-form [isMobile]="isMobile"></app-post-form>
+<app-post-form [isMobile]="isMobile" *ngIf="isLoggedInUser"></app-post-form>
 
 <nz-content>
   <div class="posts padding-bottom-88">
@@ -48,7 +58,7 @@
                   nzTitle="Like"
                   nz-icon
                   nzType="like"
-                  [theme]="checkUserInArray(post.likes, username) ? 'twotone' : 'outline'"
+                  [theme]="checkUserInArray(post.likes, payload.username) ? 'twotone' : 'outline'"
                   (click)="like(post)"
                 ></i>
                 <span class="count like">{{ post.totalLikes }}</span>
@@ -59,7 +69,7 @@
                   nzTitle="Dislike"
                   nz-icon
                   nzType="dislike"
-                  [theme]="checkUserInArray(post.dislikes, username) ? 'twotone' : 'outline'"
+                  [theme]="checkUserInArray(post.dislikes, payload.username) ? 'twotone' : 'outline'"
                   (click)="dislike(post)"
                 ></i>
                 <span class="count dislike">{{ post.totalDislikes }}</span>
@@ -69,7 +79,7 @@
                   <i
                     nz-icon
                     nzType="message"
-                    [theme]="checkUserInArray(post.comments, username) ? 'twotone' : 'outline'">
+                    [theme]="checkUserInArray(post.comments, payload.username) ? 'twotone' : 'outline'">
                   </i> comments {{ post.comments.length }}
                 </span>
               </nz-comment-action>

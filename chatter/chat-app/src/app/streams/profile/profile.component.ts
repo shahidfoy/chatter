@@ -11,6 +11,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { PostService } from '../services/post.service';
 import * as _ from 'lodash';
 import { NzNotificationService } from 'ng-zorro-antd';
+import { UserFollowed } from '../interfaces/user-followed.interface';
+import { UserFollowing } from '../interfaces/user-following.interface';
 
 @Component({
   selector: 'app-profile',
@@ -24,6 +26,8 @@ export class ProfileComponent implements OnInit {
   username: string;
   posts: Post[];
   user: User;
+  isLoggedInUser: boolean;
+  followingUser: boolean;
 
   constructor(
     private userService: UserService,
@@ -36,27 +40,75 @@ export class ProfileComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.payload = this.tokenService.getPayload();
     this.applicationStateService.isMobile.subscribe(isMobile => {
       this.isMobile = isMobile;
     });
 
     this.username = this.activatedRoute.snapshot.params.username;
     if (!this.username) {
-      this.payload = this.tokenService.getPayload();
       this.username = this.payload.username;
+      this.isLoggedInUser = true;
+    } else if (this.payload.username === this.activatedRoute.snapshot.params.username) {
+      this.isLoggedInUser = true;
+    } else {
+      this.isLoggedInUser = false;
     }
 
     this.getUser();
-
     this.postService.receiveNewPostSocket().subscribe(() => {
+      this.getUser();
+    });
+    this.userService.receiveNewFollowSocket().subscribe(() => {
       this.getUser();
     });
   }
 
-   /**
-    * open comments for post
-    * @param post post comments
-    */
+  /**
+   * follows selected user
+   * @param userId follow request user id
+   */
+  followUser(userId: string) {
+    const userInFollowingArray = this.checkUserInFollowingArray(this.user.followers, userId);
+    if (!userInFollowingArray) {
+      this.userService.followUser(this.user._id).subscribe((followingUserId: string) => {
+        this.userService.emitNewFollowSocket();
+        this.displayNotification('success', 'following user');
+      }, err => {
+        this.displayNotification('error', err.error.message);
+      });
+    } else {
+      this.userService.unFollowUser(this.user._id).subscribe((unFollowedUserId: string) => {
+        this.userService.emitNewFollowSocket();
+        this.displayNotification('warning', 'unfollowing user');
+      }, err => {
+        this.displayNotification('error', err.error.message);
+      });
+    }
+  }
+
+  /**
+   * uses lodash to check if the user id is in the logged in users following array
+   * @param array array of followed users
+   * @param userId users id
+   */
+  checkUserInFollowingArray(array: UserFollowing[], userId: string) {
+    return _.find(array, [ 'userFollower._id', userId ]);
+  }
+
+  /**
+   * displays notifications
+   * @param type type of notification
+   * @param message message to be displayed
+   */
+  displayNotification(type: string, message: string) {
+    this.notification.create(type, message, '');
+  }
+
+  /**
+   * open comments for post
+   * @param post post comments
+   */
   openComments(post: Post) {
     this.router.navigate(['streams/post', post._id]);
   }
@@ -122,6 +174,12 @@ export class ProfileComponent implements OnInit {
       this.posts.sort((current, next) => {
         return +new Date(next.createdAt) - +new Date(current.createdAt);
       });
+
+      if (this.checkUserInFollowingArray(this.user.followers, this.payload._id)) {
+        this.followingUser = true;
+      } else {
+        this.followingUser = false;
+      }
     });
   }
 }
