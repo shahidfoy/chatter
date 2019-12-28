@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PostService } from '../../services/post.service';
 import { ActivatedRoute } from '@angular/router';
 import { Post, UserComment } from '../../interfaces/post.interface';
-import * as moment from 'moment';
+import { timeFromNow } from 'src/app/shared/shared.utils';
 
 @Component({
   selector: 'app-comments',
@@ -53,7 +53,7 @@ export class CommentsComponent implements OnInit {
    * @param time time stamp
    */
   timeFromNow(time: Date) {
-    return moment(time).fromNow();
+    return timeFromNow(time);
   }
 
   /**

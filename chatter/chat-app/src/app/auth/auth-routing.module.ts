@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: 'authenticate',
     component: AuthComponent
-  }
+  },
 ];
 
 @NgModule({

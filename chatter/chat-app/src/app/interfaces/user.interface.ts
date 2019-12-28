@@ -20,6 +20,7 @@ export interface UserPost {
 }
 
 export interface NotificationsObj {
+  _id: string;
   senderId: string;
   senderUsername: string;
   message: string;

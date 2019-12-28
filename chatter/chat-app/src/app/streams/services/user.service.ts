@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../../interfaces/user.interface';
+import { User, NotificationsObj } from '../../interfaces/user.interface';
 import { environment } from '../../../environments/environment';
 import { Socket } from 'ngx-socket-io';
 
@@ -11,6 +11,7 @@ import { Socket } from 'ngx-socket-io';
 export class UserService {
 
   private readonly WEBSOCKET_FOLLOW: string = 'follow';
+  private readonly WEBSOCKET_NOTIFICATION: string = 'notification';
 
   constructor(
     private http: HttpClient,
@@ -60,6 +61,26 @@ export class UserService {
     });
   }
 
+  /**
+   * marks notification as read
+   * @param notification notifiaction to be marked
+   */
+  markNotification(notification: NotificationsObj) {
+    return this.http.post<User>(`${environment.BASEURL}/api/users/mark-notification`, {
+      notification
+    });
+  }
+
+  /**
+   * deletes notification
+   * @param notification notification to be deleted
+   */
+  deleteNotification(notification: NotificationsObj) {
+    return this.http.post<User>(`${environment.BASEURL}/api/users/delete-notification`, {
+      notification
+    });
+  }
+
   ///////////////////////////////////////////
   /// *** WEBSOCKETS
   ///////////////////////////////////////////
@@ -78,4 +99,17 @@ export class UserService {
     return this.socket.fromEvent(this.WEBSOCKET_FOLLOW);
   }
 
+  /**
+   * emits on notification action
+   */
+  emitNewNotificationActionSocket() {
+    this.socket.emit(this.WEBSOCKET_NOTIFICATION);
+  }
+
+  /**
+   * receives new notification action
+   */
+  receiveNewNotificationActionSocket(): Observable<{}> {
+    return this.socket.fromEvent(this.WEBSOCKET_NOTIFICATION);
+  }
 }

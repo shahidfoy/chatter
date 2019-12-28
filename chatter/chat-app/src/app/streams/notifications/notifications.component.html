@@ -1,7 +1,7 @@
 <div class="padding-bottom-88">
   <!-- add to nz-list for pagination [nzLoadMore]="loadMore" -->
   <nz-list
-    class="demo-loadmore-list"
+    class="notifications-list"
     [nzDataSource]="list"
     [nzItemLayout]="'horizontal'"
     [nzLoading]="initLoading"
@@ -9,19 +9,33 @@
   >
     <ng-template #item let-item>
       <nz-list-item
-        [nzContent]="item.loading ? [] : notificationType"
-        [nzActions]="item.loading ? [] : [editAction]"
+        [nzContent]="item.loading ? [] : profileContent"
+        [nzActions]="item.loading ? [] : [notificationActions]"
       >
         <nz-skeleton [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="item.loading">
-          <ng-template #notificationType>
-            <i nz-icon [nzType]="'mail'"></i>
+          <ng-template #profileContent>
+            <a [routerLink]="['/streams/profile', item.notification.senderUsername]">
+              {{ item.notification.senderUsername }}
+            </a>
           </ng-template>
-          <ng-template #editAction><a [routerLink]="['/streams/profile', item.notification.senderUsername]">view profile</a></ng-template>
+          <ng-template #notificationActions>
+            <i
+              class="anticon margin-right-8"
+              nz-icon
+              [nzType]="'mail'"
+              [theme]="item.notification.read ? 'twotone' : 'outline'"
+              (click)="markNotification(item.notification)"></i>
+            <i
+              class="anticon margin-right-8"
+              nz-icon
+              [nzType]="'delete'"
+              (click)="deleteNotification(item.notification)"></i>
+          </ng-template>
           <nz-list-item-meta
             [nzTitle]="nzTitle"
             nzIcon="user"
             nzAvatar="../../"
-            [nzDescription]="item.notification.createdAt"
+            [nzDescription]="timeFromNow(item.notification.createdAt)"
           >
             <ng-template #nzTitle>
               <a [routerLink]="['/streams/profile', item.notification.senderUsername]">{{ item.notification.message }}</a>

@@ -17,7 +17,12 @@ export class UsersGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     @SubscribeMessage('follow')
-    async onPost(client: Socket) {
+    async onFollow(client: Socket) {
         this.server.emit('follow');
+    }
+
+    @SubscribeMessage('notification')
+    async onNotificationAction(client: Socket) {
+        this.server.emit('notification');
     }
 }

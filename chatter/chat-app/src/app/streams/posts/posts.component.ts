@@ -3,13 +3,13 @@ import { ApplicationStateService } from '../../services/application-state.servic
 import { distanceInWords } from 'date-fns';
 import { PostService } from '../services/post.service';
 import { Post } from '../../streams/interfaces/post.interface';
-import * as moment from 'moment';
 import { NzNotificationService } from 'ng-zorro-antd';
 import * as _ from 'lodash';
 import { TokenService } from '../../services/token.service';
 import { PayloadData } from '../../interfaces/jwt-payload.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { timeFromNow } from 'src/app/shared/shared.utils';
 
 @Component({
   selector: 'app-posts',
@@ -58,7 +58,7 @@ export class PostsComponent implements OnInit {
    * @param time time stamp
    */
   timeFromNow(time: Date) {
-    return moment(time).fromNow();
+    return timeFromNow(time);
   }
 
   /**

@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Req, Body, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './models/user.model';
+import { User, NotificationsObj } from './models/user.model';
 import { CustomRequest } from 'src/interfaces/custom-request.interface';
 import { Token } from 'src/interfaces/response-token.interface';
 
@@ -64,5 +64,31 @@ export class UsersController {
         @Body('unfollowUserId') requestToUnFollowUserId: string,
     ): Promise<string> {
         return await this.usersService.unfollowUser(req.user, requestToUnFollowUserId);
+    }
+
+    /**
+     * marks notification as read
+     * @param req custom request
+     * @param notification notification to be marked
+     */
+    @Post('mark-notification')
+    async markNotification(
+        @Req() req: CustomRequest,
+        @Body('notification') notification: NotificationsObj,
+    ): Promise<User> {
+        return await this.usersService.markNotification(req.user, notification);
+    }
+
+    /**
+     * removes notification from users notification array
+     * @param req custom request
+     * @param notification notification to be deleted
+     */
+    @Post('delete-notification')
+    async deleteNotification(
+        @Req() req: CustomRequest,
+        @Body('notification') notification: NotificationsObj,
+    ): Promise<User> {
+        return await this.usersService.deleteNotification(req.user, notification);
     }
 }
