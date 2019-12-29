@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { TokenService } from '../services/token.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -8,7 +9,15 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class AuthComponent implements OnInit {
 
-  constructor() {}
+  constructor(
+    private tokenService: TokenService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    const token = this.tokenService.getToken();
+    if (token) {
+      this.router.navigate(['/streams']);
+    }
+  }
 }

@@ -113,7 +113,7 @@ export class FollowersComponent implements OnInit {
       this.users = this.userData.followers
                     .map((userFollowing: UserFollowing) => userFollowing.userFollower);
       _.remove(this.users, { username: this.userData.username });
-      _.remove(this.users, { username: this.loggedInUserData.username });
+      // _.remove(this.users, { username: this.loggedInUserData.username });
     });
   }
 }

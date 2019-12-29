@@ -24,7 +24,7 @@
         nz-popover
         nzPopoverContent="follow"
         nzPopoverPlacement="top"
-        [hidden]="user.username === loggedInUserData.username"></i>
+        [hidden]="user?.username === loggedInUserData?.username"></i>
     </ng-template>
     <ng-template #actionProfile>
       <a [routerLink]="['/streams/profile/', user.username]">
@@ -41,7 +41,7 @@
         nz-popover
         nzPopoverContent="chat"
         nzPopoverPlacement="top"
-        [hidden]="user.username === loggedInUserData.username"></i>
+        [hidden]="user?.username === loggedInUserData?.username"></i>
     </ng-template>
   </nz-card>
 </div>

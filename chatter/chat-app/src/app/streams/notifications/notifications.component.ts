@@ -67,7 +67,6 @@ export class NotificationsComponent implements OnInit {
    * marks all notifications as read
    */
   markAllNotifications() {
-    console.log('marking all notifications');
     this.userService.markAllNotifications().subscribe((user: User) => {
       this.userService.emitNewNotificationActionSocket();
     });

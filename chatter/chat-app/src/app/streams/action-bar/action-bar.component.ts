@@ -39,7 +39,7 @@ export class ActionBarComponent implements OnInit {
   getLoggedInUser() {
     this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
       this.loggedInUserData = user;
-      if (this.loggedInUserData.notifications) {
+      if (this.loggedInUserData) {
         this.notificationsLength = _.filter(this.loggedInUserData.notifications, ['read', false]).length;
       }
     }, (err: HttpErrorResponse) => {
