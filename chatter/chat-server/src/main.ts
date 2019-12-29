@@ -14,6 +14,6 @@ async function bootstrap() {
     // res.header('Set-Cookie', 'HttpOnly;Secure;SameSite=Strict');
     next();
   });
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
