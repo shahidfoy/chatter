@@ -8,6 +8,7 @@ import { JwtPayload, PayloadData } from '../interfaces/jwt-payload.interface';
 export class TokenService {
 
   private readonly CHAT_TOKEN: string = 'chat_token';
+  private payload: JwtPayload;
 
   constructor(private cookieService: CookieService) { }
 
@@ -20,18 +21,17 @@ export class TokenService {
   }
 
   deleteToken() {
-    this.cookieService.delete(this.CHAT_TOKEN);
+    this.cookieService.delete(this.CHAT_TOKEN, '/');
   }
 
   getPayload(): PayloadData {
     const token = this.getToken();
     let payloadStr: string;
-    let payload: JwtPayload;
     if (token) {
       payloadStr = token.split('.')[1]; // jwt payload
-      payload = JSON.parse(window.atob(payloadStr));
+      this.payload = JSON.parse(window.atob(payloadStr));
     }
 
-    return payload.data;
+    return this.payload.data;
   }
 }

@@ -9,12 +9,12 @@ export class PostsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     async handleConnection() {
         this.counter++;
-        console.log('socket handling connections', this.counter);
+        // console.log('socket handling connections', this.counter);
     }
 
     async handleDisconnect() {
         this.counter--;
-        console.log('socket disconnecting', this.counter);
+        // console.log('socket disconnecting', this.counter);
     }
 
     @SubscribeMessage('post')

@@ -8,12 +8,12 @@ export class UsersGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     async handleConnection() {
         this.counter++;
-        console.log('user socket handling connections', this.counter);
+        // console.log('user socket handling connections', this.counter);
     }
 
     async handleDisconnect() {
         this.counter--;
-        console.log('user socket disconnecting', this.counter);
+        // console.log('user socket disconnecting', this.counter);
     }
 
     @SubscribeMessage('follow')

@@ -19,7 +19,11 @@ export class JwtInterceptor implements HttpInterceptor {
 
       return next.handle(cloned);
     } else {
-      return next.handle(req);
+      const cloned = req.clone({
+        headers: req.headers.delete('auth')
+      });
+
+      return next.handle(cloned);
     }
   }
 }

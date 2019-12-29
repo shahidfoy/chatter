@@ -10,12 +10,12 @@ export class CommentsGateway implements OnGatewayConnection, OnGatewayDisconnect
 
     async handleConnection() {
         this.counter++;
-        console.log('comment socket handling connections', this.counter);
+        // console.log('comment socket handling connections', this.counter);
     }
 
     async handleDisconnect() {
         this.counter--;
-        console.log('comment socket disconnecting', this.counter);
+        // console.log('comment socket disconnecting', this.counter);
     }
 
     @SubscribeMessage('comment')
