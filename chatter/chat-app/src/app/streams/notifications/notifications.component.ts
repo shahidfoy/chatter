@@ -40,7 +40,6 @@ export class NotificationsComponent implements OnInit {
    * @param time time stamp
    */
   timeFromNow(time: Date) {
-    console.log(time);
     return timeFromNow(time);
   }
 
@@ -94,7 +93,6 @@ export class NotificationsComponent implements OnInit {
                                   return +new Date(next.createdAt) - +new Date(current.createdAt);
                                 });
       this.list = this.notifications.map(notification => ({ loading: false, notification }));
-      console.log(this.list);
       this.initLoading = false;
     });
   }
