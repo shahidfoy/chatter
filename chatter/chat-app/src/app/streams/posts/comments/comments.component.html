@@ -47,7 +47,11 @@
             class="post-content"
             [nzAuthor]="item.username"
             [nzDatetime]="timeFromNow(item.createdAt)">
-            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
+            <nz-avatar
+              [routerLink]="['/streams/profile/', item.username]"
+              nz-comment-avatar
+              nzIcon="user"
+              [nzSrc]="item.avatar"></nz-avatar>
             <nz-comment-content>
               <p>{{ item.comment }}</p>
             </nz-comment-content>
