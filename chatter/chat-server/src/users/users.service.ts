@@ -86,7 +86,7 @@ export class UsersService {
                         senderId: user._id,
                         senderUsername: user.username,
                         message: `${user.username} is now following you.`,
-                        date: Date.now(),
+                        date: new Date(),
                     },
                 },
             });
