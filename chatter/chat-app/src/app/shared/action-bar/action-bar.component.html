@@ -2,8 +2,10 @@
   <li nz-menu-item>
     <i nz-icon class="icon-size-lg" nzType="appstore"></i>
   </li>
-  <li nz-menu-item>
-    <i nz-icon class="icon-size-lg" nzType="message"></i>
+  <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
+    <a [routerLink]="['/chat']">
+      <i nz-icon class="icon-size-lg" nzType="message"></i>
+    </a>
   </li>
   <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
     <a [routerLink]="['/streams/notifications']">

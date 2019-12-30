@@ -11,7 +11,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { PostService } from '../services/post.service';
 import * as _ from 'lodash';
 import { NzNotificationService } from 'ng-zorro-antd';
-import { UserFollowed } from '../interfaces/user-followed.interface';
 import { UserFollowing } from '../interfaces/user-following.interface';
 
 @Component({

@@ -1,31 +1,36 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Sulphur+Point&display=swap');
 @import url('./assets/fontawesome/css/all.min.css');
 
+/*
 /////////////////////////////////////////////
 //** GLOBAL STYLES
 /////////////////////////////////////////////
-
+*/
 body {
   font-family: 'Sulphur Point', sans-serif;
 }
 
+.layout {
+  height: 100vh;
+}
+
+/*
 /////////////////////////////////////////////
 //** ZORRO STYLE OVERRIDES
 /////////////////////////////////////////////
+*/
 
-// badge notification color
-nz-badge {
-  .ant-scroll-number {
-    color: white;
-  }
+/* badge notification color */
+nz-badge .ant-scroll-number {
+  color: white;
 }
 
-// card border
+/* card border */
 .ant-card-bordered {
   border: transparent;
 }
 
-// card actions
+/* card actions */
 .ant-card-actions {
   background: #525552;
   border: transparent;
@@ -35,18 +40,18 @@ nz-badge {
   border-right: transparent;
 }
 
-// comments and posts
+/* comments and posts */
 .ant-comment-inner {
   padding: 0;
 }
 
-// content
+/* content */
 nz-content {
   display: flex;
   justify-content: center;
 }
 
-// descriptions
+/* descriptions */
 .ant-descriptions-bordered .ant-descriptions-item-label {
   background-color: transparent;
   border-right: transparent;
@@ -64,81 +69,81 @@ nz-content {
   border: 1px solid #505050;
 }
 
-// icons
-.anticon {
-  &:hover {
-    color: #95de64
-  }
+/* icons */
+.anticon:hover {
+  color: #95de64
 }
 
-// input icon color
-.ant-form-item-children {
-  .anticon {
-    color: white !important;
-  }
+/* input icon color */
+.ant-form-item-children .anticon {
+  color: white !important;
 }
 
-// inputs
+/* inputs */
 .ant-input {
   border: transparent;
 }
 
-// list items
+/* list items */
 .ant-list-split .ant-list-item {
   border-bottom: 1px solid #505050;
 }
 
-// select
+/* select */
 .ant-select-selection {
   border: transparent;
 }
 
-// select tag color
+/* select tag color */
 .ant-select-selection--multiple .ant-select-selection__rendered > ul > li {
   background: transparent;
 }
 
-// select dropdown
+/* select dropdown */
 .ant-select-dropdown-menu-item,
 .ant-select-dropdown-menu-item-selected,
 .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
   background-color: transparent;
-  &:hover {
-    background: #888888 !important;
-  }
 }
 
-// side-nav mobile hamburger bar
+.ant-select-dropdown-menu-item:hover,
+.ant-select-dropdown-menu-item-selected:hover,
+.ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled):hover {
+  background: #888888 !important;
+}
+
+/* side-nav mobile hamburger bar */
 .ant-layout-sider-zero-width-trigger {
   top: 0.4vh;
 }
 
-// tags
+/* tags */
 .ant-tag {
   background: transparent;
   margin-bottom: 2px;
 }
 
+/*
 /////////////////////////////////////////////
 //** GENERIC STYLES
 /////////////////////////////////////////////
-
-// width 100%
+*/
+/* width 100% */
 .full-width {
   width: 100%;
 }
 
-// pull left
+/* pull left */
 .float-left {
   float: left;
 }
 
-// pull right
+/* pull right */
 .float-right {
   float: right;
 }
 
-// margins
+/* margins */
 .margin-left-24 {
   margin-left: 24px;
 }
@@ -147,7 +152,7 @@ nz-content {
   margin-right: 8px;
 }
 
-// padding
+/* padding */
 .padding-bottom-44 {
   padding-bottom: 44px;
 }
@@ -156,7 +161,7 @@ nz-content {
   padding-bottom: 88px;
 }
 
-// hr
+/* hr */
 hr {
   height: 1px;
   color: #505050;

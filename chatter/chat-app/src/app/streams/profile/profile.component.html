@@ -1,15 +1,18 @@
 
 <nz-row [nzGutter]="16">
-  <nz-col [nzSpan]="4" class="margin-left-24">
+  <nz-col [nzSpan]="8" class="margin-left-24">
     <h2>
       {{ username }}
       <span *ngIf="!isLoggedInUser">
-        <button nz-button nzType="primary" *ngIf="!followingUser" (click)="followUser(payload._id)">
-          <i nz-icon nzType="plus" nzTheme="outline"></i>Follow
-        </button>
-        <button nz-button nzType="default" *ngIf="followingUser" (click)="followUser(payload._id)">
-          <i nz-icon nzType="minus" nzTheme="outline"></i>Unfollow
-        </button>
+        <nz-button-group>
+          <button nz-button nzType="primary" *ngIf="!followingUser" (click)="followUser(payload._id)">
+            <i nz-icon nzType="plus" nzTheme="outline"></i><span *ngIf="!isMobile">Follow</span>
+          </button>
+          <button nz-button nzType="default" *ngIf="followingUser" (click)="followUser(payload._id)">
+            <i nz-icon nzType="minus" nzTheme="outline"></i><span *ngIf="!isMobile">Unfollow</span>
+          </button>
+          <button nz-button nzType="primary" [routerLink]="['/chat/message', username]"><span *ngIf="!isMobile">Chat</span><i nz-icon [nzType]="'message'"></i></button>
+        </nz-button-group>
       </span>
     </h2>
   </nz-col>

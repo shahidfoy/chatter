@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
-import { User } from 'src/app/interfaces/user.interface';
-import { TokenService } from 'src/app/services/token.service';
-import { UserService } from '../services/user.service';
+import { PayloadData } from '../../interfaces/jwt-payload.interface';
+import { User } from '../../interfaces/user.interface';
+import { TokenService } from '../../services/token.service';
+import { UserService } from '../../streams/services/user.service';
 import * as _ from 'lodash';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
