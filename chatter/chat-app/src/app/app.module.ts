@@ -31,8 +31,8 @@ const socketConfig: SocketIoConfig = { url: `${environment.BASEURL}`, options: {
     SharedModule,
     BrowserAnimationsModule,
     AuthModule,
-    StreamsModule,
     ChatModule,
+    StreamsModule,
     SocketIoModule.forRoot(socketConfig),
   ],
   providers: [

@@ -35,11 +35,13 @@
         </a>
       </ng-template>
       <ng-template #actionChat>
-        <i
-          class="far fa-comment-dots"
-          nz-popover
-          nzPopoverContent="chat"
-          nzPopoverPlacement="top"></i>
+        <a [routerLink]="['/chat/message/', user.username]">
+          <i
+            class="far fa-comment-dots"
+            nz-popover
+            nzPopoverContent="chat"
+            nzPopoverPlacement="top"></i>
+        </a>
       </ng-template>
     </nz-card>
   </div>
