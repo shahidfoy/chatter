@@ -4,7 +4,11 @@
       class="post-content"
       [nzAuthor]="post?.username"
       [nzDatetime]="timeFromNow(post?.createdAt)">
-      <nz-avatar nz-comment-avatar nzIcon="user" [nzSize]="64"></nz-avatar>
+      <nz-avatar
+        [routerLink]="['/streams/profile/', post?.username]"
+        nz-comment-avatar
+        nzIcon="user"
+        [nzSize]="64"></nz-avatar>
       <nz-comment-content>
         <p>{{ post?.post }}</p>
         <nz-tag *ngFor="let tag of post?.tags">{{tag}}</nz-tag>
