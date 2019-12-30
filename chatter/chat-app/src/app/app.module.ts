@@ -10,13 +10,12 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { AuthModule } from './auth/auth.module';
 import { StreamsModule } from './streams/streams.module';
-import { AuthRoutingModule } from './auth/auth-routing.module';
-import { StreamsRoutingModule } from './streams/streams-routing.module';
 import { CookieService } from 'ngx-cookie-service';
 import { SharedModule } from './shared/shared.module';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
+import { ChatModule } from './chat/chat.module';
 
 registerLocaleData(en);
 
@@ -32,9 +31,8 @@ const socketConfig: SocketIoConfig = { url: `${environment.BASEURL}`, options: {
     SharedModule,
     BrowserAnimationsModule,
     AuthModule,
-    AuthRoutingModule,
     StreamsModule,
-    StreamsRoutingModule,
+    ChatModule,
     SocketIoModule.forRoot(socketConfig),
   ],
   providers: [
