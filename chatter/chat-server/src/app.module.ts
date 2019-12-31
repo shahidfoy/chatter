@@ -8,6 +8,7 @@ import { PostsModule } from './posts/posts.module';
 import { GetUserMiddleware } from './middleware/get-user.middleware';
 import { PostsController } from './posts/posts.controller';
 import { UsersController } from './users/users.controller';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UsersController } from './users/users.controller';
     }),
     UsersModule,
     PostsModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

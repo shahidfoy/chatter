@@ -5,6 +5,7 @@ import { User, NotificationsObj } from './models/user.model';
 
 @Injectable()
 export class UsersService {
+
     constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
     /**
