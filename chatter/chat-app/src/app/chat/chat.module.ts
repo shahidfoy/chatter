@@ -4,7 +4,6 @@ import { ChatComponent } from './chat.component';
 import { ChatRoutingModule } from './chat-routing.module';
 import { MessageComponent } from './message/message.component';
 import { SharedModule } from '../shared/shared.module';
-import { HeaderComponent } from '../shared/header/header.component';
 import { MessageService } from './services/message.service';
 
 
@@ -19,11 +18,7 @@ import { MessageService } from './services/message.service';
     SharedModule,
     ChatRoutingModule,
   ],
-  exports: [
-    ChatComponent
-  ],
-  providers: [
-    MessageService,
-  ]
+  exports: [ChatComponent],
+  providers: [MessageService]
 })
 export class ChatModule { }

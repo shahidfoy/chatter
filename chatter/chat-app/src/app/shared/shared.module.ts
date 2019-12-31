@@ -7,6 +7,8 @@ import { FooterComponent } from './footer/footer.component';
 import { ActionBarComponent } from './action-bar/action-bar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TokenService } from '../services/token.service';
+import { ApplicationStateService } from '../services/application-state.service';
 
 
 
@@ -15,7 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NotFoundComponent,
     HeaderComponent,
     FooterComponent,
-    ActionBarComponent
+    ActionBarComponent,
   ],
   imports: [
     RouterModule,
@@ -31,7 +33,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     HeaderComponent,
     FooterComponent,
-    ActionBarComponent
+    ActionBarComponent,
+  ],
+  providers: [
+    TokenService,
+    ApplicationStateService,
   ]
 })
 export class SharedModule { }

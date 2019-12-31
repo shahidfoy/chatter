@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StreamsComponent } from './streams.component';
-import { TokenService } from '../services/token.service';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { PostsComponent } from './posts/posts.component';
 import { SharedModule } from '../shared/shared.module';
@@ -37,6 +36,6 @@ import { UserService } from './services/user.service';
     StreamsRoutingModule,
   ],
   exports: [StreamsComponent],
-  providers: [TokenService, PostService, UserService]
+  providers: [PostService, UserService]
 })
 export class StreamsModule { }
