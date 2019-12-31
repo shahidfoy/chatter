@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ActionBarComponent } from './action-bar/action-bar.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -16,11 +18,17 @@ import { ActionBarComponent } from './action-bar/action-bar.component';
     ActionBarComponent
   ],
   imports: [
-    NgZorroAntdModule,
     RouterModule,
+    NgZorroAntdModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     NgZorroAntdModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     HeaderComponent,
     FooterComponent,
     ActionBarComponent

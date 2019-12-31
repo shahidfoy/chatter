@@ -11,6 +11,7 @@ export interface User {
   following: UserFollowed[];
   followers: UserFollowing[];
   notifications: NotificationsObj[];
+  chatList: ChatList[];
 }
 
 export interface UserPost {
@@ -29,4 +30,10 @@ export interface NotificationsObj {
   createdAt: Date;
   read: boolean;
   date: string;
+}
+
+export interface ChatList {
+  _id: string;
+  userId: string;
+  messageId: string;
 }

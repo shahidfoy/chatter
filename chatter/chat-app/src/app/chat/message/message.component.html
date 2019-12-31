@@ -1,6 +1,6 @@
 <div class="message-header">
-  <a [routerLink]="['/streams/profile', chatingWithUsername]">
-    <h3 class="margin-left-24">{{ chatingWithUsername }}</h3>
+  <a [routerLink]="['/streams/profile', receiverUsername]">
+    <h3 class="margin-left-24">{{ receiverUsername }}</h3>
   </a>
   <!-- determine if user is logged in -->
   <nz-badge [nzStatus]="'success'"></nz-badge>
@@ -25,10 +25,17 @@
 </nz-list>
 
 <div class="message-footer">
-  <nz-input-group [nzAddOnAfter]="suffixIconButton">
-    <input type="text" nz-input placeholder="send a message.." />
-  </nz-input-group>
-  <ng-template #suffixIconButton>
-    <button nz-button nzType="primary"><i class="fas fa-paper-plane"></i></button>
-  </ng-template>
+  <form (ngSubmit)="sendMessage()">
+    <nz-input-group [nzAddOnAfter]="suffixIconButton">
+      <input
+        [(ngModel)]="message"
+        name="message"
+        type="text"
+        nz-input
+        placeholder="send a message.." />
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary">Send <i class="fas fa-paper-plane"></i></button>
+    </ng-template>
+  </form>
 </div>
