@@ -1,0 +1,21 @@
+.message-header {
+  z-index: 1000;
+  position: sticky;
+  top: 0;
+  display: flex;
+  padding-top: 8px;
+  background: #505050;
+}
+
+.ant-list-item {
+  display: block;
+  padding: 12px;
+}
+
+.message-footer {
+  z-index: 1000;
+  position: sticky;
+  bottom: 0;
+  padding: 4px;
+  background: #505050;
+}

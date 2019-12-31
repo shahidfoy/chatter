@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-message',
@@ -7,9 +8,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MessageComponent implements OnInit {
 
-  constructor() { }
+  chatingWithUsername: string;
+
+  data = [
+    { name: 'Lily' },
+    { name: 'Lily' },
+    { name: 'Lily' },
+    { name: 'Lily' },
+    { name: 'Lily' },
+    { name: 'Lily' },
+    { name: 'Lily' },
+    { name: 'Lily' },
+    { name: 'Lily' },
+    { name: 'Lily' },
+    { name: 'Lily' },
+    { name: 'Lily' }
+  ];
+
+  constructor(
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+    this.chatingWithUsername = this.activatedRoute.snapshot.params.username;
   }
-
 }

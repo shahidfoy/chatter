@@ -84,6 +84,12 @@ nz-content {
   border: transparent;
 }
 
+.ant-input-group-addon {
+  padding: 0px;
+  background-color: transparent;
+  border: transparent;
+}
+
 /* list items */
 .ant-list-split .ant-list-item {
   border-bottom: 1px solid #505050;
@@ -153,6 +159,10 @@ nz-content {
 }
 
 /* padding */
+.padding-12 {
+  padding: 12px;
+}
+
 .padding-bottom-44 {
   padding-bottom: 44px;
 }
