@@ -9,6 +9,7 @@ import { GetUserMiddleware } from './middleware/get-user.middleware';
 import { PostsController } from './posts/posts.controller';
 import { UsersController } from './users/users.controller';
 import { ChatModule } from './chat/chat.module';
+import { ChatController } from './chat/chat.controller';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { ChatModule } from './chat/chat.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(GetUserMiddleware)
-      .forRoutes(PostsController, UsersController);
+      .forRoutes(PostsController, UsersController, ChatController);
   }
 }
