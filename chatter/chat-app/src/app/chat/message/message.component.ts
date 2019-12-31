@@ -5,6 +5,7 @@ import { MessageService } from '../services/message.service';
 import { UserService } from 'src/app/streams/services/user.service';
 import { User } from 'src/app/interfaces/user.interface';
 import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
+import { Message } from '../interfaces/message.interface';
 
 @Component({
   selector: 'app-message',
@@ -53,16 +54,14 @@ export class MessageComponent implements OnInit {
   }
 
   sendMessage() {
-    console.log('sending it');
-    console.log(this.message);
     if (this.message) {
       this.messageService.sendMessage(
         this.loggedInUser._id,
         this.receiverData._id,
         this.receiverUsername,
         this.message)
-      .subscribe(() => {
-        console.log('item sent');
+      .subscribe((message: Message) => {
+        console.log(message);
         this.message = '';
       });
     }

@@ -15,7 +15,7 @@ export interface Conversation extends mongoose.Document {
 }
 
 export interface Participants {
-    _id: string;
+    _id?: string;
     senderId: string;
     receiverId: string;
 }

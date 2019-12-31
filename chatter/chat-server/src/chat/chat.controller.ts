@@ -1,6 +1,7 @@
 import { Controller, Post, Param, Body, Req } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { CustomRequest } from 'src/interfaces/custom-request.interface';
+import { Message } from './models/message.model';
 
 @Controller('chat')
 export class ChatController {
@@ -19,8 +20,7 @@ export class ChatController {
         @Param('receiverId') receiverId: string,
         @Body('receiverName') receiverName: string,
         @Body('message') message: string,
-    ): Promise<any> {
-        console.log('sending message');
+    ): Promise<Message> {
         return this.chatService.sendMessage(req.user, senderId, receiverId, receiverName, message);
     }
 }

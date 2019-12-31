@@ -34,6 +34,6 @@ export interface NotificationsObj {
 
 export interface ChatList {
   _id: string;
-  userId: string;
+  receiverId: string;
   messageId: string;
 }

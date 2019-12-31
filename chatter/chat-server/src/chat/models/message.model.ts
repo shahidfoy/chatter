@@ -26,7 +26,7 @@ export interface Message extends mongoose.Document {
 }
 
 export interface MessageContents {
-    _id: string;
+    _id?: string;
     senderId: string;
     receiverId: string;
     sendername: string;

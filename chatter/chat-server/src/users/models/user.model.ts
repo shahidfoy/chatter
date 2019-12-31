@@ -31,7 +31,7 @@ export const UserSchema =  new mongoose.Schema({
     ],
     chatList: [
         {
-            userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+            receiverId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
             messageId: { type: mongoose.Schema.Types.ObjectId, ref: 'Message'},
         },
     ],
@@ -68,6 +68,6 @@ export interface NotificationsObj {
 
 export interface ChatList {
     _id: string;
-    userId: string;
+    receiverId: string;
     messageId: string;
 }
