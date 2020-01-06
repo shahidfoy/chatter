@@ -5,7 +5,7 @@ import { MessageService } from '../services/message.service';
 import { UserService } from 'src/app/streams/services/user.service';
 import { User } from 'src/app/interfaces/user.interface';
 import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
-import { Message } from '../interfaces/message.interface';
+import { Message, MessageContents } from '../interfaces/message.interface';
 
 @Component({
   selector: 'app-message',
@@ -18,6 +18,7 @@ export class MessageComponent implements OnInit {
   receiverData: User;
   loggedInUser: PayloadData;
   message: string;
+  messages: MessageContents[];
 
   data = [
     { name: 'Lily' },
@@ -47,12 +48,6 @@ export class MessageComponent implements OnInit {
     this.getUserByUsername(this.receiverUsername);
   }
 
-  getUserByUsername(username: string) {
-    this.userService.getUserByUsername(username).subscribe((user: User) => {
-      this.receiverData = user;
-    });
-  }
-
   sendMessage() {
     if (this.message) {
       this.messageService.sendMessage(
@@ -65,5 +60,20 @@ export class MessageComponent implements OnInit {
         this.message = '';
       });
     }
+  }
+
+  private getUserByUsername(username: string) {
+    this.userService.getUserByUsername(username).subscribe((user: User) => {
+      this.receiverData = user;
+
+      this.getMessages(this.loggedInUser._id, this.receiverData._id);
+    });
+  }
+
+  private getMessages(senderId: string, receiverId: string) {
+    this.messageService.getMessages(senderId, receiverId).subscribe((data: Message) => {
+      console.log(data);
+      this.messages = data.message;
+    });
   }
 }

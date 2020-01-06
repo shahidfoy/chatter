@@ -15,6 +15,37 @@ export class ChatService {
     ) {}
 
     /**
+     * gets messages between two users
+     * @param senderId senders id
+     * @param receiverId receivers id
+     */
+    async getMessages(senderId: string, receiverId: string): Promise<Message> {
+        const conversation = await this.conversationModel.findOne({
+            $or: [
+                {
+                    $and: [
+                        { 'participants.senderId': senderId },
+                        { 'participants.receiverId': receiverId },
+                    ],
+                },
+                {
+                    $and: [
+                        { 'participants.senderId': receiverId },
+                        { 'participants.receiverId': senderId },
+                    ],
+                },
+            ],
+        }).select('_id');
+
+        if (conversation) {
+            const messages = await this.messageModel.findOne({ conversationId: conversation._id });
+            return messages;
+        }
+        // might create new conversation if none located
+        return null;
+    }
+
+    /**
      * check if chat conversation exists gets conversation or creates a new one
      * creates and sends a message and updates both users chatList
      * @param user logged in user
