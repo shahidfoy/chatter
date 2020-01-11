@@ -3,13 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Message } from '../interfaces/message.interface';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
 
-  constructor(private http: HttpClient) { }
+  private readonly WEBSOCKET_CHAT: string = 'chat';
+
+  constructor(
+    private socket: Socket,
+    private http: HttpClient,
+  ) { }
 
   /**
    * gets messages between two users
@@ -33,4 +39,23 @@ export class MessageService {
       message
     });
   }
+
+  ///////////////////////////////////////////
+  /// *** WEBSOCKETS
+  ///////////////////////////////////////////
+
+  /**
+   * emits on new chat
+   */
+  emitNewChatSocket() {
+    this.socket.emit(this.WEBSOCKET_CHAT);
+  }
+
+  /**
+   * receives new chat
+   */
+  receiveNewChatSocket(): Observable<{}> {
+    return this.socket.fromEvent(this.WEBSOCKET_CHAT);
+  }
+
 }

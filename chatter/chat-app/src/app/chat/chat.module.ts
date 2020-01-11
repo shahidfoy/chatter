@@ -6,8 +6,6 @@ import { MessageComponent } from './message/message.component';
 import { SharedModule } from '../shared/shared.module';
 import { MessageService } from './services/message.service';
 
-
-
 @NgModule({
   declarations: [
     ChatComponent,

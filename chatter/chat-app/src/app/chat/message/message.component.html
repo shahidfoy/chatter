@@ -1,41 +1,69 @@
-<div class="message-header">
-  <a [routerLink]="['/streams/profile', receiverUsername]">
-    <h3 class="margin-left-24">{{ receiverUsername }}</h3>
-  </a>
-  <!-- determine if user is logged in -->
-  <nz-badge [nzStatus]="'success'"></nz-badge>
+<div class="message" #autoScroll>
+  <div class="message-header">
+    <a [routerLink]="['/streams/profile', receiverUsername]">
+      <h3 class="margin-left-24">{{ receiverUsername }}</h3>
+    </a>
+    <!-- determine if user is logged in -->
+    <nz-badge [nzStatus]="'success'"></nz-badge>
+  </div>
+
+  <div class="message-container">
+    <nz-list
+      [nzDataSource]="messages"
+      [nzRenderItem]="item"
+      [nzItemLayout]="'horizontal'">
+      <ng-template #item let-item>
+        <nz-list-item>
+          <nz-list-item-meta
+            [nzTitle]="nzTitle"
+            nzAvatar="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png">
+            <ng-template #nzTitle>
+              <a [routerLink]="['/streams/profile', item.sendername]">{{ item.sendername }}</a>
+            </ng-template>
+          </nz-list-item-meta>
+          <div class="padding-12">
+            <!-- <img style="width: 200px" src="assets/logo.png"> -->
+            <p>{{ item.body }}</p>
+          </div>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+
+    <!-- <nz-list
+      > -->
+      <!-- <p *ngFor="let item of messages">{{ item.body }}</p> -->
+      <!-- <ng-template #item let-item>
+        <nz-list-item>
+          <nz-list-item-meta
+            [nzTitle]="nzTitle"
+            nzAvatar="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png">
+            <ng-template #nzTitle>
+              <a [routerLink]="['/streams/profile', item.sendername]">{{ item.sendername }}</a>
+            </ng-template>
+          </nz-list-item-meta>
+          <div class="padding-12">
+            <img style="width: 200px" src="assets/logo.png">
+            <p>{{ item.body }}</p>
+          </div>
+        </nz-list-item>
+      </ng-template> -->
+    <!-- </nz-list> -->
+  </div>
+
+  <div [ngClass]="{ 'mobile-message-footer': isMobile, 'message-footer': !isMobile }">
+    <form (ngSubmit)="sendMessage()">
+      <nz-input-group [nzAddOnAfter]="suffixIconButton">
+        <input
+          [(ngModel)]="message"
+          name="message"
+          type="text"
+          nz-input
+          placeholder="send a message.." />
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary"><i class="fas fa-paper-plane"></i></button>
+      </ng-template>
+    </form>
+  </div>
 </div>
 
-<nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
-  <ng-template #item let-item>
-    <nz-list-item>
-      <nz-list-item-meta
-        [nzTitle]="nzTitle"
-        nzAvatar="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png">
-        <ng-template #nzTitle>
-          <a href="https://ng.ant.design">{{ item.name }}</a>
-        </ng-template>
-      </nz-list-item-meta>
-      <div class="padding-12">
-        <!-- <img style="width: 200px" src="assets/logo.png"> -->
-        <span>test long message testing here test long</span>
-      </div>
-    </nz-list-item>
-  </ng-template>
-</nz-list>
-
-<div class="message-footer">
-  <form (ngSubmit)="sendMessage()">
-    <nz-input-group [nzAddOnAfter]="suffixIconButton">
-      <input
-        [(ngModel)]="message"
-        name="message"
-        type="text"
-        nz-input
-        placeholder="send a message.." />
-    </nz-input-group>
-    <ng-template #suffixIconButton>
-      <button nz-button nzType="primary">Send <i class="fas fa-paper-plane"></i></button>
-    </ng-template>
-  </form>
-</div>
