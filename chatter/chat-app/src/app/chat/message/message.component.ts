@@ -49,12 +49,6 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     this.scrollToBottom();
   }
 
-  scrollToBottom(): void {
-    try {
-        this.autoScrollContainer.nativeElement.scrollTop = this.autoScrollContainer.nativeElement.scrollHeight;
-    } catch (err) {}
-  }
-
   sendMessage() {
     if (this.message) {
       this.messageService.sendMessage(
@@ -67,6 +61,12 @@ export class MessageComponent implements OnInit, AfterViewChecked {
         this.messageService.emitNewChatSocket();
       });
     }
+  }
+
+  private scrollToBottom(): void {
+    try {
+        this.autoScrollContainer.nativeElement.scrollTop = this.autoScrollContainer.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 
   private getUserByUsername(username: string) {

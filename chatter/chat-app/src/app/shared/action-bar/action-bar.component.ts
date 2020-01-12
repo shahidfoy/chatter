@@ -17,6 +17,7 @@ export class ActionBarComponent implements OnInit {
   loggedInUser: PayloadData;
   loggedInUserData: User;
   notificationsLength: number;
+  chatListLength: number;
 
   constructor(
     private tokenService: TokenService,
@@ -41,6 +42,7 @@ export class ActionBarComponent implements OnInit {
       this.loggedInUserData = user;
       if (this.loggedInUserData) {
         this.notificationsLength = _.filter(this.loggedInUserData.notifications, ['read', false]).length;
+        this.chatListLength = this.loggedInUserData.chatList.length;
       }
     }, (err: HttpErrorResponse) => {
       if (err.error.jwtToken) {

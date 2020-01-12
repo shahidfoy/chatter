@@ -1,0 +1,22 @@
+<div class="padding-12">
+  <nz-list
+    [nzDataSource]="users"
+    [nzRenderItem]="user"
+    [nzItemLayout]="'horizontal'">
+    <ng-template #user let-user>
+      <nz-list-item>
+        <nz-list-item-meta
+          [nzTitle]="nzTitle"
+          nzAvatar="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png">
+          <ng-template #nzTitle>
+            <a [routerLink]="['/chat/message', user]">{{ user }}</a>
+          </ng-template>
+        </nz-list-item-meta>
+        <div class="padding-12">
+          <!-- add current chat message -->
+          <!-- <p>{{ user }}</p> -->
+        </div>
+      </nz-list-item>
+    </ng-template>
+  </nz-list>
+</div>
