@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TokenService } from '../services/token.service';
 import { ApplicationStateService } from '../services/application-state.service';
+import { SideNavComponent } from './side-nav/side-nav.component';
 
 
 
@@ -18,6 +19,7 @@ import { ApplicationStateService } from '../services/application-state.service';
     HeaderComponent,
     FooterComponent,
     ActionBarComponent,
+    SideNavComponent,
   ],
   imports: [
     RouterModule,
@@ -34,6 +36,7 @@ import { ApplicationStateService } from '../services/application-state.service';
     HeaderComponent,
     FooterComponent,
     ActionBarComponent,
+    SideNavComponent,
   ],
   providers: [
     TokenService,

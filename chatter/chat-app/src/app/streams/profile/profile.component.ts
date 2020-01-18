@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenService } from '../../services/token.service';
-import { PayloadData } from '../../interfaces/jwt-payload.interface';
-import { User } from '../../interfaces/user.interface';
+import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
+import { User } from '../../shared/interfaces/user.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationStateService } from 'src/app/services/application-state.service';
 import { UserService } from '../services/user.service';

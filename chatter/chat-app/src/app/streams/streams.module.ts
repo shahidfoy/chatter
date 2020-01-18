@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StreamsComponent } from './streams.component';
-import { SideNavComponent } from './side-nav/side-nav.component';
+import { SideNavComponent } from '../shared/side-nav/side-nav.component';
 import { PostsComponent } from './posts/posts.component';
 import { SharedModule } from '../shared/shared.module';
 import { PostFormComponent } from './posts/post-form/post-form.component';
@@ -19,7 +19,6 @@ import { UserService } from './services/user.service';
 @NgModule({
   declarations: [
     StreamsComponent,
-    SideNavComponent,
     PostsComponent,
     PostFormComponent,
     ProfileComponent,

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PayloadData } from '../../interfaces/jwt-payload.interface';
-import { NotificationsObj, User } from '../../interfaces/user.interface';
+import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
+import { NotificationsObj, User } from '../../shared/interfaces/user.interface';
 import { UserService } from '../services/user.service';
 import { TokenService } from '../../services/token.service';
 import { timeFromNow } from '../../shared/shared.utils';
@@ -72,6 +72,7 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
+  // IMPLEMENT THIS LATER TO LOAD NOTIFICATIONS
   // onLoadMore(): void {
   //   this.loadingMore = true;
   //   this.list = this.data.concat([...Array(count)].fill({}).map(() => ({ loading: true, name: {} })));

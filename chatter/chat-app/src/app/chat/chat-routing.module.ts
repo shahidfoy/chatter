@@ -4,6 +4,7 @@ import { ChatComponent } from './chat.component';
 import { AuthGuard } from '../guards/auth.guard';
 import { MessageComponent } from './message/message.component';
 import { ChatListComponent } from './chat-list/chat-list.component';
+import { NotificationsComponent } from '../chat/notifications/notifications.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
     children: [
       { path: '', component: ChatListComponent },
       { path: 'chat-list', component: ChatListComponent },
+      { path: 'notifications', component: NotificationsComponent},
       { path: 'message', component: MessageComponent },
       { path: 'message/:username', component: MessageComponent },
     ]

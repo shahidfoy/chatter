@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { TokenResponse } from '../../interfaces/tokenResponse.interface';
-import { User } from '../../interfaces/user.interface';
+import { TokenResponse } from '../../shared/interfaces/tokenResponse.interface';
+import { User } from '../../shared/interfaces/user.interface';
 import { environment } from '../../../environments/environment';
 
 @Injectable({

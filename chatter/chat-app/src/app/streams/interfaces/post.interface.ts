@@ -1,4 +1,4 @@
-import { User } from '../../interfaces/user.interface';
+import { User } from '../../shared/interfaces/user.interface';
 import { UsernameObj } from './username-obj.interface';
 
 export interface Post {
