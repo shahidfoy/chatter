@@ -23,7 +23,6 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   loggedInUser: PayloadData;
   message: string;
   messages: MessageContents[];
-  typingMessage: any;
   typing = false;
 
   constructor(
@@ -56,7 +55,13 @@ export class MessageComponent implements OnInit, AfterViewChecked {
 
     this.messageService.receiveTypingSocket().subscribe((data: ChatParams) => {
       if (data.sender === this.receiverUsername) {
-        console.log('receiver is getting data', data);
+        this.typing = true;
+      }
+    });
+
+    this.messageService.receiveStopTypingSocket().subscribe((data: ChatParams) => {
+      if (data.sender === this.receiverUsername) {
+        this.typing = false;
       }
     });
   }
@@ -65,6 +70,9 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     this.scrollToBottom();
   }
 
+  /**
+   * sends message to receiver
+   */
   sendMessage() {
     if (this.message) {
       this.messageService.sendMessage(
@@ -79,17 +87,30 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  /**
+   * detects if user is typing
+   */
   isTyping() {
-    console.log('user is typing');
     this.messageService.emitTypingSocket(this.loggedInUser.username, this.receiverUsername);
+
+    setTimeout(() => {
+      this.messageService.emitStopTypingSocket(this.loggedInUser.username, this.receiverUsername);
+    }, 1000);
   }
 
+  /**
+   * scrolls to bottom of chat message
+   */
   private scrollToBottom(): void {
     try {
         this.autoScrollContainer.nativeElement.scrollTop = this.autoScrollContainer.nativeElement.scrollHeight;
     } catch (err) {}
   }
 
+  /**
+   * gets user by username
+   * @param username users username
+   */
   private getUserByUsername(username: string) {
     this.userService.getUserByUsername(username).subscribe((user: User) => {
       this.receiverData = user;
@@ -98,6 +119,11 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  /**
+   * gets chat messages between two users
+   * @param senderId senders id
+   * @param receiverId receivers id
+   */
   private getMessages(senderId: string, receiverId: string) {
     this.messageService.getMessages(senderId, receiverId).subscribe((data: Message) => {
       if (data !== null) {

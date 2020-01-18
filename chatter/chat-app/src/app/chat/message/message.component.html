@@ -27,6 +27,21 @@
           </div>
         </nz-list-item>
       </ng-template>
+
+      <!-- user is typing -->
+      <nz-list-item *ngIf="typing">
+        <hr>
+        <nz-list-item-meta
+          [nzTitle]="nzTitle"
+          nzAvatar="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png">
+          <ng-template #nzTitle>
+            <a [routerLink]="['/streams/profile', receiverUsername]">{{ receiverUsername }}</a>
+          </ng-template>
+        </nz-list-item-meta>
+        <div class="padding-12">
+          <p>{{ receiverUsername }} is typing . . .</p>
+        </div>
+      </nz-list-item>
     </nz-list>
   </div>
 

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Message } from '../interfaces/message.interface';
 import { Socket } from 'ngx-socket-io';
+import { ChatParams } from '../interfaces/chat-params.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class MessageService {
   private readonly WEBSOCKET_JOIN_CHAT: string = 'join_chat';
   private readonly WEBSOCKET_CHAT: string = 'chat';
   private readonly WEBSOCKET_TYPING: string = 'typing';
+  private readonly WEBSOCKET_STOP_TYPING: string = 'stop_typing';
 
   constructor(
     private socket: Socket,
@@ -70,8 +72,8 @@ export class MessageService {
 
   /**
    * emits when user is typing
-   * @param loggedInUserUsername logged in username
-   * @param receiverUsername receiver username
+   * @param sender logged in user username
+   * @param receiver receiver username
    */
   emitTypingSocket(sender: string, receiver: string) {
     this.socket.emit(this.WEBSOCKET_TYPING, { sender, receiver });
@@ -80,7 +82,23 @@ export class MessageService {
   /**
    * receives typing event
    */
-  receiveTypingSocket(): Observable<any> {
+  receiveTypingSocket(): Observable<ChatParams> {
     return this.socket.fromEvent(this.WEBSOCKET_TYPING);
+  }
+
+  /**
+   * emits when user stopped typing
+   * @param sender logged in user username
+   * @param receiver receiver username
+   */
+  emitStopTypingSocket(sender: string, receiver: string) {
+    this.socket.emit(this.WEBSOCKET_STOP_TYPING, { sender, receiver });
+  }
+
+  /**
+   * receives user stopped typing event
+   */
+  receiveStopTypingSocket(): Observable<ChatParams> {
+    return this.socket.fromEvent(this.WEBSOCKET_STOP_TYPING);
   }
 }

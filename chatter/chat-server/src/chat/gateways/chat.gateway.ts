@@ -32,4 +32,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     async onTyping(client: Socket, chatParams: ChatParams) {
         this.server.to(chatParams.receiver).emit('typing', chatParams);
     }
+
+    @SubscribeMessage('stop_typing')
+    async onStopTyping(client: Socket, chatParams: ChatParams) {
+        this.server.to(chatParams.receiver).emit('stop_typing', chatParams);
+    }
 }
