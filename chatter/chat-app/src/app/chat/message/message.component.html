@@ -28,32 +28,13 @@
         </nz-list-item>
       </ng-template>
     </nz-list>
-
-    <!-- <nz-list
-      > -->
-      <!-- <p *ngFor="let item of messages">{{ item.body }}</p> -->
-      <!-- <ng-template #item let-item>
-        <nz-list-item>
-          <nz-list-item-meta
-            [nzTitle]="nzTitle"
-            nzAvatar="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png">
-            <ng-template #nzTitle>
-              <a [routerLink]="['/streams/profile', item.sendername]">{{ item.sendername }}</a>
-            </ng-template>
-          </nz-list-item-meta>
-          <div class="padding-12">
-            <img style="width: 200px" src="assets/logo.png">
-            <p>{{ item.body }}</p>
-          </div>
-        </nz-list-item>
-      </ng-template> -->
-    <!-- </nz-list> -->
   </div>
 
   <div [ngClass]="{ 'mobile-message-footer': isMobile, 'message-footer': !isMobile }">
     <form (ngSubmit)="sendMessage()">
       <nz-input-group [nzAddOnAfter]="suffixIconButton">
         <input
+          (keypress)="isTyping()"
           [(ngModel)]="message"
           name="message"
           type="text"

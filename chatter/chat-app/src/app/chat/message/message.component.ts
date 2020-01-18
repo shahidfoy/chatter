@@ -7,6 +7,7 @@ import { User } from 'src/app/interfaces/user.interface';
 import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
 import { Message, MessageContents } from '../interfaces/message.interface';
 import { ApplicationStateService } from 'src/app/services/application-state.service';
+import { ChatParams } from '../interfaces/chat-params.interface';
 
 @Component({
   selector: 'app-message',
@@ -22,6 +23,8 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   loggedInUser: PayloadData;
   message: string;
   messages: MessageContents[];
+  typingMessage: any;
+  typing = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -40,8 +43,21 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     this.receiverUsername = this.activatedRoute.snapshot.params.username;
     this.getUserByUsername(this.receiverUsername);
 
+    const chatParams: ChatParams = {
+      sender: this.loggedInUser.username,
+      receiver: this.receiverUsername
+    };
+
+    this.messageService.emitJoinChatSocket(chatParams);
+
     this.messageService.receiveNewChatSocket().subscribe(() => {
       this.getMessages(this.loggedInUser._id, this.receiverData._id);
+    });
+
+    this.messageService.receiveTypingSocket().subscribe((data: ChatParams) => {
+      if (data.sender === this.receiverUsername) {
+        console.log('receiver is getting data', data);
+      }
     });
   }
 
@@ -61,6 +77,11 @@ export class MessageComponent implements OnInit, AfterViewChecked {
         this.messageService.emitNewChatSocket();
       });
     }
+  }
+
+  isTyping() {
+    console.log('user is typing');
+    this.messageService.emitTypingSocket(this.loggedInUser.username, this.receiverUsername);
   }
 
   private scrollToBottom(): void {

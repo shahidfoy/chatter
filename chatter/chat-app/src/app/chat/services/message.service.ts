@@ -10,7 +10,9 @@ import { Socket } from 'ngx-socket-io';
 })
 export class MessageService {
 
+  private readonly WEBSOCKET_JOIN_CHAT: string = 'join_chat';
   private readonly WEBSOCKET_CHAT: string = 'chat';
+  private readonly WEBSOCKET_TYPING: string = 'typing';
 
   constructor(
     private socket: Socket,
@@ -45,6 +47,14 @@ export class MessageService {
   ///////////////////////////////////////////
 
   /**
+   * emits join chat event
+   * @param chatParams chat params
+   */
+  emitJoinChatSocket(chatParams: any) {
+    this.socket.emit(this.WEBSOCKET_JOIN_CHAT, chatParams);
+  }
+
+  /**
    * emits on new chat
    */
   emitNewChatSocket() {
@@ -58,4 +68,19 @@ export class MessageService {
     return this.socket.fromEvent(this.WEBSOCKET_CHAT);
   }
 
+  /**
+   * emits when user is typing
+   * @param loggedInUserUsername logged in username
+   * @param receiverUsername receiver username
+   */
+  emitTypingSocket(sender: string, receiver: string) {
+    this.socket.emit(this.WEBSOCKET_TYPING, { sender, receiver });
+  }
+
+  /**
+   * receives typing event
+   */
+  receiveTypingSocket(): Observable<any> {
+    return this.socket.fromEvent(this.WEBSOCKET_TYPING);
+  }
 }

@@ -1,5 +1,6 @@
 import { OnGatewayConnection, OnGatewayDisconnect, WebSocketGateway, WebSocketServer, SubscribeMessage } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { ChatParams } from '../interfaces/chat-params.interface';
 
 @WebSocketGateway()
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -16,8 +17,19 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         // console.log('user socket disconnecting', this.counter);
     }
 
+    @SubscribeMessage('join_chat')
+    async onJoinChat(client: Socket, chatParams: ChatParams) {
+        client.join(chatParams.sender);
+        client.join(chatParams.receiver);
+    }
+
     @SubscribeMessage('chat')
     async onMessage(client: Socket) {
         this.server.emit('chat');
+    }
+
+    @SubscribeMessage('typing')
+    async onTyping(client: Socket, chatParams: ChatParams) {
+        this.server.to(chatParams.receiver).emit('typing', chatParams);
     }
 }
