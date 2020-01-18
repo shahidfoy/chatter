@@ -8,7 +8,7 @@ import { PayloadData } from '../../interfaces/jwt-payload.interface';
 })
 export class HeaderComponent implements OnInit {
 
-  title = 'Game Chatter';
+  title = 'NERDOJO';
   @Input() isMobile: boolean;
   @Input() payload: PayloadData;
   username: string;
