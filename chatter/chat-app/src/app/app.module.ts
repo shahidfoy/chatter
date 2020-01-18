@@ -12,7 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { StreamsModule } from './streams/streams.module';
 import { CookieService } from 'ngx-cookie-service';
 import { SharedModule } from './shared/shared.module';
-import { JwtInterceptor } from './shared/interceptors/jwt.interceptor';
+import { JwtInterceptor } from './shared/services/interceptors/jwt.interceptor';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 import { ChatModule } from './chat/chat.module';

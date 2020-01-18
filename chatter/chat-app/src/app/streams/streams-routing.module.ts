@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { StreamsComponent } from './streams.component';
-import { AuthGuard } from '../shared/guards/auth.guard';
+import { AuthGuard } from '../shared/services/guards/auth.guard';
 import { PostsComponent } from './posts/posts.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CommentsComponent } from './posts/comments/comments.component';
