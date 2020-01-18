@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PayloadData } from '../shared/interfaces/jwt-payload.interface';
-import { TokenService } from '../services/token.service';
-import { ApplicationStateService } from '../services/application-state.service';
+import { TokenService } from '../shared/services/token.service';
+import { ApplicationStateService } from '../shared/services/application-state.service';
 
 @Component({
   selector: 'app-chat',

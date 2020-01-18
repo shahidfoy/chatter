@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import * as _ from 'lodash';
-import { TokenService } from '../../services/token.service';
+import { TokenService } from '../../shared/services/token.service';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { UserFollowed } from '../interfaces/user-followed.interface';
 import { NzNotificationService } from 'ng-zorro-antd';

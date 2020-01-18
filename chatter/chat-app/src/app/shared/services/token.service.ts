@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { JwtPayload, PayloadData } from '../shared/interfaces/jwt-payload.interface';
+import { JwtPayload, PayloadData } from '../interfaces/jwt-payload.interface';
 
 @Injectable({
   providedIn: 'root'

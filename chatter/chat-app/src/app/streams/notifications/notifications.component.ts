@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { NotificationsObj, User } from '../../shared/interfaces/user.interface';
 import { UserService } from '../services/user.service';
-import { TokenService } from '../../services/token.service';
+import { TokenService } from '../../shared/services/token.service';
 import { timeFromNow } from '../../shared/shared.utils';
 
 @Component({

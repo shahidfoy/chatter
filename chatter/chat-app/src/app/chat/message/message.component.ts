@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TokenService } from 'src/app/services/token.service';
+import { TokenService } from 'src/app/shared/services/token.service';
 import { MessageService } from '../services/message.service';
 import { UserService } from 'src/app/streams/services/user.service';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { PayloadData } from 'src/app/shared/interfaces/jwt-payload.interface';
 import { Message, MessageContents } from '../interfaces/message.interface';
-import { ApplicationStateService } from 'src/app/services/application-state.service';
+import { ApplicationStateService } from 'src/app/shared/services/application-state.service';
 import { ChatParams } from '../interfaces/chat-params.interface';
 
 @Component({

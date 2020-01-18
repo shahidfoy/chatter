@@ -7,8 +7,8 @@ import { FooterComponent } from './footer/footer.component';
 import { ActionBarComponent } from './action-bar/action-bar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TokenService } from '../services/token.service';
-import { ApplicationStateService } from '../services/application-state.service';
+import { TokenService } from './services/token.service';
+import { ApplicationStateService } from './services/application-state.service';
 import { SideNavComponent } from './side-nav/side-nav.component';
 
 

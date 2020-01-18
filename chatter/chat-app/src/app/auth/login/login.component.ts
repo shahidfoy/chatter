@@ -4,7 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { TokenResponse } from '../../shared/interfaces/tokenResponse.interface';
-import { TokenService } from '../../../app/services/token.service';
+import { TokenService } from '../../shared/services/token.service';
 
 @Component({
   selector: 'app-login',

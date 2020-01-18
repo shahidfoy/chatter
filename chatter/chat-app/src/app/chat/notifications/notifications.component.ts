@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationsObj, User, ChatList } from 'src/app/shared/interfaces/user.interface';
 import { timeFromNow } from 'src/app/shared/shared.utils';
-import { TokenService } from 'src/app/services/token.service';
+import { TokenService } from 'src/app/shared/services/token.service';
 import { UserService } from 'src/app/streams/services/user.service';
 import { PayloadData } from 'src/app/shared/interfaces/jwt-payload.interface';
 import { MessageService } from '../services/message.service';
