@@ -1,3 +1,8 @@
+.message {
+  overflow: scroll;
+  height: 100%
+}
+
 .message-header {
   z-index: 1000;
   position: sticky;
@@ -12,10 +17,22 @@
   padding: 12px;
 }
 
+.ant-list-split .ant-list-item:last-child {
+  margin-bottom: 56px;
+}
+
 .message-footer {
-  z-index: 1000;
-  position: sticky;
-  bottom: 0;
-  padding: 4px;
+  position: fixed;
+  bottom: 0px;
+  padding: 8px;
+  width: 100%;
+  background: #505050;
+}
+
+.mobile-message-footer {
+  position: fixed;
+  bottom: 64px;
+  padding: 8px;
+  width: 100%;
   background: #505050;
 }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { PayloadData } from '../../interfaces/jwt-payload.interface';
+import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { Post } from '../interfaces/post.interface';
-import { TokenService } from '../../services/token.service';
-import { ApplicationStateService } from '../../services/application-state.service';
+import { TokenService } from '../../shared/services/token.service';
+import { ApplicationStateService } from '../../shared/services/application-state.service';
 import { PostService } from '../services/post.service';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';

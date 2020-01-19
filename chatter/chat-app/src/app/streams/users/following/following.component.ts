@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../../interfaces/user.interface';
+import { User } from '../../../shared/interfaces/user.interface';
 import { UserFollowed } from '../../interfaces/user-followed.interface';
 import { UserService } from '../../services/user.service';
-import { PayloadData } from 'src/app/interfaces/jwt-payload.interface';
+import { PayloadData } from '../../../shared/interfaces/jwt-payload.interface';
 import * as _ from 'lodash';
-import { TokenService } from 'src/app/services/token.service';
+import { TokenService } from '../../../shared/services/token.service';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService, NzConfigService } from 'ng-zorro-antd';
 

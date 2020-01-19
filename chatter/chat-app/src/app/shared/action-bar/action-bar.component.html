@@ -3,7 +3,8 @@
     <i nz-icon class="icon-size-lg" nzType="appstore"></i>
   </li>
   <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
-    <a [routerLink]="['/chat']">
+    <a [routerLink]="['/chat/notifications']">
+      <nz-badge [nzCount]="chatListLength"></nz-badge>
       <i nz-icon class="icon-size-lg" nzType="message"></i>
     </a>
   </li>

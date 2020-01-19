@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User, NotificationsObj } from '../../interfaces/user.interface';
+import { User, NotificationsObj } from '../../shared/interfaces/user.interface';
 import { environment } from '../../../environments/environment';
 import { Socket } from 'ngx-socket-io';
 

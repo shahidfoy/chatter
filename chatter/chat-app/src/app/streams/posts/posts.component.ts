@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ApplicationStateService } from '../../services/application-state.service';
+import { ApplicationStateService } from '../../shared/services/application-state.service';
 import { PostService } from '../services/post.service';
 import { Post } from '../interfaces/post.interface';
 import { NzNotificationService } from 'ng-zorro-antd';
 import * as _ from 'lodash';
-import { TokenService } from '../../services/token.service';
-import { PayloadData } from '../../interfaces/jwt-payload.interface';
+import { TokenService } from '../../shared/services/token.service';
+import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { timeFromNow } from 'src/app/shared/shared.utils';

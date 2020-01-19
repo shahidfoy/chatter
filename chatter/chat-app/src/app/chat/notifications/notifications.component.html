@@ -1,0 +1,61 @@
+<div class="padding-bottom-88" style="margin: 30px;">
+  <!-- <div class="padding-bottom-44">
+    <button
+      class="float-right"
+      nz-button>Mark all as read</button>
+  </div> -->
+
+  <!-- add to nz-list for pagination [nzLoadMore]="loadMore" -->
+  <nz-list
+    class="notifications-list"
+    [nzDataSource]="chatList"
+    [nzItemLayout]="'horizontal'"
+    [nzLoading]="initLoading"
+    [nzRenderItem]="item"
+  >
+    <ng-template #item let-item>
+      <nz-list-item [routerLink]="['/chat/message', item.receiverId.username]"
+        [nzContent]="item.loading ? [] : profileContent"
+        [nzActions]="item.loading ? [] : [notificationActions]"
+      >
+        <nz-skeleton [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="item.loading">
+          <ng-template #profileContent>
+            <a [routerLink]="['/streams/profile', item.receiverId.username]">
+              {{ item.receiverId.username }}
+            </a>
+          </ng-template>
+          <ng-template #notificationActions>
+            <i
+              class="anticon margin-right-8"
+              nz-icon
+              [nzType]="'mail'"
+              [theme]="checkMessageIsRead(item.messageId.message[item.messageId.message.length - 1])"
+              (click)="markMessage(item.messageId.message)"></i>
+            <!-- <i
+              class="anticon margin-right-8"
+              nz-icon
+              [nzType]="'delete'"
+              (click)="deleteNotification(null)"></i> -->
+          </ng-template>
+          <nz-list-item-meta
+            [nzTitle]="nzTitle"
+            [nzDescription]="timeFromNow(item.messageId.message[item.messageId.message.length - 1])"
+            nzIcon="user"
+            [nzAvatar]="getUserImage(item.receiverId.username)"
+          >
+            <ng-template #nzTitle>
+              <p>{{ item.messageId.message[item.messageId.message.length - 1].body }}</p>
+            </ng-template>
+          </nz-list-item-meta>
+        </nz-skeleton>
+      </nz-list-item>
+    </ng-template>
+
+
+    <!-- <ng-template #loadMore>
+      <div class="loadmore">
+        <button nz-button *ngIf="!loadingMore" (click)="onLoadMore()">loading more</button>
+      </div>
+    </ng-template> -->
+  </nz-list>
+</div>

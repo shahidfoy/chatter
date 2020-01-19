@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { PayloadData } from '../../../interfaces/jwt-payload.interface';
+import { PayloadData } from '../../../shared/interfaces/jwt-payload.interface';
 import { UserFollowed } from '../../interfaces/user-followed.interface';
 import * as _ from 'lodash';
 import { UserFollowing } from '../../interfaces/user-following.interface';
-import { TokenService } from '../../../services/token.service';
+import { TokenService } from '../../../shared/services/token.service';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd';
-import { User } from '../../../interfaces/user.interface';
+import { User } from '../../../shared/interfaces/user.interface';
 
 @Component({
   selector: 'app-followers',

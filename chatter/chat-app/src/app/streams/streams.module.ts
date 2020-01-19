@@ -1,30 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StreamsComponent } from './streams.component';
-import { TokenService } from '../services/token.service';
-import { SideNavComponent } from './side-nav/side-nav.component';
-import { HeaderComponent } from '../shared/header/header.component';
-import { FooterComponent } from '../shared/footer/footer.component';
+import { SideNavComponent } from '../shared/side-nav/side-nav.component';
 import { PostsComponent } from './posts/posts.component';
 import { SharedModule } from '../shared/shared.module';
-import { ActionBarComponent } from '../shared/action-bar/action-bar.component';
 import { PostFormComponent } from './posts/post-form/post-form.component';
 import { ProfileComponent } from './profile/profile.component';
 import { StreamsRoutingModule } from './streams-routing.module';
 import { PostService } from './services/post.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { CommentsComponent } from './posts/comments/comments.component';
 import { UsersComponent } from './users/users.component';
 import { FollowingComponent } from './users/following/following.component';
 import { FollowersComponent } from './users/followers/followers.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { TrendingComponent } from './trending/trending.component';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
     StreamsComponent,
-    SideNavComponent,
     PostsComponent,
     PostFormComponent,
     ProfileComponent,
@@ -39,11 +33,8 @@ import { TrendingComponent } from './trending/trending.component';
     CommonModule,
     SharedModule,
     StreamsRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
   ],
   exports: [StreamsComponent],
-  providers: [TokenService, PostService]
+  providers: [PostService, UserService]
 })
 export class StreamsModule { }

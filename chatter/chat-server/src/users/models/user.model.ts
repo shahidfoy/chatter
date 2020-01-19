@@ -29,6 +29,12 @@ export const UserSchema =  new mongoose.Schema({
             date: { type: String, default: '' },
         },
     ],
+    chatList: [
+        {
+            receiverId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+            messageId: { type: mongoose.Schema.Types.ObjectId, ref: 'Message'},
+        },
+    ],
 });
 
 export interface User extends mongoose.Document {
@@ -40,6 +46,7 @@ export interface User extends mongoose.Document {
     following: UsernameObj[];
     followers: UsernameObj[];
     notifications: NotificationsObj[];
+    chatList: ChatList[];
 }
 
 export interface UserPost {
@@ -57,4 +64,10 @@ export interface NotificationsObj {
     createdAt: Date;
     read: boolean;
     date: string;
+}
+
+export interface ChatList {
+    _id: string;
+    receiverId: string;
+    messageId: string;
 }

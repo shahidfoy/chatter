@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { AuthComponent } from './auth.component';
 import { SignupComponent } from './signup/signup.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '../shared/shared.module';
 import { AuthService } from './services/auth.service';
 import { AuthRoutingModule } from './auth-routing.module';
@@ -18,9 +16,6 @@ import { AuthRoutingModule } from './auth-routing.module';
   imports: [
     CommonModule,
     SharedModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
     AuthRoutingModule,
   ],
   exports: [AuthComponent],

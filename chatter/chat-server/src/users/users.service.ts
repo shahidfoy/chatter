@@ -5,6 +5,7 @@ import { User, NotificationsObj } from './models/user.model';
 
 @Injectable()
 export class UsersService {
+
     constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
     /**
@@ -31,6 +32,8 @@ export class UsersService {
                                     .populate('posts.postId')
                                     .populate('following.userFollowed')
                                     .populate('followers.userFollower')
+                                    .populate('chatList.receiverId')
+                                    .populate('chatList.messageId')
                                     .then((user: User) => {
                                         return user;
                                     })
@@ -48,6 +51,8 @@ export class UsersService {
                                     .populate('posts.postId')
                                     .populate('following.userFollowed')
                                     .populate('followers.userFollower')
+                                    .populate('chatList.receiverId')
+                                    .populate('chatList.messageId')
                                     .then((user: User) => {
                                         return user;
                                     })
