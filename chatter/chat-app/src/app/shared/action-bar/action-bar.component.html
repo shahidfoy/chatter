@@ -1,6 +1,8 @@
 <ul nz-menu nzMode="horizontal" class="header-menu">
   <li nz-menu-item>
-    <i nz-icon class="icon-size-lg" nzType="appstore"></i>
+    <a [routerLink]="['/streams/posts']">
+      <i nz-icon class="icon-size-lg" nzType="appstore"></i>
+    </a>
   </li>
   <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
     <a [routerLink]="['/chat/notifications']">
