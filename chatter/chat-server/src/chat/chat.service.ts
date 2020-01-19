@@ -63,6 +63,8 @@ export class ChatService {
         });
 
         if (conversations.length > 0) {
+            const messageContent = await this.messageModel.findOne({ conversationId: conversations[0]._id });
+            this.updateChatList(user, receiverId, messageContent);
             return await this.messageModel.updateOne({
                 conversationId: conversations[0]._id,
             }, {
@@ -137,51 +139,57 @@ export class ChatService {
         }
     }
 
-    // private updateUserMessages(conversationId: string) {
-    //     const messageBody: Partial<Message> = {
-    //         conversationId: newConversation._id,
-    //         sender: user.username,
-    //         receiver: receiverName,
-    //         message: [],
-    //     };
-    //     const messageContents: MessageContents = {
-    //         senderId,
-    //         receiverId,
-    //         sendername: user.username,
-    //         receivername: receiverName,
-    //         body: message,
-    //         isRead: false,
-    //         createdAt: new Date(),
-    //     };
-    //     messageBody.message.push(messageContents);
-    //     return await this.messageModel.create(messageBody)
-    //                     .then(async (messageRes: Message) => {
-    //                         await this.userModel.updateOne({ _id: user._id }, {
-    //                             $push: {
-    //                                 chatList: {
-    //                                     $each: [{
-    //                                         receiverId,
-    //                                         messageId: messageRes._id,
-    //                                     }],
-    //                                     $position: 0,
-    //                                 },
-    //                             },
-    //                         });
+    /**
+     * updates logged in users and receivers chat list
+     * removes chat contents with matching receiver id and adds new chat contents to the first
+     * position of chat list
+     * @param user logged in user
+     * @param receiverId receiver id
+     * @param message message contents
+     */
+    private async updateChatList(user: User, receiverId: string, message: Message) {
+        await this.userModel.updateOne({
+            _id: user._id,
+        }, {
+            $pull: {
+                chatList: {
+                    receiverId,
+                },
+            },
+        });
 
-    //                         await this.userModel.updateOne({ _id: receiverId }, {
-    //                             $push: {
-    //                                 chatList: {
-    //                                     $each: [{
-    //                                         receiverId: user._id,
-    //                                         messageId: messageRes._id,
-    //                                     }],
-    //                                     $position: 0,
-    //                                 },
-    //                             },
-    //                         });
-    //                         return messageRes;
-    //                     }).catch(error => {
-    //                         throw new InternalServerErrorException({ message: `Error message occured ${error}`});
-    //                     });
-    // }
+        await this.userModel.updateOne({
+            _id: receiverId,
+        }, {
+            $pull: {
+                chatList: {
+                    receiverId: user._id,
+                },
+            },
+        });
+
+        await this.userModel.updateOne({ _id: user._id }, {
+            $push: {
+                chatList: {
+                    $each: [{
+                        receiverId,
+                        messageId: message._id,
+                    }],
+                    $position: 0,
+                },
+            },
+        });
+
+        await this.userModel.updateOne({ _id: receiverId }, {
+            $push: {
+                chatList: {
+                    $each: [{
+                        receiverId: user._id,
+                        messageId: message._id,
+                    }],
+                    $position: 0,
+                },
+            },
+        });
+    }
 }
