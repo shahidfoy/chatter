@@ -22,6 +22,9 @@ export class NotificationsComponent implements OnInit {
   loggedInUser: PayloadData;
   loggedInUserData: User;
 
+  userImage = 'https://i.pinimg.com/474x/41/03/85/4103858ae55e0713f9dd8d264c60f49b.jpg';
+  receiverImage = 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
+
   constructor(
     private router: Router,
     private userService: UserService,
@@ -72,6 +75,14 @@ export class NotificationsComponent implements OnInit {
     return lastMessage.isRead || lastMessage.sendername === this.loggedInUser.username ? 'outline' : 'twotone';
   }
 
+  /**
+   * gets users chat image
+   * @param username username
+   */
+  getUserImage(username: string): string {
+    return username === this.loggedInUser.username ? this.userImage : this.receiverImage;
+  }
+
   // /**
   //  * deletes notification
   //  * @param notification notification to be deleted
@@ -108,9 +119,7 @@ export class NotificationsComponent implements OnInit {
   private getLoggedInUsersChatNotifications() {
     this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
       this.loggedInUserData = user;
-
       this.chatList = user.chatList;
-      console.log(this.chatList);
       this.initLoading = false;
     });
   }

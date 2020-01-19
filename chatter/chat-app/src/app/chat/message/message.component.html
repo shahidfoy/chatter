@@ -16,7 +16,7 @@
         <nz-list-item>
           <nz-list-item-meta
             [nzTitle]="nzTitle"
-            nzAvatar="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png">
+            [nzAvatar]="getUserImage(item.sendername)">
             <ng-template #nzTitle>
               <a [routerLink]="['/streams/profile', item.sendername]">{{ item.sendername }}</a>
             </ng-template>

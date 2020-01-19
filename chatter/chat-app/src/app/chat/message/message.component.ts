@@ -25,6 +25,9 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   messages: MessageContents[];
   typing = false;
 
+  userImage = 'https://i.pinimg.com/474x/41/03/85/4103858ae55e0713f9dd8d264c60f49b.jpg';
+  receiverImage = 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private tokenService: TokenService,
@@ -96,6 +99,14 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     setTimeout(() => {
       this.messageService.emitStopTypingSocket(this.loggedInUser.username, this.receiverUsername);
     }, 3000);
+  }
+
+  /**
+   * gets users chat image
+   * @param username username
+   */
+  getUserImage(username: string): string {
+    return username === this.loggedInUser.username ? this.userImage : this.receiverImage;
   }
 
   /**
