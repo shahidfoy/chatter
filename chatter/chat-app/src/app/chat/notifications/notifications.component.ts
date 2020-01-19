@@ -69,7 +69,7 @@ export class NotificationsComponent implements OnInit {
    * @param lastMessage last message sent
    */
   checkMessageIsRead(lastMessage: MessageBody): string {
-    return lastMessage.isRead || lastMessage.sendername === this.loggedInUser.username ? 'twotone' : 'outline';
+    return lastMessage.isRead || lastMessage.sendername === this.loggedInUser.username ? 'outline' : 'twotone';
   }
 
   // /**

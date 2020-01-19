@@ -95,7 +95,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
 
     setTimeout(() => {
       this.messageService.emitStopTypingSocket(this.loggedInUser.username, this.receiverUsername);
-    }, 1000);
+    }, 3000);
   }
 
   /**
