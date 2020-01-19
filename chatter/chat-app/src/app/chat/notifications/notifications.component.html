@@ -14,7 +14,7 @@
     [nzRenderItem]="item"
   >
     <ng-template #item let-item>
-      <nz-list-item
+      <nz-list-item [routerLink]="['/chat/message', item.receiverId.username]"
         [nzContent]="item.loading ? [] : profileContent"
         [nzActions]="item.loading ? [] : [notificationActions]"
       >
@@ -44,7 +44,7 @@
             nzAvatar="../../"
           >
             <ng-template #nzTitle>
-              <a [routerLink]="['/chat/message', item.receiverId.username]">{{ item.messageId.message[item.messageId.message.length - 1].body }}</a>
+              <p>{{ item.messageId.message[item.messageId.message.length - 1].body }}</p>
             </ng-template>
           </nz-list-item-meta>
         </nz-skeleton>
