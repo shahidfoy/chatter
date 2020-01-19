@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { PayloadData } from '../interfaces/jwt-payload.interface';
-import { User } from '../interfaces/user.interface';
+import { User, ChatList, MessageBody } from '../interfaces/user.interface';
 import { TokenService } from '../services/token.service';
 import { UserService } from '../../streams/services/user.service';
 import * as _ from 'lodash';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MessageService } from 'src/app/chat/services/message.service';
 
 @Component({
   selector: 'app-action-bar',
@@ -23,6 +24,7 @@ export class ActionBarComponent implements OnInit {
     private tokenService: TokenService,
     private userService: UserService,
     private router: Router,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit() {
@@ -32,17 +34,22 @@ export class ActionBarComponent implements OnInit {
     this.userService.receiveNewNotificationActionSocket().subscribe(() => {
       this.getLoggedInUser();
     });
+
+    // might need fix add proper websocket
+    this.messageService.receiveNewChatSocket().subscribe(() => {
+      this.getLoggedInUser();
+    });
   }
 
   /**
    * gets logged in user data
    */
-  getLoggedInUser() {
+  private getLoggedInUser() {
     this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
       this.loggedInUserData = user;
       if (this.loggedInUserData) {
         this.notificationsLength = _.filter(this.loggedInUserData.notifications, ['read', false]).length;
-        this.chatListLength = this.loggedInUserData.chatList.length;
+        this.checkIfMessagesRead();
       }
     }, (err: HttpErrorResponse) => {
       if (err.error.jwtToken) {
@@ -52,4 +59,18 @@ export class ActionBarComponent implements OnInit {
     });
   }
 
+  /**
+   * checks for unread chat messages
+   */
+  private checkIfMessagesRead() {
+    this.chatListLength = 0;
+    this.loggedInUserData.chatList.forEach((chatList: ChatList) => {
+      const lastMessage: MessageBody = chatList.messageId.message[chatList.messageId.message.length - 1];
+      if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
+        if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
+          this.chatListLength++;
+        }
+      }
+    });
+  }
 }

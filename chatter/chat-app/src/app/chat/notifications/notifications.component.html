@@ -25,13 +25,13 @@
             </a>
           </ng-template>
           <ng-template #notificationActions>
-            <!-- <i
+            <i
               class="anticon margin-right-8"
               nz-icon
               [nzType]="'mail'"
-              [theme]="item.notification.read ? 'twotone' : 'outline'"
-              (click)="markNotification(null)"></i>
-            <i
+              [theme]="checkMessageIsRead(item.messageId.message[item.messageId.message.length - 1])"
+              (click)="markMessage(item.messageId.message)"></i>
+            <!-- <i
               class="anticon margin-right-8"
               nz-icon
               [nzType]="'delete'"
@@ -39,7 +39,7 @@
           </ng-template>
           <nz-list-item-meta
             [nzTitle]="nzTitle"
-            [nzDescription]="timeFromNow(item.messageId.message[item.messageId.message.length - 1].createdAt)"
+            [nzDescription]="timeFromNow(item.messageId.message[item.messageId.message.length - 1])"
             nzIcon="user"
             nzAvatar="../../"
           >

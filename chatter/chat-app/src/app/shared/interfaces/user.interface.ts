@@ -54,4 +54,5 @@ export interface MessageBody {
   receiverId: string;
   sendername: string;
   receivername: string;
+  isRead: boolean;
 }
