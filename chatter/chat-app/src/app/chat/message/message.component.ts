@@ -43,7 +43,8 @@ export class MessageComponent implements OnInit, AfterViewChecked {
 
     this.loggedInUser = this.tokenService.getPayload();
     this.receiverUsername = this.activatedRoute.snapshot.params.username;
-    this.getUserByUsername(this.receiverUsername);
+    this.getUserByUsernameWithMessages(this.receiverUsername);
+    this.markMessagesAsRead();
 
     const chatParams: ChatParams = {
       sender: this.loggedInUser.username,
@@ -53,7 +54,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     this.messageService.emitJoinChatSocket(chatParams);
 
     this.messageService.receiveNewChatSocket().subscribe(() => {
-      this.getMessages(this.loggedInUser._id, this.receiverData._id);
+      this.getUserByUsernameWithMessages(this.receiverUsername);
     });
 
     this.messageService.receiveTypingSocket().subscribe((data: ChatParams) => {
@@ -110,6 +111,16 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   }
 
   /**
+   * marks receivers messages as read
+   */
+  markMessagesAsRead() {
+    this.messageService.markReceiverMessages(this.loggedInUser.username, this.receiverUsername)
+      .subscribe(() => {
+        this.messageService.emitNewChatSocket();
+      });
+  }
+
+  /**
    * scrolls to bottom of chat message
    */
   private scrollToBottom(): void {
@@ -119,10 +130,10 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   }
 
   /**
-   * gets user by username
+   * gets user by username and messages between the users
    * @param username users username
    */
-  private getUserByUsername(username: string) {
+  private getUserByUsernameWithMessages(username: string) {
     this.userService.getUserByUsername(username).subscribe((user: User) => {
       this.receiverData = user;
 

@@ -31,6 +31,15 @@ export class MessageService {
   }
 
   /**
+   * marks receivers messages as read
+   * @param sender logged in user
+   * @param receiver receiver of logged in users messages
+   */
+  markReceiverMessages(sender: string, receiver: string): Observable<void> {
+    return this.http.get<any>(`${environment.BASEURL}/api/chat/mark-receiver-messages/${sender}/${receiver}`);
+  }
+
+  /**
    * sends chat message
    * @param senderId senders id
    * @param receiverId receivers id

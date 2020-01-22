@@ -46,6 +46,36 @@ export class ChatService {
     }
 
     /**
+     * marks receivers messages that are sent to the logged in user as read
+     * @param sender logged in user
+     * @param receiver receiver of logged in users messages
+     */
+    async markReceiverMessages(sender: string, receiver: string) {
+        const messages = await this.messageModel.aggregate([
+            { $unwind: '$message' },
+            {
+                $match: {
+                    $and: [{ 'message.sendername': receiver, 'message.receivername': sender }],
+                },
+            },
+        ]);
+
+        if (messages.length > 0) {
+            try {
+                messages.forEach(async (messageContents: any) => {
+                    await this.messageModel.updateOne({
+                        'message._id': messageContents.message._id,
+                    }, {
+                        $set: {'message.$.isRead': true },
+                    });
+                });
+            } catch (err) {
+                throw new InternalServerErrorException('Error: marking receiver messages');
+            }
+        }
+    }
+
+    /**
      * check if chat conversation exists gets conversation or creates a new one
      * creates and sends a message and updates both users chatList
      * @param user logged in user
