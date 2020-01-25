@@ -3,6 +3,7 @@
   <nz-col [nzSpan]="8" class="margin-left-24">
     <h2>
       {{ username }}
+      <nz-badge *ngIf="user?.onlineStatus === 'ONLINE'" [nzStatus]="'success'"></nz-badge>
       <span *ngIf="!isLoggedInUser">
         <nz-button-group>
           <button nz-button nzType="primary" *ngIf="!followingUser" (click)="followUser(payload._id)">
@@ -36,7 +37,7 @@
 <app-post-form [isMobile]="isMobile" *ngIf="isLoggedInUser"></app-post-form>
 
 <nz-content>
-  <div class="posts padding-bottom-88">
+  <div class="posts">
 
     <div class="inner-content" *ngFor="let post of posts" [ngClass]="{'mobile-content': isMobile}">
         <div class="content">

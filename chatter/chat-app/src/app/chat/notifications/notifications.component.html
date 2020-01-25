@@ -31,11 +31,6 @@
               [nzType]="'mail'"
               [theme]="checkMessageIsRead(item.messageId.message[item.messageId.message.length - 1])"
               (click)="markMessage(item.messageId.message)"></i>
-            <!-- <i
-              class="anticon margin-right-8"
-              nz-icon
-              [nzType]="'delete'"
-              (click)="deleteNotification(null)"></i> -->
           </ng-template>
           <nz-list-item-meta
             [nzTitle]="nzTitle"

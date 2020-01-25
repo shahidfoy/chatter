@@ -23,6 +23,19 @@ export class ChatController {
     }
 
     /**
+     * marks receivers of logged in users messages as read
+     * @param sender logged in user
+     * @param receiver receiver of logged in users messages
+     */
+    @Get('mark-receiver-messages/:sender/:receiver')
+    async markReceiverMessages(
+        @Param('sender') sender: string,
+        @Param('receiver') receiver: string,
+    ) {
+        this.chatService.markReceiverMessages(sender, receiver);
+    }
+
+    /**
      * sends a chat message to the receiver
      * @param req custom request
      * @param senderId senders id

@@ -7,14 +7,15 @@
       <nz-card-meta
         [nzTitle]="user.username"
         [nzDescription]="user.email"
-        [nzAvatar]="avatarTemplate"
-      ></nz-card-meta>
+        [nzAvatar]="avatarTemplate">
+      </nz-card-meta>
 
       <ng-template #avatarTemplate>
         <!-- TODO:: replace image with user profile image -->
         <a [routerLink]="['/streams/profile/', user.username]">
           <nz-avatar nzSrc=""></nz-avatar>
         </a>
+        <nz-badge class="badge" *ngIf="user?.onlineStatus === 'ONLINE'" [nzStatus]="'success'"></nz-badge>
       </ng-template>
       <ng-template #actionFollow>
         <i nz-icon

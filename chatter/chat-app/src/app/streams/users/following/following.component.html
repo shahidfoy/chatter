@@ -15,6 +15,7 @@
         <a [routerLink]="['/streams/profile/', user.username]">
           <nz-avatar nzSrc=""></nz-avatar>
         </a>
+        <nz-badge class="badge" *ngIf="user?.onlineStatus === 'ONLINE'" [nzStatus]="'success'"></nz-badge>
       </ng-template>
       <ng-template #actionFollow>
         <i nz-icon

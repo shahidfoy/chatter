@@ -4,7 +4,7 @@
       <h3 class="margin-left-24">{{ receiverUsername }}</h3>
     </a>
     <!-- determine if user is logged in -->
-    <nz-badge [nzStatus]="'success'"></nz-badge>
+    <nz-badge *ngIf="receiverData?.onlineStatus === 'ONLINE'" [nzStatus]="'success'"></nz-badge>
   </div>
 
   <div class="message-container">
@@ -46,7 +46,7 @@
   </div>
 
   <div [ngClass]="{ 'mobile-message-footer': isMobile, 'message-footer': !isMobile }">
-    <form (ngSubmit)="sendMessage()">
+    <form (ngSubmit)="sendMessage()" (click)="markMessagesAsRead()">
       <nz-input-group [nzAddOnAfter]="suffixIconButton">
         <input
           (keypress)="isTyping()"

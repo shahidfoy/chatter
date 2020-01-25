@@ -67,6 +67,7 @@ export class AuthService {
                     username,
                     email: email.toLowerCase(),
                     password: hash,
+                    onlineStatus: 'ONLINE',
                 };
 
                 this.userModel.create(body).then((user) => {
@@ -86,25 +87,45 @@ export class AuthService {
      * @param password
      */
     async loginUser(email: string, password: string): Promise<Token> {
-        return await this.userModel.findOne({ email }).then(user => {
+        return await this.userModel.findOne({ email }).then(async (user: User) => {
             if (!user) {
                 throw new NotFoundException({ message: 'Email not found' });
             }
 
-            return new Promise((resolve, reject) => {
-                bcrypt.compare(password, user.password).then((result) => {
-                    if (!result) {
-                        throw new InternalServerErrorException({ message: 'Password is incorrect' });
-                    }
-                    const token: string = jwt.sign({ data: user }, dbConfig.secret, { expiresIn: '168h' });
-                    resolve({ token });
-                }).catch(tokenError => {
-                    reject({ message: `Error occured ${tokenError.message.message}` });
+            try {
+                return await new Promise((resolve, reject) => {
+                    bcrypt.compare(password, user.password).then(async (result) => {
+                        if (!result) {
+                            throw new InternalServerErrorException({ message: 'Password is incorrect' });
+                        }
+                        await this.userModel.updateOne({
+                            _id: user._id,
+                        }, {
+                            onlineStatus: 'ONLINE',
+                        });
+                        const token: string = jwt.sign({ data: user }, dbConfig.secret, { expiresIn: '168h' });
+                        resolve({ token });
+                    }).catch(tokenError => {
+                        reject({ message: `Error occured ${tokenError.message.message}` });
+                    });
                 });
-            }).catch(() => {
+            }
+            catch (e) {
                 throw new InternalServerErrorException({ message: 'Password is incorrect' });
-            });
+            }
 
+        });
+    }
+
+    /**
+     * sets user status as OFFLINE
+     * @param id user id
+     */
+    async logoutUser(id: string) {
+        await this.userModel.updateOne({
+            _id: id,
+        }, {
+            onlineStatus: 'OFFLINE',
         });
     }
 }

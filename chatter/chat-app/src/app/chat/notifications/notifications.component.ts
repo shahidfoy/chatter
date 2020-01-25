@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationsObj, User, ChatList, MessageId, MessageBody } from '../../shared/interfaces/user.interface';
+import { User, ChatList, MessageBody } from '../../shared/interfaces/user.interface';
 import { timeFromNow } from '../../shared/shared.utils';
 import { TokenService } from '../../shared/services/token.service';
 import { UserService } from '../../streams/services/user.service';
@@ -82,16 +82,6 @@ export class NotificationsComponent implements OnInit {
   getUserImage(username: string): string {
     return username === this.loggedInUser.username ? this.userImage : this.receiverImage;
   }
-
-  // /**
-  //  * deletes notification
-  //  * @param notification notification to be deleted
-  //  */
-  // deleteNotification(notification: NotificationsObj) {
-  //   this.userService.deleteNotification(notification).subscribe((user: User) => {
-  //     this.userService.emitNewNotificationActionSocket();
-  //   });
-  // }
 
   // /**
   //  * marks all notifications as read

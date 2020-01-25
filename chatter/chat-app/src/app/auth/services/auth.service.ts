@@ -19,4 +19,8 @@ export class AuthService {
   loginUser(body: Partial<User>): Observable<TokenResponse> {
     return this.http.post<TokenResponse>(`${environment.BASEURL}/api/auth/login`, body);
   }
+
+  logoutUser(id: string): Observable<void> {
+    return this.http.post<void>(`${environment.BASEURL}/api/auth/logout`, { id });
+  }
 }
