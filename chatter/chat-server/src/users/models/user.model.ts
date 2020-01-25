@@ -5,6 +5,7 @@ export const UserSchema =  new mongoose.Schema({
     username: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    onlineStatus: { type: String },
     posts: [
         {
             postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
@@ -42,6 +43,7 @@ export interface User extends mongoose.Document {
     username: string;
     email: string;
     password: string;
+    onlineStatus: string;
     posts: UserPost[]; // may replace with interface later
     following: UsernameObj[];
     followers: UsernameObj[];

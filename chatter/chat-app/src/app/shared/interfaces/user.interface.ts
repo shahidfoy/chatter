@@ -7,6 +7,7 @@ export interface User {
   username: string;
   email: string;
   password: string;
+  onlineStatus: string;
   posts: UserPost[];
   following: UserFollowed[];
   followers: UserFollowing[];

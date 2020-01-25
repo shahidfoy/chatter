@@ -4,7 +4,7 @@
       <h3 class="margin-left-24">{{ receiverUsername }}</h3>
     </a>
     <!-- determine if user is logged in -->
-    <nz-badge [nzStatus]="'success'"></nz-badge>
+    <nz-badge *ngIf="receiverData?.onlineStatus === 'ONLINE'" [nzStatus]="'success'"></nz-badge>
   </div>
 
   <div class="message-container">
