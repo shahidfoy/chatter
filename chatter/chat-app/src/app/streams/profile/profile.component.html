@@ -3,6 +3,7 @@
   <nz-col [nzSpan]="8" class="margin-left-24">
     <h2>
       {{ username }}
+      <nz-badge *ngIf="user?.onlineStatus === 'ONLINE'" [nzStatus]="'success'"></nz-badge>
       <span *ngIf="!isLoggedInUser">
         <nz-button-group>
           <button nz-button nzType="primary" *ngIf="!followingUser" (click)="followUser(payload._id)">
