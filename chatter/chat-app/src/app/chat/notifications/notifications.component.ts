@@ -83,15 +83,6 @@ export class NotificationsComponent implements OnInit {
     return username === this.loggedInUser.username ? this.userImage : this.receiverImage;
   }
 
-  // /**
-  //  * marks all notifications as read
-  //  */
-  // markAllNotifications() {
-  //   this.userService.markAllNotifications().subscribe((user: User) => {
-  //     this.userService.emitNewNotificationActionSocket();
-  //   });
-  // }
-
   // IMPLEMENT THIS LATER TO LOAD NOTIFICATIONS
   // onLoadMore(): void {
   //   this.loadingMore = true;
