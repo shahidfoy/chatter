@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChatComponent } from './chat.component';
 import { AuthGuard } from '../shared/services/guards/auth.guard';
 import { MessageComponent } from './message/message.component';
-import { ChatListComponent } from './chat-list/chat-list.component';
 import { NotificationsComponent } from '../chat/notifications/notifications.component';
 
 
@@ -13,8 +12,7 @@ const routes: Routes = [
     component: ChatComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', component: ChatListComponent },
-      { path: 'chat-list', component: ChatListComponent },
+      { path: '', component: NotificationsComponent },
       { path: 'notifications', component: NotificationsComponent},
       { path: 'message', component: MessageComponent },
       { path: 'message/:username', component: MessageComponent },

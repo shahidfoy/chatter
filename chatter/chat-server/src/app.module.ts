@@ -10,6 +10,8 @@ import { PostsController } from './posts/posts.controller';
 import { UsersController } from './users/users.controller';
 import { ChatModule } from './chat/chat.module';
 import { ChatController } from './chat/chat.controller';
+import { ImagesModule } from './images/images.module';
+import { ImagesController } from './images/images.controller';
 
 @Module({
   imports: [
@@ -20,6 +22,7 @@ import { ChatController } from './chat/chat.controller';
     UsersModule,
     PostsModule,
     ChatModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -27,6 +30,6 @@ import { ChatController } from './chat/chat.controller';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(GetUserMiddleware)
-      .forRoutes(PostsController, UsersController, ChatController);
+      .forRoutes(PostsController, UsersController, ChatController, ImagesController);
   }
 }

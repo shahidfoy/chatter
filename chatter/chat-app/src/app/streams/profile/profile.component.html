@@ -1,6 +1,20 @@
 
 <nz-row [nzGutter]="16">
-  <nz-col [nzSpan]="8" class="margin-left-24">
+  <nz-col [nzSpan]="3" class="margin-left-24" *ngIf="isMobile">
+    <nz-avatar
+      nzIcon="user"
+      nzSrc="https://i.pinimg.com/474x/41/03/85/4103858ae55e0713f9dd8d264c60f49b.jpg"
+      [nzSize]="42">
+    </nz-avatar>
+  </nz-col>
+  <nz-col [nzSpan]="1" class="margin-left-24" *ngIf="!isMobile">
+    <nz-avatar
+      nzIcon="user"
+      nzSrc="https://i.pinimg.com/474x/41/03/85/4103858ae55e0713f9dd8d264c60f49b.jpg"
+      [nzSize]="48">
+    </nz-avatar>
+  </nz-col>
+  <nz-col [nzSpan]="7">
     <h2>
       {{ username }}
       <nz-badge *ngIf="user?.onlineStatus === 'ONLINE'" [nzStatus]="'success'"></nz-badge>

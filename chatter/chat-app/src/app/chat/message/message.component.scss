@@ -1,7 +1,7 @@
 .message {
   overflow: scroll;
   overflow-x: hidden;
-  height: 100%
+  height: 100%;
 }
 
 .message-header {
@@ -28,7 +28,7 @@
 
 .mobile-message-footer {
   position: sticky;
-  bottom: 0px;
+  bottom: 0;
   padding: 8px;
   width: 100%;
   background: #505050;

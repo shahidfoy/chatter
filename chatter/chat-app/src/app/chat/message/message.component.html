@@ -7,7 +7,7 @@
     <nz-badge *ngIf="receiverData?.onlineStatus === 'ONLINE'" [nzStatus]="'success'"></nz-badge>
   </div>
 
-  <div class="message-container">
+  <div class="message-container" [ngClass]="{ 'padding-bottom-44': !isMobile }">
     <nz-list
       [nzDataSource]="messages"
       [nzRenderItem]="item"
