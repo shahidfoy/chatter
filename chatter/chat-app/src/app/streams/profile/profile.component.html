@@ -2,21 +2,21 @@
 <nz-row [nzGutter]="16">
   <nz-col [nzSpan]="3" class="margin-left-24" *ngIf="isMobile">
     <nz-avatar
-      (click)="uploadProfileImage(username)"
+      (click)="uploadProfileImage()"
       nz-popover
-      nzPopoverContent="upload image"
+      [nzPopoverContent]="uploadImagePopoverStr()"
       nzIcon="user"
-      nzSrc="https://i.pinimg.com/474x/41/03/85/4103858ae55e0713f9dd8d264c60f49b.jpg"
+      [nzSrc]="avatarUrl"
       [nzSize]="42">
     </nz-avatar>
   </nz-col>
   <nz-col [nzSpan]="1" class="margin-left-24" *ngIf="!isMobile">
     <nz-avatar
-      (click)="uploadProfileImage(username)"
+      (click)="uploadProfileImage()"
       nz-popover
-      nzPopoverContent="upload image"
+      [nzPopoverContent]="uploadImagePopoverStr()"
       nzIcon="user"
-      nzSrc="https://i.pinimg.com/474x/41/03/85/4103858ae55e0713f9dd8d264c60f49b.jpg"
+      [nzSrc]="avatarUrl"
       [nzSize]="48">
     </nz-avatar>
   </nz-col>
@@ -114,25 +114,7 @@
   </div>
 </nz-content>
 
-
-<nz-modal
-  [(nzVisible)]="isVisible"
-  nzTitle="Upload Profile Image"
-  (nzOnCancel)="handleModalCancel()"
-  (nzOnOk)="handleModalOk()">
-
-  <nz-upload
-    class="avatar-uploader"
-    nzAction="https://jsonplaceholder.typicode.com/posts/"
-    nzName="avatar"
-    nzListType="picture-card"
-    [nzShowUploadList]="false"
-    [nzBeforeUpload]="beforeUpload"
-    (nzChange)="handleChange($event)">
-    <ng-container *ngIf="!avatarUrl">
-      <i class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></i>
-      <div class="ant-upload-text">Upload</div>
-    </ng-container>
-    <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar" />
-  </nz-upload>
-</nz-modal>
+<app-upload-image-modal
+  [avatarUrl]="avatarUrl"
+  [isVisible]="isVisible"
+  (updateProfileOutput)="profileUpdated($event)"></app-upload-image-modal>

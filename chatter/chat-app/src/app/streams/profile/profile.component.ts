@@ -13,6 +13,7 @@ import * as _ from 'lodash';
 import { NzNotificationService, NzMessageService, UploadFile } from 'ng-zorro-antd';
 import { UserFollowing } from '../interfaces/user-following.interface';
 import { Observable, Observer } from 'rxjs';
+import { UploadImageModalState } from './upload-image-modal/upload-image-modal.component';
 
 @Component({
   selector: 'app-profile',
@@ -30,8 +31,7 @@ export class ProfileComponent implements OnInit {
   isLoggedInUser: boolean;
   followingUser: boolean;
 
-  loading = false;
-  avatarUrl: string;
+  avatarUrl: string = 'https://i.pinimg.com/474x/41/03/85/4103858ae55e0713f9dd8d264c60f49b.jpg';
 
   constructor(
     private userService: UserService,
@@ -40,7 +40,6 @@ export class ProfileComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private applicationStateService: ApplicationStateService,
     private notification: NzNotificationService,
-    private msg: NzMessageService,
     private router: Router,
   ) { }
 
@@ -69,87 +68,33 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // TODO:: CURRENTLY HERE
-
-  uploadProfileImage(username: string): void {
-    console.log('username', username);
-    this.isVisible = true;
-  }
-
-  handleModalOk(): void {
-    console.log('Button ok clicked!');
-    this.isVisible = false;
-  }
-
-  handleModalCancel(): void {
-    console.log('Button cancel clicked!');
-    this.isVisible = false;
-  }
-
-  beforeUpload = (file: File) => {
-    return new Observable((observer: Observer<boolean>) => {
-      const isJPG = file.type === 'image/jpeg';
-      if (!isJPG) {
-        this.msg.error('You can only upload JPG file!');
-        observer.complete();
-        return;
-      }
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isLt2M) {
-        this.msg.error('Image must smaller than 2MB!');
-        observer.complete();
-        return;
-      }
-      // check height
-      this.checkImageDimension(file).then(dimensionRes => {
-        if (!dimensionRes) {
-          this.msg.error('Image only 300x300 above');
-          observer.complete();
-          return;
-        }
-
-        observer.next(isJPG && isLt2M && dimensionRes);
-        observer.complete();
-      });
-    });
-  }
-
-  handleChange(info: { file: UploadFile }): void {
-    switch (info.file.status) {
-      case 'uploading':
-        this.loading = true;
-        break;
-      case 'done':
-        // Get this url from response in real world.
-        this.getBase64(info.file!.originFileObj!, (img: string) => {
-          this.loading = false;
-          this.avatarUrl = img;
-        });
-        break;
-      case 'error':
-        this.msg.error('Network error');
-        this.loading = false;
-        break;
+  /**
+   * popover that indicates upload image feature
+   */
+  uploadImagePopoverStr(): string {
+    if (this.isLoggedInUser) {
+      return 'Upload Image';
     }
   }
 
-  private getBase64(img: File, callback: (img: string) => void): void {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result!.toString()));
-    reader.readAsDataURL(img);
+  /**
+   * lets logged in user upload profile image on their profile page
+   * sets isVisible status for upload-image-modal to true
+   */
+  uploadProfileImage(): void {
+    if (this.isLoggedInUser) {
+      this.isVisible = true;
+    }
   }
 
-  private checkImageDimension(file: File): Promise<boolean> {
-    return new Promise(resolve => {
-      const img = new Image(); // create image
-      img.src = window.URL.createObjectURL(file);
-      img.onload = () => {
-        const width = img.naturalWidth;
-        const height = img.naturalHeight;
-        window.URL.revokeObjectURL(img.src!);
-        resolve(width === height && width >= 300);
-      };
-    });
+  /**
+   * emits the avatar url and modal visible status
+   * from the upload-image-modal component
+   * @param event updated image modal state
+   */
+  profileUpdated(event: UploadImageModalState) {
+    this.avatarUrl = event.avatarUrl;
+    this.isVisible = event.isVisible;
   }
 
   /**
