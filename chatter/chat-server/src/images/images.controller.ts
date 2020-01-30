@@ -1,7 +1,10 @@
-import { Controller, Get, Body } from '@nestjs/common';
+import { Controller, Get, Body, Post, Req } from '@nestjs/common';
+import { CustomRequest } from 'src/interfaces/custom-request.interface';
+import { ImagesService } from './images.service';
 
 @Controller('images')
 export class ImagesController {
+    constructor(private imagesService: ImagesService) {}
 
     /**
      * gets users profile image by username
@@ -12,5 +15,12 @@ export class ImagesController {
         @Body('username') username: string,
     ): Promise<any> {
         return undefined;
+    }
+
+    @Post('upload-profile-image')
+    async uploadProfileImage(
+        @Body('image') image: any,
+    ): Promise<any> {
+        return this.imagesService.uploadProfileImage(image);
     }
 }

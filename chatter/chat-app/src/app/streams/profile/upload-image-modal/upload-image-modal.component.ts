@@ -4,6 +4,7 @@ import { Observable, Observer } from 'rxjs';
 import { UploadImageModalState } from '../../interfaces/upload-image-modal-state';
 import { environment } from 'src/environments/environment';
 import { FileUploader } from 'ng2-file-upload';
+import { ImageUploadService } from '../../services/image-upload.service';
 
 @Component({
   selector: 'app-upload-image-modal',
@@ -24,7 +25,10 @@ export class UploadImageModalComponent implements OnInit {
   @Output() updateProfileOutput = new EventEmitter<UploadImageModalState>();
   loading = false;
 
-  constructor(private msg: NzMessageService) { }
+  constructor(
+    private msg: NzMessageService,
+    private imageUploadService: ImageUploadService
+  ) { }
 
   ngOnInit() {
   }
@@ -89,7 +93,11 @@ export class UploadImageModalComponent implements OnInit {
         this.getBase64(info.file.originFileObj, (img: string) => {
           console.log('img', img);
           this.loading = false;
-          this.avatarUrl = img;
+          this.avatarUrl = img.toString();
+
+          this.imageUploadService.uploadImage(img.toString()).subscribe((response: any) => {
+            console.log('uploading image complete', response);
+          });
         });
         break;
       case 'error':
@@ -100,11 +108,11 @@ export class UploadImageModalComponent implements OnInit {
   }
 
 
-  private getBase64(img: File, callback: (img: string) => void): void {
+  private getBase64(img: File, callback: (img: any) => void): void {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-      console.log('reader result', reader.result.toString());
-      callback(reader.result.toString());
+      // console.log('reader result', reader.result.toString());
+      callback(reader.result);
     });
 
     reader.addEventListener('error', (event) => {
