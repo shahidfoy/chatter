@@ -1,11 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UploadFile, NzMessageService } from 'ng-zorro-antd';
 import { Observable, Observer } from 'rxjs';
-
-export interface UploadImageModalState {
-  avatarUrl: string;
-  isVisible: boolean;
-}
+import { UploadImageModalState } from '../../interfaces/upload-image-modal-state';
+import { environment } from 'src/environments/environment';
+import { FileUploader } from 'ng2-file-upload';
 
 @Component({
   selector: 'app-upload-image-modal',
@@ -13,6 +11,13 @@ export interface UploadImageModalState {
   styleUrls: ['./upload-image-modal.component.scss']
 })
 export class UploadImageModalComponent implements OnInit {
+
+  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-profile-image`;
+
+  uploader: FileUploader = new FileUploader({
+    url: this.FILE_UPLOAD_URL,
+    disableMultipart: true,
+  });
 
   @Input() avatarUrl: string;
   @Input() isVisible: boolean;
@@ -73,13 +78,16 @@ export class UploadImageModalComponent implements OnInit {
   }
 
   handleChange(info: { file: UploadFile }): void {
+    console.log('upload image info', info);
     switch (info.file.status) {
       case 'uploading':
         this.loading = true;
         break;
       case 'done':
         // Get this url from response in real world.
+        console.log('DONE');
         this.getBase64(info.file.originFileObj, (img: string) => {
+          console.log('img', img);
           this.loading = false;
           this.avatarUrl = img;
         });
@@ -94,7 +102,14 @@ export class UploadImageModalComponent implements OnInit {
 
   private getBase64(img: File, callback: (img: string) => void): void {
     const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result.toString()));
+    reader.addEventListener('load', () => {
+      console.log('reader result', reader.result.toString());
+      callback(reader.result.toString());
+    });
+
+    reader.addEventListener('error', (event) => {
+      this.msg.error(`Network Error ${event}`);
+    });
     reader.readAsDataURL(img);
   }
 

@@ -10,10 +10,9 @@ import { timeFromNow } from 'src/app/shared/shared.utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PostService } from '../services/post.service';
 import * as _ from 'lodash';
-import { NzNotificationService, NzMessageService, UploadFile } from 'ng-zorro-antd';
+import { NzNotificationService } from 'ng-zorro-antd';
 import { UserFollowing } from '../interfaces/user-following.interface';
-import { Observable, Observer } from 'rxjs';
-import { UploadImageModalState } from './upload-image-modal/upload-image-modal.component';
+import { UploadImageModalState } from '../interfaces/upload-image-modal-state';
 
 @Component({
   selector: 'app-profile',
@@ -31,7 +30,7 @@ export class ProfileComponent implements OnInit {
   isLoggedInUser: boolean;
   followingUser: boolean;
 
-  avatarUrl: string = 'https://i.pinimg.com/474x/41/03/85/4103858ae55e0713f9dd8d264c60f49b.jpg';
+  avatarUrl = 'https://i.pinimg.com/474x/41/03/85/4103858ae55e0713f9dd8d264c60f49b.jpg';
 
   constructor(
     private userService: UserService,

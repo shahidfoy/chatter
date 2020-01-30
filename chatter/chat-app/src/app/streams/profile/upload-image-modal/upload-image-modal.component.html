@@ -13,7 +13,7 @@
 <ng-template #modalContent>
   <nz-upload
     class="avatar-uploader"
-    nzAction="https://jsonplaceholder.typicode.com/posts/"
+    [nzAction]="FILE_UPLOAD_URL"
     nzName="avatar"
     nzListType="picture-card"
     [nzShowUploadList]="false"
