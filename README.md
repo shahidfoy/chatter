@@ -8,6 +8,8 @@ Requires:
 -Node.js
 
 ## Angular
+
+### Run
 To start front-end open `chatter/chat-app` install packages `npm i` and run `ng serve`
 runs locally on localhost:4200
 
@@ -35,6 +37,7 @@ export const cloudinaryConfig: any = cloudinary.config({
 });
 ```
 
+### Run
 To start back-end open `chatter/chat-server` install packages `npm i` and run `npm run start:dev`
 runs locally on localhost:3000
 ```
