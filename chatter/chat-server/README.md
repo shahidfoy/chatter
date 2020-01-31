@@ -28,6 +28,19 @@
 
 Chat Server
 
+Add cloudinary config to the `config` folder
+```
+import * as Cloudinary from 'cloudinary';
+
+const cloudinary = Cloudinary.v2;
+
+export const cloudinaryConfig: any = cloudinary.config({
+    cloud_name: 'cloudinary cloud name',
+    api_key: 'cloudinary api key',
+    api_secret: 'cloudinary api secret',
+});
+```
+
 ## Installation
 
 ```bash
