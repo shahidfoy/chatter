@@ -18,6 +18,23 @@ ng serve
 ```
 
 ## NestJS
+
+### Setup
+Add cloudinary config `cloudinary.config.ts` to the `src/config` folder requires cloudinary account
+
+`cloudinary.config.ts`
+```
+import * as Cloudinary from 'cloudinary';
+
+const cloudinary = Cloudinary.v2;
+
+export const cloudinaryConfig: any = cloudinary.config({
+    cloud_name: 'cloudinary cloud name',
+    api_key: 'cloudinary api key',
+    api_secret: 'cloudinary api secret',
+});
+```
+
 To start back-end open `chatter/chat-server` install packages `npm i` and run `npm run start:dev`
 runs locally on localhost:3000
 ```
