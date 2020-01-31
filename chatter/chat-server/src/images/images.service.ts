@@ -7,7 +7,9 @@ export class ImagesService {
     async uploadProfileImage(image: any): Promise<any> {
         console.log('upload profile image service');
 
-        if (image) {}
+        if (image) {
+            console.log(image);
+        }
         return undefined;
     }
 }

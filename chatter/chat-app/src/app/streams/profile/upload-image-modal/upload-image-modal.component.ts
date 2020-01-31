@@ -95,7 +95,7 @@ export class UploadImageModalComponent implements OnInit {
           this.loading = false;
           this.avatarUrl = img.toString();
 
-          this.imageUploadService.uploadImage(img.toString()).subscribe((response: any) => {
+          this.imageUploadService.uploadImage(img).subscribe((response: any) => {
             console.log('uploading image complete', response);
           });
         });
