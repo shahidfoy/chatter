@@ -30,7 +30,7 @@ Chat Server
 
 ## Setup
 
-Add cloudinary config to the `config` folder requires cloudinary account
+Add cloudinary config to the `src/config` folder requires cloudinary account
 ```
 import * as Cloudinary from 'cloudinary';
 
