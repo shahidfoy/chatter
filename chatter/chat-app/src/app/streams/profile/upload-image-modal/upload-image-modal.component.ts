@@ -36,6 +36,7 @@ export class UploadImageModalComponent implements OnInit {
 
     // TODO:: CURRENTLY HERE add docs clean up code
   updateProfile() {
+    this.imageService.emitUserProfileImage(this.avatarUrl);
     this.updateProfileOutput.emit({
       avatarUrl: this.avatarUrl,
       isVisible: this.isVisible,

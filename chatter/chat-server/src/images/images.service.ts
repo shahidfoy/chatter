@@ -18,9 +18,15 @@ export class ImagesService {
 
     async uploadProfileImage(req: CustomRequest, image: string): Promise<CloudinaryResponse> {
         if (image) {
+
+            const user = await this.userModel.findOne({
+                _id: req.user._id,
+            });
+            cloudinary.uploader.destroy(user.picId);
+
             return new Promise((resolve, reject) => {
 
-                cloudinary.uploader.upload(image, async (error: any, result: CloudinaryResponse) => {
+                cloudinary.uploader.upload(image, async (error: Cloudinary.ErrorCallBack, result: CloudinaryResponse) => {
 
                     if (error) {
                         throw new InternalServerErrorException({ message: `Error retrieving profile image ${error}` });

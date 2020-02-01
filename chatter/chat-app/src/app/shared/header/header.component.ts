@@ -27,10 +27,15 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.username = this.payload.username;
     this.getUser();
+
+    this.imageService.profileImageSubject.subscribe((imageUrl: string) => {
+      this.avatarUrl = imageUrl;
+    });
   }
 
-  // TODO:: EMIT NEW PROFILE IMAGE WHEN NEW PROFILE IS UPLOADED
-
+  /**
+   * gets user by id and sets the users profile image
+   */
   private getUser() {
     this.userService.getUserById(this.payload._id).subscribe((user: User) => {
       this.user = user;
