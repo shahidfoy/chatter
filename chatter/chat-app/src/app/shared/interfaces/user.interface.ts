@@ -13,6 +13,8 @@ export interface User {
   followers: UserFollowing[];
   notifications: NotificationsObj[];
   chatList: ChatList[];
+  picVersion: string;
+  picId: string;
 }
 
 export interface UserPost {

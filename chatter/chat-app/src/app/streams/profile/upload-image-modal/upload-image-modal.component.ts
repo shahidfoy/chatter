@@ -2,9 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UploadFile, NzMessageService } from 'ng-zorro-antd';
 import { Observable, Observer } from 'rxjs';
 import { UploadImageModalState } from '../../interfaces/upload-image-modal-state';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
 import { FileUploader } from 'ng2-file-upload';
 import { ImageUploadService } from '../../services/image-upload.service';
+import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
 
 @Component({
   selector: 'app-upload-image-modal',
@@ -91,11 +92,11 @@ export class UploadImageModalComponent implements OnInit {
         // Get this url from response in real world.
         console.log('DONE');
         this.getBase64(info.file.originFileObj, (img: string) => {
-          console.log('img', img);
+          // console.log('img', img);
           this.loading = false;
           this.avatarUrl = img.toString();
 
-          this.imageUploadService.uploadImage(img).subscribe((response: any) => {
+          this.imageUploadService.uploadImage(img).subscribe((response: CloudinaryResponse) => {
             console.log('uploading image complete', response);
           });
         });
@@ -108,7 +109,7 @@ export class UploadImageModalComponent implements OnInit {
   }
 
 
-  private getBase64(img: File, callback: (img: any) => void): void {
+  private getBase64(img: File, callback: (img: ArrayBuffer | string) => void): void {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
       // console.log('reader result', reader.result.toString());

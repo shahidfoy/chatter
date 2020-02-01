@@ -21,6 +21,8 @@ import { UploadImageModalState } from '../interfaces/upload-image-modal-state';
 })
 export class ProfileComponent implements OnInit {
 
+  private readonly CLOUDINARY_BASE_URL = 'https://res.cloudinary.com/do0bqipp2/image/upload';
+  private readonly DEFAULT_PROFILE_IMAGE = this.CLOUDINARY_BASE_URL + '/v1580522418/little-fox_dribbble_mdr97t.png';
   isVisible = false;
   isMobile: boolean;
   payload: PayloadData;
@@ -30,7 +32,7 @@ export class ProfileComponent implements OnInit {
   isLoggedInUser: boolean;
   followingUser: boolean;
 
-  avatarUrl = 'https://i.pinimg.com/474x/41/03/85/4103858ae55e0713f9dd8d264c60f49b.jpg';
+  avatarUrl: string;
 
   constructor(
     private userService: UserService,
@@ -195,12 +197,18 @@ export class ProfileComponent implements OnInit {
   }
 
   /**
-   * gets user and populates their posts
+   * gets user and populates their profile image & posts
    */
   private getUser() {
     this.userService.getUserByUsername(this.username).subscribe((user: User) => {
       this.posts = [];
       this.user = user;
+
+      if (!this.user.picId) {
+        this.avatarUrl = this.DEFAULT_PROFILE_IMAGE;
+      } else {
+        this.avatarUrl = `${this.CLOUDINARY_BASE_URL}/v${this.user.picVersion}/${this.user.picId}`;
+      }
 
       this.posts = user.posts.map(post => post.postId as Post);
       this.posts.sort((current, next) => {

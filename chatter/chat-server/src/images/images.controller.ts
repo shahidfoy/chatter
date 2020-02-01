@@ -1,5 +1,7 @@
-import { Controller, Get, Body, Post } from '@nestjs/common';
+import { Controller, Get, Body, Post, Req } from '@nestjs/common';
 import { ImagesService } from './images.service';
+import { CustomRequest } from 'src/interfaces/custom-request.interface';
+import { CloudinaryResponse } from './interfaces/cloudinary-response';
 
 @Controller('images')
 export class ImagesController {
@@ -18,8 +20,9 @@ export class ImagesController {
 
     @Post('upload-profile-image')
     async uploadProfileImage(
-        @Body('image') image: any,
-    ): Promise<any> {
-        return this.imagesService.uploadProfileImage(image);
+        @Req() req: CustomRequest,
+        @Body('image') image: string,
+    ): Promise<CloudinaryResponse> {
+        return this.imagesService.uploadProfileImage(req, image);
     }
 }
