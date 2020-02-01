@@ -7,12 +7,15 @@ import { CloudinaryResponse } from '../interfaces/cloudinary-response';
 @Injectable({
   providedIn: 'root'
 })
-export class ImageUploadService {
+export class ImageService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   * uploads user's profile image
+   * @param image profile image
+   */
   uploadImage(image: string): Observable<CloudinaryResponse> {
-    console.log('uploading PROFILE IMAGE', image);
     return this.http.post<CloudinaryResponse>(`${environment.BASEURL}/api/images/upload-profile-image`, { image });
   }
 }

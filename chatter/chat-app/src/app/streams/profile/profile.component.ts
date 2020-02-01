@@ -21,8 +21,10 @@ import { UploadImageModalState } from '../interfaces/upload-image-modal-state';
 })
 export class ProfileComponent implements OnInit {
 
+  // TODO:: move these to a service and environments config
   private readonly CLOUDINARY_BASE_URL = 'https://res.cloudinary.com/do0bqipp2/image/upload';
   private readonly DEFAULT_PROFILE_IMAGE = this.CLOUDINARY_BASE_URL + '/v1580522418/little-fox_dribbble_mdr97t.png';
+
   isVisible = false;
   isMobile: boolean;
   payload: PayloadData;

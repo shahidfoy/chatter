@@ -17,7 +17,7 @@ import { TrendingComponent } from './trending/trending.component';
 import { UserService } from './services/user.service';
 import { UploadImageModalComponent } from './profile/upload-image-modal/upload-image-modal.component';
 import { FileUploadModule } from 'ng2-file-upload';
-import { ImageUploadService } from './services/image-upload.service';
+import { ImageService } from './services/image.service';
 
 @NgModule({
   declarations: [
@@ -40,6 +40,6 @@ import { ImageUploadService } from './services/image-upload.service';
     FileUploadModule,
   ],
   exports: [StreamsComponent],
-  providers: [PostService, UserService, ImageUploadService]
+  providers: [PostService, UserService, ImageService]
 })
 export class StreamsModule { }

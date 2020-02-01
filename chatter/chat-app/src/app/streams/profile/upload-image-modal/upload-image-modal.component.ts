@@ -4,8 +4,8 @@ import { Observable, Observer } from 'rxjs';
 import { UploadImageModalState } from '../../interfaces/upload-image-modal-state';
 import { environment } from '../../../../environments/environment';
 import { FileUploader } from 'ng2-file-upload';
-import { ImageUploadService } from '../../services/image-upload.service';
 import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-upload-image-modal',
@@ -28,13 +28,13 @@ export class UploadImageModalComponent implements OnInit {
 
   constructor(
     private msg: NzMessageService,
-    private imageUploadService: ImageUploadService
+    private imageService: ImageService
   ) { }
 
   ngOnInit() {
   }
 
-    // TODO:: CURRENTLY HERE
+    // TODO:: CURRENTLY HERE add docs clean up code
   updateProfile() {
     this.updateProfileOutput.emit({
       avatarUrl: this.avatarUrl,
@@ -42,14 +42,12 @@ export class UploadImageModalComponent implements OnInit {
     });
   }
 
-  handleModalOk(): void {
-    console.log('Button ok clicked!');
+  handleModalOk() {
     this.isVisible = false;
     this.updateProfile();
   }
 
-  handleModalCancel(): void {
-    console.log('Button cancel clicked!');
+  handleModalCancel() {
     this.isVisible = false;
     this.updateProfile();
   }
@@ -82,21 +80,19 @@ export class UploadImageModalComponent implements OnInit {
     });
   }
 
-  handleChange(info: { file: UploadFile }): void {
+  handleChange(info: { file: UploadFile }) {
     console.log('upload image info', info);
     switch (info.file.status) {
       case 'uploading':
         this.loading = true;
         break;
       case 'done':
-        // Get this url from response in real world.
-        console.log('DONE');
+        // uploads profile image
         this.getBase64(info.file.originFileObj, (img: string) => {
-          // console.log('img', img);
           this.loading = false;
           this.avatarUrl = img.toString();
-
-          this.imageUploadService.uploadImage(img).subscribe((response: CloudinaryResponse) => {
+          // image service
+          this.imageService.uploadImage(img).subscribe((response: CloudinaryResponse) => {
             console.log('uploading image complete', response);
           });
         });
