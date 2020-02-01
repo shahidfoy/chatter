@@ -3,7 +3,6 @@ import { UploadFile, NzMessageService } from 'ng-zorro-antd';
 import { Observable, Observer } from 'rxjs';
 import { UploadImageModalState } from '../../interfaces/upload-image-modal-state';
 import { environment } from '../../../../environments/environment';
-import { FileUploader } from 'ng2-file-upload';
 import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
 import { ImageService } from '../../services/image.service';
 
@@ -15,11 +14,6 @@ import { ImageService } from '../../services/image.service';
 export class UploadImageModalComponent implements OnInit {
 
   FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-profile-image`;
-
-  uploader: FileUploader = new FileUploader({
-    url: this.FILE_UPLOAD_URL,
-    disableMultipart: true,
-  });
 
   @Input() avatarUrl: string;
   @Input() isVisible: boolean;
