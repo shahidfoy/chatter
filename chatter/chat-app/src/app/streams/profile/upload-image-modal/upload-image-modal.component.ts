@@ -82,7 +82,7 @@ export class UploadImageModalComponent implements OnInit {
   }
 
   handleChange(info: { file: UploadFile }) {
-    console.log('upload image info', info);
+
     switch (info.file.status) {
       case 'uploading':
         this.loading = true;
@@ -93,9 +93,7 @@ export class UploadImageModalComponent implements OnInit {
           this.loading = false;
           this.avatarUrl = img.toString();
           // image service
-          this.imageService.uploadImage(img).subscribe((response: CloudinaryResponse) => {
-            console.log('uploading image complete', response);
-          });
+          this.imageService.uploadImage(img).subscribe((response: CloudinaryResponse) => {});
         });
         break;
       case 'error':
@@ -109,7 +107,6 @@ export class UploadImageModalComponent implements OnInit {
   private getBase64(img: File, callback: (img: ArrayBuffer | string) => void): void {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-      // console.log('reader result', reader.result.toString());
       callback(reader.result);
     });
 

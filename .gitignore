@@ -7,5 +7,6 @@ chatter/chat-server/dist
 bitnami-google-bitnami-m4y9l1bb7g.ppk
 chatter/chat-server/src/config/db.config.prod.ts
 chatter/chat-server/src/config/cloudinary.config.ts
+PROD_SETUP.md
 
 
