@@ -60,14 +60,21 @@ export class UploadImageModalComponent implements OnInit {
   /**
    * verifies image requirements
    */
+  // TODO:: FIX VALIDATIONS FOR PROFILE IMAGES
   beforeUpload = (file: File) => {
     return new Observable((observer: Observer<boolean>) => {
       const isJPG = file.type === 'image/jpeg';
-      if (!isJPG) {
-        this.msg.error('You can only upload JPG file!');
+      const isPNG = file.type === 'image/png';
+      const isGIF = file.type === 'image/gif';
+
+      // check file type
+      if (!isJPG && !isPNG && !isGIF) {
+        this.msg.error('You can only upload JPG, PND or GIF files!');
         observer.complete();
         return;
       }
+
+      // check file size
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
         this.msg.error('Image must smaller than 2MB!');
@@ -133,7 +140,8 @@ export class UploadImageModalComponent implements OnInit {
 
   /**
    * check image dimensions
-   * loads images greator or equal to 300 x 300
+   * loads images whos width and height are
+   * greator then or equal to 300 x 300
    * @param file incoming image file
    */
   private checkImageDimension(file: File): Promise<boolean> {
@@ -144,7 +152,7 @@ export class UploadImageModalComponent implements OnInit {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
         window.URL.revokeObjectURL(img.src);
-        resolve(width === height && width >= 300);
+        resolve(width >= 300 && height >= 300);
       };
     });
   }
