@@ -71,7 +71,7 @@ export class AuthService {
                 };
 
                 this.userModel.create(body).then((user) => {
-                    const token: string = jwt.sign({data: user}, dbConfig.secret, { expiresIn: '168h' });
+                    const token: string = jwt.sign({data: user}, dbConfig.secret, {});
                     // cookieParser.cookie({ 'auth': token });
                     resolve({ token });
                 }).catch(tokenError => {
@@ -103,7 +103,7 @@ export class AuthService {
                         }, {
                             onlineStatus: 'ONLINE',
                         });
-                        const token: string = jwt.sign({ data: user }, dbConfig.secret, { expiresIn: '168h' });
+                        const token: string = jwt.sign({ data: user }, dbConfig.secret, {});
                         resolve({ token });
                     }).catch(tokenError => {
                         reject({ message: `Error occured ${tokenError.message.message}` });

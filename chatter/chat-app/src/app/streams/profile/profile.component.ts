@@ -12,6 +12,8 @@ import { PostService } from '../services/post.service';
 import * as _ from 'lodash';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { UserFollowing } from '../interfaces/user-following.interface';
+import { UploadImageModalState } from '../interfaces/upload-image-modal-state';
+import { ImageService } from '../services/image.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,6 +22,7 @@ import { UserFollowing } from '../interfaces/user-following.interface';
 })
 export class ProfileComponent implements OnInit {
 
+  isVisible = false;
   isMobile: boolean;
   payload: PayloadData;
   username: string;
@@ -28,10 +31,13 @@ export class ProfileComponent implements OnInit {
   isLoggedInUser: boolean;
   followingUser: boolean;
 
+  avatarUrl: string;
+
   constructor(
     private userService: UserService,
     private postService: PostService,
     private tokenService: TokenService,
+    private imageService: ImageService,
     private activatedRoute: ActivatedRoute,
     private applicationStateService: ApplicationStateService,
     private notification: NzNotificationService,
@@ -61,6 +67,35 @@ export class ProfileComponent implements OnInit {
     this.userService.receiveNewFollowSocket().subscribe(() => {
       this.getUser();
     });
+  }
+
+  /**
+   * popover that indicates upload image feature
+   */
+  uploadImagePopoverStr(): string {
+    if (this.isLoggedInUser) {
+      return 'Upload Image';
+    }
+  }
+
+  /**
+   * lets logged in user upload profile image on their profile page
+   * sets isVisible status for upload-image-modal to true
+   */
+  uploadProfileImage(): void {
+    if (this.isLoggedInUser) {
+      this.isVisible = true;
+    }
+  }
+
+  /**
+   * emits the avatar url and modal visible status
+   * from the upload-image-modal component
+   * @param event updated image modal state
+   */
+  profileUpdated(event: UploadImageModalState) {
+    this.avatarUrl = event.avatarUrl;
+    this.isVisible = event.isVisible;
   }
 
   /**
@@ -162,12 +197,18 @@ export class ProfileComponent implements OnInit {
   }
 
   /**
-   * gets user and populates their posts
+   * gets user and populates their profile image & posts
    */
   private getUser() {
     this.userService.getUserByUsername(this.username).subscribe((user: User) => {
       this.posts = [];
       this.user = user;
+
+      if (!this.user.picId) {
+        this.avatarUrl = this.imageService.getDefaultProfileImage();
+      } else {
+        this.avatarUrl = this.imageService.getUserProfileImage(this.user.picVersion, this.user.picId);
+      }
 
       this.posts = user.posts.map(post => post.postId as Post);
       this.posts.sort((current, next) => {

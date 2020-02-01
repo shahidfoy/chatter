@@ -34,6 +34,8 @@ export class PostsService {
      */
     async getPostById(postId: string): Promise<UserPost> {
         return await this.postModel.findOne({ _id: postId })
+            .populate('user')
+            .populate('comments.userId')
             .then((post) => {
                 return post;
             })

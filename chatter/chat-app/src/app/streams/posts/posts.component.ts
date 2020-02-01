@@ -9,6 +9,8 @@ import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { timeFromNow } from 'src/app/shared/shared.utils';
+import { User } from 'src/app/shared/interfaces/user.interface';
+import { ImageService } from '../services/image.service';
 
 @Component({
   selector: 'app-posts',
@@ -25,6 +27,7 @@ export class PostsComponent implements OnInit {
     private tokenService: TokenService,
     private applicationStateService: ApplicationStateService,
     private postService: PostService,
+    private imageService: ImageService,
     private notification: NzNotificationService,
     private router: Router,
   ) { }
@@ -40,6 +43,18 @@ export class PostsComponent implements OnInit {
     this.postService.receiveNewPostSocket().subscribe(() => {
       this.getAllPosts();
     });
+  }
+
+  /**
+   * gets users profile image url
+   * @param user user of post
+   */
+  getAvatarUrl(user: User) {
+    if (user.picId) {
+      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+    } else {
+      return this.imageService.getDefaultProfileImage();
+    }
   }
 
   /**

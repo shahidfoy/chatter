@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { timeFromNow } from 'src/app/shared/shared.utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import * as _ from 'lodash';
+import { ImageService } from '../services/image.service';
+import { User } from 'src/app/shared/interfaces/user.interface';
 
 @Component({
   selector: 'app-trending',
@@ -24,6 +26,7 @@ export class TrendingComponent implements OnInit {
 
   constructor(
     private tokenService: TokenService,
+    private imageService: ImageService,
     private applicationStateService: ApplicationStateService,
     private postService: PostService,
     private notification: NzNotificationService,
@@ -41,6 +44,18 @@ export class TrendingComponent implements OnInit {
     this.postService.receiveNewPostSocket().subscribe(() => {
       this.getTrendingPosts();
     });
+  }
+
+  /**
+   * gets users profile image url
+   * @param user user of post
+   */
+  getAvatarUrl(user: User) {
+    if (user.picId) {
+      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+    } else {
+      return this.imageService.getDefaultProfileImage();
+    }
   }
 
   /**

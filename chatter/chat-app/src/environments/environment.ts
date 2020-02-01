@@ -4,6 +4,7 @@
 
 export const environment = {
   BASEURL: 'http://localhost:3000',
+  CLOUDINARY_BASE_URL: 'https://res.cloudinary.com/do0bqipp2/image/upload',
   production: false
 };
 

@@ -8,6 +8,7 @@ import { PayloadData } from 'src/app/shared/interfaces/jwt-payload.interface';
 import { Message, MessageContents } from '../interfaces/message.interface';
 import { ApplicationStateService } from 'src/app/shared/services/application-state.service';
 import { ChatParams } from '../interfaces/chat-params.interface';
+import { ImageService } from 'src/app/streams/services/image.service';
 
 @Component({
   selector: 'app-message',
@@ -25,14 +26,12 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   messages: MessageContents[];
   typing = false;
 
-  userImage = 'https://i.pinimg.com/474x/41/03/85/4103858ae55e0713f9dd8d264c60f49b.jpg';
-  receiverImage = 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
-
   constructor(
     private activatedRoute: ActivatedRoute,
     private tokenService: TokenService,
     private userService: UserService,
     private messageService: MessageService,
+    private imageService: ImageService,
     private applicationStateService: ApplicationStateService,
   ) { }
 
@@ -103,11 +102,15 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   }
 
   /**
-   * gets users chat image
+   * gets user's chat image
    * @param username username
    */
-  getUserImage(username: string): string {
-    return username === this.loggedInUser.username ? this.userImage : this.receiverImage;
+  getUserAvatar(user: any): string {
+    if (user.picId) {
+      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+    } else {
+      return this.imageService.getDefaultProfileImage();
+    }
   }
 
   /**

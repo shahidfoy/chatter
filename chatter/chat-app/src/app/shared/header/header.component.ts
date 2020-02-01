@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PayloadData } from '../interfaces/jwt-payload.interface';
+import { User } from '../interfaces/user.interface';
+import { UserService } from 'src/app/streams/services/user.service';
+import { ImageService } from 'src/app/streams/services/image.service';
 
 @Component({
   selector: 'app-header',
@@ -11,12 +14,37 @@ export class HeaderComponent implements OnInit {
   title = 'NERDOJO';
   @Input() isMobile: boolean;
   @Input() payload: PayloadData;
+  user: User;
   username: string;
 
-  constructor() { }
+  avatarUrl: string;
+
+  constructor(
+    private userService: UserService,
+    private imageService: ImageService,
+  ) { }
 
   ngOnInit() {
     this.username = this.payload.username;
+    this.getUser();
+
+    this.imageService.profileImageSubject.subscribe((imageUrl: string) => {
+      this.avatarUrl = imageUrl;
+    });
   }
 
+  /**
+   * gets user by id and sets the users profile image
+   */
+  private getUser() {
+    this.userService.getUserById(this.payload._id).subscribe((user: User) => {
+      this.user = user;
+
+      if (user.picId) {
+        this.avatarUrl = this.imageService.getUserProfileImage(user.picVersion, user.picId);
+      } else {
+        this.avatarUrl = this.imageService.getDefaultProfileImage();
+      }
+    });
+  }
 }

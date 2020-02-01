@@ -41,9 +41,8 @@
           <nz-list-item-meta
             [nzTitle]="nzTitle"
             nzIcon="user"
-            nzAvatar="../../"
-            [nzDescription]="timeFromNow(item.notification.createdAt)"
-          >
+            [nzAvatar]="getAvatarUrl(item.notification.senderId)"
+            [nzDescription]="timeFromNow(item.notification.createdAt)">
             <ng-template #nzTitle>
               <a [routerLink]="['/streams/profile', item.notification.senderUsername]">{{ item.notification.message }}</a>
             </ng-template>

@@ -28,6 +28,7 @@
     "@nestjs/platform-socket.io": "^6.10.14",
     "@nestjs/websockets": "^6.10.14",
     "bcrypt": "^3.0.7",
+    "cloudinary": "^1.19.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.1",
     "reflect-metadata": "^0.1.13",

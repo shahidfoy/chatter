@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChatListComponent } from './chat-list.component';
+import { UploadImageModalComponent } from './upload-image-modal.component';
 
-describe('ChatListComponent', () => {
-  let component: ChatListComponent;
-  let fixture: ComponentFixture<ChatListComponent>;
+describe('UploadImageModalComponent', () => {
+  let component: UploadImageModalComponent;
+  let fixture: ComponentFixture<UploadImageModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChatListComponent ]
+      declarations: [ UploadImageModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChatListComponent);
+    fixture = TestBed.createComponent(UploadImageModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

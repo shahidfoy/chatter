@@ -36,6 +36,8 @@ export const UserSchema =  new mongoose.Schema({
             messageId: { type: mongoose.Schema.Types.ObjectId, ref: 'Message'},
         },
     ],
+    picVersion: { type: String, default: '' },
+    picId: { type: String, default: '' },
 });
 
 export interface User extends mongoose.Document {
@@ -49,6 +51,8 @@ export interface User extends mongoose.Document {
     followers: UsernameObj[];
     notifications: NotificationsObj[];
     chatList: ChatList[];
+    picVersion: string;
+    picId: string;
 }
 
 export interface UserPost {

@@ -38,7 +38,7 @@ export class ChatService {
         }).select('_id');
 
         if (conversation) {
-            const messages = await this.messageModel.findOne({ conversationId: conversation._id });
+            const messages = await this.messageModel.findOne({ conversationId: conversation._id }).populate('message.senderId');
             return messages;
         }
         // might create new conversation if none located

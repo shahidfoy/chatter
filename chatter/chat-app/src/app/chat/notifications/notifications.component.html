@@ -1,9 +1,4 @@
-<div class="padding-bottom-88" style="margin: 30px;">
-  <!-- <div class="padding-bottom-44">
-    <button
-      class="float-right"
-      nz-button>Mark all as read</button>
-  </div> -->
+<div style="margin: 30px;">
 
   <!-- add to nz-list for pagination [nzLoadMore]="loadMore" -->
   <nz-list
@@ -36,7 +31,7 @@
             [nzTitle]="nzTitle"
             [nzDescription]="timeFromNow(item.messageId.message[item.messageId.message.length - 1])"
             nzIcon="user"
-            [nzAvatar]="getUserImage(item.receiverId.username)"
+            [nzAvatar]="getUserAvatar(item.receiverId)"
           >
             <ng-template #nzTitle>
               <p>{{ item.messageId.message[item.messageId.message.length - 1].body }}</p>

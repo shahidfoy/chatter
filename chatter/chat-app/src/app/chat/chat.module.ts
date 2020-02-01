@@ -5,14 +5,12 @@ import { ChatRoutingModule } from './chat-routing.module';
 import { MessageComponent } from './message/message.component';
 import { SharedModule } from '../shared/shared.module';
 import { MessageService } from './services/message.service';
-import { ChatListComponent } from './chat-list/chat-list.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
   declarations: [
     ChatComponent,
     MessageComponent,
-    ChatListComponent,
     NotificationsComponent,
   ],
   imports: [

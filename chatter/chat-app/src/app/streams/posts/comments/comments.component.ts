@@ -4,6 +4,8 @@ import { PostService } from '../../services/post.service';
 import { ActivatedRoute } from '@angular/router';
 import { Post, UserComment } from '../../interfaces/post.interface';
 import { timeFromNow } from 'src/app/shared/shared.utils';
+import { User } from 'src/app/shared/interfaces/user.interface';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-comments',
@@ -21,6 +23,7 @@ export class CommentsComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService,
+    private imageService: ImageService,
     private activatedRoute: ActivatedRoute
     ) { }
 
@@ -37,6 +40,18 @@ export class CommentsComponent implements OnInit {
   }
 
   // TODO:: limit comment length
+
+  /**
+   * gets user's avatar
+   * @param user user
+   */
+  getUserAvatar(user: User): string {
+    if (user && user.picId) {
+      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+    } else {
+      return this.imageService.getDefaultProfileImage();
+    }
+  }
 
   /**
    * adds a new comment to post

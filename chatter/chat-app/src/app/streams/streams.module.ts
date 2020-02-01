@@ -15,6 +15,9 @@ import { FollowersComponent } from './users/followers/followers.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { TrendingComponent } from './trending/trending.component';
 import { UserService } from './services/user.service';
+import { UploadImageModalComponent } from './profile/upload-image-modal/upload-image-modal.component';
+import { FileUploadModule } from 'ng2-file-upload';
+import { ImageService } from './services/image.service';
 
 @NgModule({
   declarations: [
@@ -27,14 +30,16 @@ import { UserService } from './services/user.service';
     FollowingComponent,
     FollowersComponent,
     NotificationsComponent,
-    TrendingComponent
+    TrendingComponent,
+    UploadImageModalComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     StreamsRoutingModule,
+    FileUploadModule,
   ],
   exports: [StreamsComponent],
-  providers: [PostService, UserService]
+  providers: [PostService, UserService, ImageService]
 })
 export class StreamsModule { }

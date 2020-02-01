@@ -4,6 +4,7 @@ import { NotificationsObj, User } from '../../shared/interfaces/user.interface';
 import { UserService } from '../services/user.service';
 import { TokenService } from '../../shared/services/token.service';
 import { timeFromNow } from '../../shared/shared.utils';
+import { ImageService } from '../services/image.service';
 
 @Component({
   selector: 'app-notifications',
@@ -21,8 +22,11 @@ export class NotificationsComponent implements OnInit {
   loggedInUserData: User;
   notifications: NotificationsObj[];
 
+  avatarUrl: string;
+
   constructor(
     private userService: UserService,
+    private imageService: ImageService,
     private tokenService: TokenService,
   ) {}
 
@@ -33,6 +37,18 @@ export class NotificationsComponent implements OnInit {
     this.userService.receiveNewNotificationActionSocket().subscribe(() => {
       this.getLoggedInUsersNotifications();
     });
+  }
+
+  /**
+   * gets users profile image url
+   * @param user user of post
+   */
+  getAvatarUrl(userId: User): string {
+    if (userId.picId) {
+      return this.imageService.getUserProfileImage(userId.picVersion, userId.picId);
+    } else {
+      return this.imageService.getDefaultProfileImage();
+    }
   }
 
   /**

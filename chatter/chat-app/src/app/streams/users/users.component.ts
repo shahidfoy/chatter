@@ -6,6 +6,7 @@ import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { UserFollowed } from '../interfaces/user-followed.interface';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { User } from '../../shared/interfaces/user.interface';
+import { ImageService } from '../services/image.service';
 
 @Component({
   selector: 'app-users',
@@ -20,6 +21,7 @@ export class UsersComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private imageService: ImageService,
     private tokenService: TokenService,
     private notification: NzNotificationService,
   ) { }
@@ -33,6 +35,18 @@ export class UsersComponent implements OnInit {
       this.getLoggedInUser(this.loggedInUserToken._id);
       this.getUsers();
     });
+  }
+
+  /**
+   * gets users profile image url
+   * @param user user of post
+   */
+  getAvatarUrl(user: User) {
+    if (user.picId) {
+      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+    } else {
+      return this.imageService.getDefaultProfileImage();
+    }
   }
 
   /**

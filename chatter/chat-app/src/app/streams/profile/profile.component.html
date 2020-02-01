@@ -1,6 +1,26 @@
 
 <nz-row [nzGutter]="16">
-  <nz-col [nzSpan]="8" class="margin-left-24">
+  <nz-col [nzSpan]="3" class="margin-left-24" *ngIf="isMobile">
+    <nz-avatar
+      (click)="uploadProfileImage()"
+      nz-popover
+      [nzPopoverContent]="uploadImagePopoverStr()"
+      nzIcon="user"
+      [nzSrc]="avatarUrl"
+      [nzSize]="42">
+    </nz-avatar>
+  </nz-col>
+  <nz-col [nzSpan]="1" class="margin-left-24" *ngIf="!isMobile">
+    <nz-avatar
+      (click)="uploadProfileImage()"
+      nz-popover
+      [nzPopoverContent]="uploadImagePopoverStr()"
+      nzIcon="user"
+      [nzSrc]="avatarUrl"
+      [nzSize]="48">
+    </nz-avatar>
+  </nz-col>
+  <nz-col [nzSpan]="7">
     <h2>
       {{ username }}
       <nz-badge *ngIf="user?.onlineStatus === 'ONLINE'" [nzStatus]="'success'"></nz-badge>
@@ -46,6 +66,7 @@
               <nz-avatar
                 nz-comment-avatar
                 nzIcon="user"
+                [nzSrc]="avatarUrl"
                 [nzSize]="'large'"
               ></nz-avatar>
             </nz-comment>
@@ -93,3 +114,8 @@
 
   </div>
 </nz-content>
+
+<app-upload-image-modal
+  [avatarUrl]="avatarUrl"
+  [isVisible]="isVisible"
+  (updateProfileOutput)="profileUpdated($event)"></app-upload-image-modal>

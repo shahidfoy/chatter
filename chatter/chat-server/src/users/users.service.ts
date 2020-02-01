@@ -34,6 +34,7 @@ export class UsersService {
                                     .populate('followers.userFollower')
                                     .populate('chatList.receiverId')
                                     .populate('chatList.messageId')
+                                    .populate('notifications.senderId')
                                     .then((user: User) => {
                                         return user;
                                     })
@@ -53,6 +54,7 @@ export class UsersService {
                                     .populate('followers.userFollower')
                                     .populate('chatList.receiverId')
                                     .populate('chatList.messageId')
+                                    .populate('notifications.senderId')
                                     .then((user: User) => {
                                         return user;
                                     })

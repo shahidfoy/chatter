@@ -11,6 +11,7 @@
                 [routerLink]="['/streams/profile/', post.username]"
                 nz-comment-avatar
                 nzIcon="user"
+                [nzSrc]="getAvatarUrl(post.user)"
                 [nzSize]="'large'"></nz-avatar>
             </nz-comment>
 
