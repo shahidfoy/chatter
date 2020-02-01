@@ -28,7 +28,9 @@ export class UploadImageModalComponent implements OnInit {
   ngOnInit() {
   }
 
-    // TODO:: CURRENTLY HERE add docs clean up code
+  /**
+   * emits users upated image and sends image data to profile component parent
+   */
   updateProfile() {
     this.imageService.emitUserProfileImage(this.avatarUrl);
     this.updateProfileOutput.emit({
@@ -37,16 +39,27 @@ export class UploadImageModalComponent implements OnInit {
     });
   }
 
+  /**
+   * closes model when ok button is clicked
+   * updates users profile image
+   */
   handleModalOk() {
     this.isVisible = false;
     this.updateProfile();
   }
 
+  /**
+   * closes model when user clicks away from modal
+   * updates users profile image
+   */
   handleModalCancel() {
     this.isVisible = false;
     this.updateProfile();
   }
 
+  /**
+   * verifies image requirements
+   */
   beforeUpload = (file: File) => {
     return new Observable((observer: Observer<boolean>) => {
       const isJPG = file.type === 'image/jpeg';
@@ -75,8 +88,11 @@ export class UploadImageModalComponent implements OnInit {
     });
   }
 
+  /**
+   * handles image file status changes
+   * @param info image file info
+   */
   handleChange(info: { file: UploadFile }) {
-
     switch (info.file.status) {
       case 'uploading':
         this.loading = true;
@@ -98,6 +114,11 @@ export class UploadImageModalComponent implements OnInit {
   }
 
 
+  /**
+   * converts file to string base64
+   * @param img image file
+   * @param callback result of file reader
+   */
   private getBase64(img: File, callback: (img: ArrayBuffer | string) => void): void {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
@@ -110,6 +131,11 @@ export class UploadImageModalComponent implements OnInit {
     reader.readAsDataURL(img);
   }
 
+  /**
+   * check image dimensions
+   * loads images greator or equal to 300 x 300
+   * @param file incoming image file
+   */
   private checkImageDimension(file: File): Promise<boolean> {
     return new Promise(resolve => {
       const img = new Image(); // create image
