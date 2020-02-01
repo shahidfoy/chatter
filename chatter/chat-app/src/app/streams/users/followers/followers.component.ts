@@ -8,6 +8,7 @@ import { TokenService } from '../../../shared/services/token.service';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { User } from '../../../shared/interfaces/user.interface';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-followers',
@@ -23,6 +24,7 @@ export class FollowersComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private imageService: ImageService,
     private tokenService: TokenService,
     private router: ActivatedRoute,
     private notification: NzNotificationService,
@@ -35,6 +37,18 @@ export class FollowersComponent implements OnInit {
     });
 
     this.populateFollowersListByUsername();
+  }
+
+  /**
+   * gets users profile image url
+   * @param user user of post
+   */
+  getAvatarUrl(user: User) {
+    if (user.picId) {
+      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+    } else {
+      return this.imageService.getDefaultProfileImage();
+    }
   }
 
   /**

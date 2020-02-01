@@ -13,6 +13,7 @@ import * as _ from 'lodash';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { UserFollowing } from '../interfaces/user-following.interface';
 import { UploadImageModalState } from '../interfaces/upload-image-modal-state';
+import { ImageService } from '../services/image.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,10 +21,6 @@ import { UploadImageModalState } from '../interfaces/upload-image-modal-state';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-
-  // TODO:: move these to a service and environments config
-  private readonly CLOUDINARY_BASE_URL = 'https://res.cloudinary.com/do0bqipp2/image/upload';
-  private readonly DEFAULT_PROFILE_IMAGE = this.CLOUDINARY_BASE_URL + '/v1580522418/little-fox_dribbble_mdr97t.png';
 
   isVisible = false;
   isMobile: boolean;
@@ -40,6 +37,7 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private postService: PostService,
     private tokenService: TokenService,
+    private imageService: ImageService,
     private activatedRoute: ActivatedRoute,
     private applicationStateService: ApplicationStateService,
     private notification: NzNotificationService,
@@ -207,9 +205,9 @@ export class ProfileComponent implements OnInit {
       this.user = user;
 
       if (!this.user.picId) {
-        this.avatarUrl = this.DEFAULT_PROFILE_IMAGE;
+        this.avatarUrl = this.imageService.getDefaultProfileImage();
       } else {
-        this.avatarUrl = `${this.CLOUDINARY_BASE_URL}/v${this.user.picVersion}/${this.user.picId}`;
+        this.avatarUrl = this.imageService.getUserProfileImage(this.user.picVersion, this.user.picId);
       }
 
       this.posts = user.posts.map(post => post.postId as Post);

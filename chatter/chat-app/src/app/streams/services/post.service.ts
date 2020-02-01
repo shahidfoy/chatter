@@ -5,10 +5,13 @@ import { HttpClient } from '@angular/common/http';
 import { Post } from '../interfaces/post.interface';
 import { Socket } from 'ngx-socket-io';
 
-
+/**
+ * Retrieves the REST endpoints for posts
+ */
 @Injectable({
   providedIn: 'root'
 })
+
 export class PostService {
 
   private readonly WEBSOCKET_POST: string = 'post';

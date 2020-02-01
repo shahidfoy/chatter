@@ -6,6 +6,7 @@ import { UserService } from '../../streams/services/user.service';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { MessageService } from '../services/message.service';
 import { Router } from '@angular/router';
+import { ImageService } from 'src/app/streams/services/image.service';
 
 @Component({
   selector: 'app-notifications',
@@ -22,14 +23,12 @@ export class NotificationsComponent implements OnInit {
   loggedInUser: PayloadData;
   loggedInUserData: User;
 
-  userImage = 'https://i.pinimg.com/474x/41/03/85/4103858ae55e0713f9dd8d264c60f49b.jpg';
-  receiverImage = 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
-
   constructor(
     private router: Router,
     private userService: UserService,
     private tokenService: TokenService,
     private messageService: MessageService,
+    private imageService: ImageService,
   ) {}
 
   ngOnInit() {
@@ -76,11 +75,15 @@ export class NotificationsComponent implements OnInit {
   }
 
   /**
-   * gets users chat image
-   * @param username username
+   * gets user's chat image
+   * @param user user
    */
-  getUserImage(username: string): string {
-    return username === this.loggedInUser.username ? this.userImage : this.receiverImage;
+  getUserAvatar(user: User): string {
+    if (user.picId) {
+      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+    } else {
+      return this.imageService.getDefaultProfileImage();
+    }
   }
 
   // IMPLEMENT THIS LATER TO LOAD NOTIFICATIONS

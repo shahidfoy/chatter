@@ -8,7 +8,7 @@
         [routerLink]="['/streams/profile/', post?.username]"
         nz-comment-avatar
         nzIcon="user"
-        [nzSize]="64"></nz-avatar>
+        [nzSrc]="getUserAvatar(post?.user)"></nz-avatar>
       <nz-comment-content>
         <p>{{ post?.post }}</p>
         <nz-tag *ngFor="let tag of post?.tags">{{tag}}</nz-tag>
@@ -39,25 +39,21 @@
     </div>
   </div>
 
-  <div class="">
-    <div class="padding-bottom-88">
-      <nz-list [nzDataSource]="commentsArray" [nzRenderItem]="comment" [nzItemLayout]="'horizontal'">
-        <ng-template #comment let-item>
-          <nz-comment
-            class="post-content"
-            [nzAuthor]="item.username"
-            [nzDatetime]="timeFromNow(item.createdAt)">
-            <nz-avatar
-              [routerLink]="['/streams/profile/', item.username]"
-              nz-comment-avatar
-              nzIcon="user"
-              [nzSrc]="item.avatar"></nz-avatar>
-            <nz-comment-content>
-              <p>{{ item.comment }}</p>
-            </nz-comment-content>
-          </nz-comment>
-        </ng-template>
-      </nz-list>
-    </div>
-  </div>
+  <nz-list [nzDataSource]="commentsArray" [nzRenderItem]="comment" [nzItemLayout]="'horizontal'">
+    <ng-template #comment let-item>
+      <nz-comment
+        class="post-content"
+        [nzAuthor]="item.username"
+        [nzDatetime]="timeFromNow(item.createdAt)">
+        <nz-avatar
+          [routerLink]="['/streams/profile/', item.username]"
+          nz-comment-avatar
+          nzIcon="user"
+          [nzSrc]="getUserAvatar(item.userId)"></nz-avatar>
+        <nz-comment-content>
+          <p>{{ item.comment }}</p>
+        </nz-comment-content>
+      </nz-comment>
+    </ng-template>
+  </nz-list>
 </nz-content>

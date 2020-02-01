@@ -6,7 +6,8 @@ import { PayloadData } from '../../../shared/interfaces/jwt-payload.interface';
 import * as _ from 'lodash';
 import { TokenService } from '../../../shared/services/token.service';
 import { ActivatedRoute } from '@angular/router';
-import { NzNotificationService, NzConfigService } from 'ng-zorro-antd';
+import { NzNotificationService } from 'ng-zorro-antd';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-following',
@@ -22,10 +23,10 @@ export class FollowingComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private imageService: ImageService,
     private tokenService: TokenService,
     private router: ActivatedRoute,
     private notification: NzNotificationService,
-    private nzConfigService: NzConfigService,
   ) { }
 
   ngOnInit() {
@@ -35,6 +36,18 @@ export class FollowingComponent implements OnInit {
     });
 
     this.populateFollowingListByUsername();
+  }
+
+  /**
+   * gets users profile image url
+   * @param user user of post
+   */
+  getAvatarUrl(user: User) {
+    if (user.picId) {
+      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+    } else {
+      return this.imageService.getDefaultProfileImage();
+    }
   }
 
   /**
