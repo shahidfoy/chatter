@@ -62,6 +62,7 @@ export class UploadImageModalComponent implements OnInit {
    */
   // TODO:: FIX VALIDATIONS FOR PROFILE IMAGES
   beforeUpload = (file: File) => {
+    console.log('before');
     return new Observable((observer: Observer<boolean>) => {
       const isJPG = file.type === 'image/jpeg';
       const isPNG = file.type === 'image/png';
@@ -89,7 +90,9 @@ export class UploadImageModalComponent implements OnInit {
           return;
         }
 
-        observer.next(isJPG && isLt2M && dimensionRes);
+        if (isJPG) { observer.next(isJPG && isLt2M && dimensionRes); }
+        if (isPNG) { observer.next(isPNG && isLt2M && dimensionRes); }
+        if (isGIF) { observer.next(isGIF && isLt2M && dimensionRes); }
         observer.complete();
       });
     });
@@ -100,13 +103,17 @@ export class UploadImageModalComponent implements OnInit {
    * @param info image file info
    */
   handleChange(info: { file: UploadFile }) {
+    console.log('handling chage');
     switch (info.file.status) {
       case 'uploading':
+        console.log('uploading');
         this.loading = true;
         break;
       case 'done':
         // uploads profile image
+        console.log('done');
         this.getBase64(info.file.originFileObj, (img: string) => {
+          console.log(img);
           this.loading = false;
           this.avatarUrl = img.toString();
           // image service
@@ -114,6 +121,7 @@ export class UploadImageModalComponent implements OnInit {
         });
         break;
       case 'error':
+        console.log('error');
         this.msg.error('Network error');
         this.loading = false;
         break;
@@ -151,6 +159,9 @@ export class UploadImageModalComponent implements OnInit {
       img.onload = () => {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
+
+        console.log('height', height);
+
         window.URL.revokeObjectURL(img.src);
         resolve(width >= 300 && height >= 300);
       };
