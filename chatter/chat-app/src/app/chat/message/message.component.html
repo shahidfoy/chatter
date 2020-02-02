@@ -3,11 +3,11 @@
     <a [routerLink]="['/streams/profile', receiverUsername]">
       <h3 class="margin-left-24">{{ receiverUsername }}</h3>
     </a>
-    <!-- determine if user is logged in -->
+     <!-- determine if user is logged in -->
     <nz-badge *ngIf="receiverData?.onlineStatus === 'ONLINE'" [nzStatus]="'success'"></nz-badge>
   </div>
 
-  <div class="message-container" [ngClass]="{ 'padding-bottom-44': !isMobile }">
+  <div class="message-container">
     <nz-list
       [nzDataSource]="messages"
       [nzRenderItem]="item"
@@ -45,8 +45,8 @@
     </nz-list>
   </div>
 
-  <div [ngClass]="{ 'mobile-message-footer': isMobile, 'message-footer': !isMobile }">
-    <form (ngSubmit)="sendMessage()" (click)="markMessagesAsRead()">
+  <div class="message-footer">
+    <form class="message-footer-form" (ngSubmit)="sendMessage()" (click)="markMessagesAsRead()">
       <nz-input-group [nzAddOnAfter]="suffixIconButton">
         <input
           (keypress)="isTyping()"
