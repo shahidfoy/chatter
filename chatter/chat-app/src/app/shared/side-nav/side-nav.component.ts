@@ -13,6 +13,7 @@ export class SideNavComponent implements OnInit {
 
   payload: PayloadData;
   isCollapsed = false;
+  isChangePasswordModalVisible = false;
 
   constructor(
     private tokenService: TokenService,
@@ -20,6 +21,10 @@ export class SideNavComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+  }
+
+  displayChangePasswordModal() {
+    this.isChangePasswordModalVisible = true;
   }
 
   logout() {

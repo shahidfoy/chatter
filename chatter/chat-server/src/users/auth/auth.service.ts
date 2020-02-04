@@ -109,8 +109,7 @@ export class AuthService {
                         reject({ message: `Error occured ${tokenError.message.message}` });
                     });
                 });
-            }
-            catch (e) {
+            } catch (e) {
                 throw new InternalServerErrorException({ message: 'Password is incorrect' });
             }
 

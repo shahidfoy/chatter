@@ -49,6 +49,12 @@
   </li>
   <li nz-submenu nzTitle="Settings" nzIcon="setting">
     <ul>
+      <li
+        nz-menu-item
+        (click)="displayChangePasswordModal()">
+        <i nz-icon [nzType]="'lock'"></i>
+        <span>Change Password</span>
+      </li>
       <li nz-menu-item (click)="logout()">
         <i nz-icon [nzType]="'logout'"></i>
         <span>Log out</span>
@@ -56,3 +62,7 @@
     </ul>
   </li>
 </ul>
+
+<app-change-password-modal
+  [isVisible]="isChangePasswordModalVisible"
+  (closeModal)="isChangePasswordModalVisible = $event"></app-change-password-modal>
