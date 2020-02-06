@@ -1,5 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { PayloadData } from '../interfaces/jwt-payload.interface';
+import { TokenService } from '../services/token.service';
+import { AuthService } from '../../auth/services/auth.service';
+import { NzNotificationService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-change-password-modal',
@@ -11,14 +15,23 @@ export class ChangePasswordModalComponent implements OnInit {
   @Input() isVisible: boolean;
   @Output() closeModal = new EventEmitter<boolean>();
   validateForm: FormGroup;
+  payload: PayloadData;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private tokenService: TokenService,
+    private authService: AuthService,
+    private notification: NzNotificationService,
+  ) { }
 
   ngOnInit() {
     this.validateForm = this.fb.group({
       oldPassword: [null, [Validators.required]],
       newPassword: [null, [Validators.required]],
+      confirmNewPassword: [null, [Validators.required]],
     });
+
+    this.payload = this.tokenService.getPayload();
   }
 
   /**
@@ -27,6 +40,7 @@ export class ChangePasswordModalComponent implements OnInit {
    */
   handleModalOk() {
     this.isVisible = false;
+    this.validateForm.reset();
     this.closeModal.emit(this.isVisible);
   }
 
@@ -36,10 +50,31 @@ export class ChangePasswordModalComponent implements OnInit {
    */
   handleModalCancel() {
     this.isVisible = false;
+    this.validateForm.reset();
     this.closeModal.emit(this.isVisible);
   }
 
-  submitForm() {
-    console.log('form', this.validateForm.value);
+  /**
+   * changes the users password
+   */
+  changePassword() {
+    const updatePassword = this.validate(this.validateForm);
+    if (updatePassword) {
+      this.authService.changePassword(this.validateForm.value).subscribe(() => {
+        console.log('changing password');
+        this.handleModalOk();
+      });
+    }
+  }
+
+  validate(passwordFormGroup: FormGroup) {
+    const newPassword = passwordFormGroup.controls.newPassword.value;
+    const confirmNewPassword = passwordFormGroup.controls.confirmNewPassword.value;
+
+    if (confirmNewPassword !== newPassword) {
+      this.notification.create('error', 'Error', 'New passwords do not match');
+      return false;
+    }
+    return true;
   }
 }

@@ -10,6 +10,10 @@ export class GenericErrorHandler implements ErrorHandler {
     private notification: NzNotificationService,
   ) {}
 
+  /**
+   * displays a notification if error message exists
+   * @param error incoming error
+   */
   handleError(error: any) {
     if (error.error) {
       this.notification.create('error', 'Error', error.error.message);
