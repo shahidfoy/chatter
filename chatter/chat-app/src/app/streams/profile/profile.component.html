@@ -21,7 +21,7 @@
     </nz-avatar>
   </nz-col>
   <nz-col [nzSpan]="10">
-    <h2>
+    <h2 class="username">
       {{ username }}
       <nz-badge *ngIf="user?.onlineStatus === 'ONLINE'" [nzStatus]="'success'"></nz-badge>
       <span *ngIf="!isLoggedInUser">

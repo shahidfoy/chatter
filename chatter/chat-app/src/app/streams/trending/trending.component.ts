@@ -112,7 +112,7 @@ export class TrendingComponent implements OnInit {
    */
   private getTrendingPosts() {
     this.postService.getTrendingPosts().subscribe(posts => {
-      this.posts = posts.reverse();
+      this.posts = posts;
     });
   }
 

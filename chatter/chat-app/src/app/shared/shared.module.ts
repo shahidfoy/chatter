@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RouterModule } from '@angular/router';
@@ -11,6 +11,7 @@ import { TokenService } from './services/token.service';
 import { ApplicationStateService } from './services/application-state.service';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { ChangePasswordModalComponent } from './change-password-modal/change-password-modal.component';
+import { GenericErrorHandler } from './services/generic-error.handler';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { ChangePasswordModalComponent } from './change-password-modal/change-pas
   providers: [
     TokenService,
     ApplicationStateService,
+    { provide: ErrorHandler, useClass: GenericErrorHandler }
   ]
 })
 export class SharedModule { }

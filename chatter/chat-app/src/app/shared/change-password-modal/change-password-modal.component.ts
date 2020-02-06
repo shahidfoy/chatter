@@ -40,6 +40,6 @@ export class ChangePasswordModalComponent implements OnInit {
   }
 
   submitForm() {
-
+    console.log('form', this.validateForm.value);
   }
 }
