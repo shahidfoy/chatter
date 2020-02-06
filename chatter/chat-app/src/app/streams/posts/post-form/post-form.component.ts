@@ -38,6 +38,7 @@ export class PostFormComponent implements OnInit {
   // TODO:: limit tag length
 
   submitPost() {
+    console.log('submitting post');
     this.isLoading = true;
     this.postService.addPost(this.postForm.value).subscribe((data: Post) => {
       this.postForm.reset();
