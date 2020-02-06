@@ -18,12 +18,12 @@ export class GetUserMiddleware implements NestMiddleware {
             const user: UserJwtToken = jwt.verify(jwtToken, dbConfig.secret) as UserJwtToken;
 
             if (user) {
-                console.log('Found user; details in jwt: ' , user);
+                // console.log('Found user; details in jwt: ' , user);
                 req.user = user.data;
             }
 
         } catch (err) {
-            console.log('Error handling authentication JWT: ', err);
+            // console.log('Error handling authentication JWT: ', err);
             throw new InternalServerErrorException({ message: 'Token has expired. Please login again.', jwtToken });
         }
         next();
