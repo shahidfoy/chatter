@@ -10,7 +10,7 @@ import { FollowersComponent } from './users/followers/followers.component';
 import { FollowingComponent } from './users/following/following.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { TrendingComponent } from './trending/trending.component';
-import { ChangePasswordModalComponent } from '../shared/change-password-modal/change-password-modal.component';
+import { ChangePasswordModalComponent } from '../shared/change-password/change-password-modal.component';
 
 const routes: Routes = [
   {

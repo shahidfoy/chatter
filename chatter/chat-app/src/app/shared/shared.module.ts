@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TokenService } from './services/token.service';
 import { ApplicationStateService } from './services/application-state.service';
 import { SideNavComponent } from './side-nav/side-nav.component';
-import { ChangePasswordModalComponent } from './change-password-modal/change-password-modal.component';
+import { ChangePasswordModalComponent } from './change-password/change-password-modal.component';
 import { GenericErrorHandler } from './services/generic-error.handler';
 
 
