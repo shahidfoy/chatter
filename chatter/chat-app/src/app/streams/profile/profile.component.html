@@ -21,8 +21,8 @@
     </nz-avatar>
   </nz-col>
   <nz-col [nzSpan]="6">
-    <h2 class="username">
-      {{ username }}
+    <div>
+      <h2 class="username" [ngClass]="{ 'username-mobile' : isMobile }">{{ username }}</h2>
       <nz-badge *ngIf="user?.onlineStatus === 'ONLINE'" [nzStatus]="'success'"></nz-badge>
       <span *ngIf="!isLoggedInUser">
         <nz-button-group>
@@ -35,7 +35,7 @@
           <button nz-button nzType="primary" [routerLink]="['/chat/message', username]"><span *ngIf="!isMobile">Chat</span><i nz-icon [nzType]="'message'"></i></button>
         </nz-button-group>
       </span>
-    </h2>
+    </div>
   </nz-col>
   <nz-col [nzSpan]="12" class="float-right">
     <nz-descriptions nzBordered [nzSize]="'small'">
