@@ -80,7 +80,7 @@ export class NotificationsComponent implements OnInit {
    */
   getUserAvatar(user: User): string {
     if (user.picId) {
-      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+      return this.imageService.getImage(user.picVersion, user.picId);
     } else {
       return this.imageService.getDefaultProfileImage();
     }

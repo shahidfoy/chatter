@@ -45,8 +45,10 @@ export class PostsController {
         @Req() req: CustomRequest,
         @Body('post') post: string,
         @Body('tags') tags: string[],
+        @Body('picVersion') picVersion: number,
+        @Body('picId') picId: string,
     ): Promise<Partial<UserPost>> {
-        return this.postsService.addPost(req.user, post, tags);
+        return this.postsService.addPost(req.user, post, tags, picVersion, picId);
     }
 
     /**

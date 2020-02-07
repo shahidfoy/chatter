@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit {
       this.user = user;
 
       if (user.picId) {
-        this.avatarUrl = this.imageService.getUserProfileImage(user.picVersion, user.picId);
+        this.avatarUrl = this.imageService.getImage(user.picVersion, user.picId);
       } else {
         this.avatarUrl = this.imageService.getDefaultProfileImage();
       }

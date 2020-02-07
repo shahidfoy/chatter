@@ -50,7 +50,7 @@ export class PostsService {
      * @param post post data
      * @param tags tags related to post
      */
-    async addPost(user: User, post: string, tags: string[]): Promise<Partial<UserPost>> {
+    async addPost(user: User, post: string, tags: string[], picVersion: number, picId: string): Promise<Partial<UserPost>> {
         const schema = Joi.object().keys({
             post: Joi.string().required(),
         });
@@ -76,6 +76,8 @@ export class PostsService {
             post,
             tags,
             createdAt: new Date(),
+            picVersion,
+            picId,
         };
 
         return await this.postModel.create(body).then(async (newPost: UserPost) => {

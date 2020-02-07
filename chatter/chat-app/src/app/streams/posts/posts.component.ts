@@ -51,7 +51,7 @@ export class PostsComponent implements OnInit {
    */
   getAvatarUrl(user: User) {
     if (user.picId) {
-      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+      return this.imageService.getImage(user.picVersion, user.picId);
     } else {
       return this.imageService.getDefaultProfileImage();
     }
@@ -104,6 +104,17 @@ export class PostsComponent implements OnInit {
    */
   checkUserInArray(array: any[], username: string) {
     return _.some(array, { username });
+  }
+
+  /**
+   * gets post image
+   * @param post post contents
+   */
+  getPostImage(post: Post): string {
+    if (post.picId) {
+      return this.imageService.getImage(post.picVersion, post.picId);
+    }
+    return '';
   }
 
   /**

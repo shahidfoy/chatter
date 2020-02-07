@@ -18,7 +18,8 @@
             <nz-comment>
               <nz-comment-content>
                 <p class="post">{{ post.post }}</p>
-                <!-- <img style="padding-bottom: 8px; width: 80%;" src="../../../assets/logo6.png"/> -->
+                <img style="padding-bottom: 8px;" [src]="getPostImage(post)"/>
+                <br>
                 <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag>
               </nz-comment-content>
               <nz-comment-action>

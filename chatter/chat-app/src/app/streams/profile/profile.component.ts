@@ -89,6 +89,17 @@ export class ProfileComponent implements OnInit {
   }
 
   /**
+   * gets post image
+   * @param post post contents
+   */
+  getPostImage(post: Post): string {
+    if (post.picId) {
+      return this.imageService.getImage(post.picVersion, post.picId);
+    }
+    return '';
+  }
+
+  /**
    * emits the avatar url and modal visible status
    * from the upload-image-modal component
    * @param event updated image modal state
@@ -207,7 +218,7 @@ export class ProfileComponent implements OnInit {
       if (!this.user.picId) {
         this.avatarUrl = this.imageService.getDefaultProfileImage();
       } else {
-        this.avatarUrl = this.imageService.getUserProfileImage(this.user.picVersion, this.user.picId);
+        this.avatarUrl = this.imageService.getImage(this.user.picVersion, this.user.picId);
       }
 
       this.posts = user.posts.map(post => post.postId as Post);
