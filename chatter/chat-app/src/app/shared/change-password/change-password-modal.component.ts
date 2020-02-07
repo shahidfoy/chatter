@@ -70,6 +70,10 @@ export class ChangePasswordModalComponent implements OnInit {
     }
   }
 
+  /**
+   * validates password form
+   * @param passwordFormGroup password form
+   */
   validate(passwordFormGroup: FormGroup) {
     const newPassword = passwordFormGroup.controls.newPassword.value;
     const confirmNewPassword = passwordFormGroup.controls.confirmNewPassword.value;
