@@ -10,6 +10,7 @@
         nzIcon="user"
         [nzSrc]="getUserAvatar(post?.user)"></nz-avatar>
       <nz-comment-content>
+        <img [src]="getPostImage(post)">
         <p>{{ post?.post }}</p>
         <nz-tag *ngFor="let tag of post?.tags">{{tag}}</nz-tag>
       </nz-comment-content>

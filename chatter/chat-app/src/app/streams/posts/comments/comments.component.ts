@@ -54,6 +54,17 @@ export class CommentsComponent implements OnInit {
   }
 
   /**
+   * gets post image
+   * @param post post contents
+   */
+  getPostImage(post: Post): string {
+    if (post.picId) {
+      return this.imageService.getImage(post.picVersion, post.picId);
+    }
+    return '';
+  }
+
+  /**
    * adds a new comment to post
    */
   addNewComment() {

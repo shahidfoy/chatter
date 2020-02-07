@@ -12,6 +12,7 @@ import { ApplicationStateService } from './services/application-state.service';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { ChangePasswordModalComponent } from './change-password/change-password-modal.component';
 import { GenericErrorHandler } from './services/generic-error.handler';
+import { NgxMasonryModule } from 'ngx-masonry';
 
 
 @NgModule({
@@ -29,12 +30,14 @@ import { GenericErrorHandler } from './services/generic-error.handler';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxMasonryModule,
   ],
   exports: [
     NgZorroAntdModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxMasonryModule,
     HeaderComponent,
     FooterComponent,
     ActionBarComponent,

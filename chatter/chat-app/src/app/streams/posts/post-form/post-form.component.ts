@@ -7,6 +7,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
 import { ImageService } from '../../services/image.service';
 import { Subject, Observable, Observer } from 'rxjs';
 import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-post-form',
@@ -14,6 +15,8 @@ import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
   styleUrls: ['./post-form.component.scss']
 })
 export class PostFormComponent implements OnInit {
+
+  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-post-image`;
 
   postForm: FormGroup;
   @Input() isMobile: boolean;
@@ -49,23 +52,31 @@ export class PostFormComponent implements OnInit {
    * submits users post
    */
   submitPost() {
-    console.log('submitting post');
     this.isLoading = true;
 
-    this.imageService.uploadPostImage(this.postImage).subscribe((result: CloudinaryResponse) => {
-      console.log('uploaded image', result);
-
-      this.postForm.controls.picVersion.setValue(result.version);
-      this.postForm.controls.picId.setValue(result.public_id);
-      this.postService.addPost(this.postForm.value).subscribe((data: Post) => {
-        console.log('post data', data);
-        this.postForm.reset();
-        this.postService.emitNewPostSocket();
-        this.isLoading = false;
-      }, (err: HttpErrorResponse) => {
-        this.displayError(err.error.message);
-        this.isLoading = false;
+    if (this.postImage !== '') {
+      this.imageService.uploadPostImage(this.postImage).subscribe((result: CloudinaryResponse) => {
+        this.postForm.controls.picVersion.setValue(result.version);
+        this.postForm.controls.picId.setValue(result.public_id);
+        this.addPost();
       });
+    } else {
+      this.addPost();
+    }
+
+  }
+
+  /**
+   * adds post through post service
+   */
+  addPost() {
+    this.postService.addPost(this.postForm.value).subscribe((data: Post) => {
+      this.postForm.reset();
+      this.postService.emitNewPostSocket();
+      this.isLoading = false;
+    }, (err: HttpErrorResponse) => {
+      this.displayError(err.error.message);
+      this.isLoading = false;
     });
   }
 

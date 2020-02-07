@@ -24,6 +24,7 @@
     "ng-zorro-antd": "^8.5.2",
     "ng2-file-upload": "^1.4.0",
     "ngx-cookie-service": "^2.2.0",
+    "ngx-masonry": "^1.1.4",
     "ngx-socket-io": "^3.0.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
