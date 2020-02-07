@@ -5,6 +5,7 @@ import { TokenResponse } from '../../shared/interfaces/tokenResponse.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { environment } from '../../../environments/environment';
 import { ChangePassword } from '../../shared/interfaces/change-password.interface';
+import { MessageResponse } from 'src/app/shared/interfaces/message-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,7 @@ export class AuthService {
    * changes user's password
    * @param body password contents
    */
-  changePassword(body: ChangePassword): Observable<any> {
-    return this.http.post<ChangePassword>(`${environment.BASEURL}/api/users/change-password/`, body);
+  changePassword(body: ChangePassword): Observable<MessageResponse> {
+    return this.http.post<MessageResponse>(`${environment.BASEURL}/api/auth/change-password`, body);
   }
 }

@@ -4,6 +4,7 @@ import { PayloadData } from '../interfaces/jwt-payload.interface';
 import { TokenService } from '../services/token.service';
 import { AuthService } from '../../auth/services/auth.service';
 import { NzNotificationService } from 'ng-zorro-antd';
+import { MessageResponse } from '../interfaces/message-response.interface';
 
 @Component({
   selector: 'app-change-password-modal',
@@ -60,8 +61,10 @@ export class ChangePasswordModalComponent implements OnInit {
   changePassword() {
     const updatePassword = this.validate(this.validateForm);
     if (updatePassword) {
-      this.authService.changePassword(this.validateForm.value).subscribe(() => {
+      this.authService.changePassword(this.validateForm.value).subscribe((response: MessageResponse) => {
         console.log('changing password');
+        console.log(response);
+        this.notification.create('success', 'Password Updated', response.message);
         this.handleModalOk();
       });
     }

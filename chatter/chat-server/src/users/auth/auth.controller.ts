@@ -2,6 +2,7 @@ import { Controller, Post, Body, InternalServerErrorException, Req, Get } from '
 import { Token } from '../../interfaces/response-token.interface';
 import { AuthService } from './auth.service';
 import { CustomRequest } from 'src/interfaces/custom-request.interface';
+import { MessageResponse } from 'src/interfaces/message-response.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -48,5 +49,14 @@ export class AuthController {
         @Body('id') id: string,
     ) {
         this.authService.logoutUser(id);
+    }
+
+    @Post('/change-password')
+    async changePassword(
+        @Req() req: CustomRequest,
+        @Body('oldPassword') oldPassword: string,
+        @Body('newPassword') newPassword: string,
+    ): Promise<MessageResponse> {
+        return await this.authService.changePassword(req.user, oldPassword, newPassword);
     }
 }
