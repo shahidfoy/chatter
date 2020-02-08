@@ -55,7 +55,6 @@ export class PostsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log('actived url', this.activatedRoute.snapshot.url);
     if (this.activatedRoute.snapshot.url[0].path === this.PATH_PROFILE) {
       if (this.activatedRoute.snapshot.url[1]) {
         this.getUser(this.activatedRoute.snapshot.url[1].path);
