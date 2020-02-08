@@ -35,6 +35,9 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  /**
+   * emits true for isCollased
+   */
   closeSideNav() {
     this.applicationStatusService.isCollapsed.next(true);
   }
