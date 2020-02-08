@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ApplicationStateService } from '../../shared/services/application-state.service';
 import { PostService } from '../services/post.service';
 import { Post } from '../interfaces/post.interface';
@@ -7,29 +7,35 @@ import * as _ from 'lodash';
 import { TokenService } from '../../shared/services/token.service';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { timeFromNow } from 'src/app/shared/shared.utils';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { ImageService } from '../services/image.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-posts',
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.scss']
 })
-export class PostsComponent implements OnInit {
+export class PostsComponent implements OnInit, AfterViewInit {
+
+  private readonly PATH_PROFILE = 'profile';
   isMobile: boolean;
   payload: PayloadData;
   username: string;
   posts: Post[];
+  userData: User;
 
   constructor(
     private tokenService: TokenService,
     private applicationStateService: ApplicationStateService,
     private postService: PostService,
     private imageService: ImageService,
+    private userService: UserService,
     private notification: NzNotificationService,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -39,7 +45,7 @@ export class PostsComponent implements OnInit {
       this.isMobile = isMobile;
     });
 
-    this.getAllPosts();
+    // this.getAllPosts();
     // this.postService.receiveNewPostSocket().subscribe(() => {
     //   setTimeout(() => {
     //     this.getAllPosts();
@@ -47,15 +53,31 @@ export class PostsComponent implements OnInit {
     // });
   }
 
+  ngAfterViewInit() {
+    if (this.activatedRoute.snapshot.url[0].path === this.PATH_PROFILE) {
+      this.getUser();
+    } else {
+      this.getAllPosts();
+    }
+  }
+
   /**
    * gets users profile image url
    * @param user user of post
    */
   getAvatarUrl(user: User) {
-    if (user.picId) {
-      return this.imageService.getImage(user.picVersion, user.picId);
+    if (this.activatedRoute.snapshot.url[0].path === this.PATH_PROFILE) {
+      if (this.userData.picId) {
+        return this.imageService.getImage(this.userData.picVersion, this.userData.picId);
+      } else {
+        return this.imageService.getDefaultProfileImage();
+      }
     } else {
-      return this.imageService.getDefaultProfileImage();
+      if (user.picId) {
+        return this.imageService.getImage(user.picVersion, user.picId);
+      } else {
+        return this.imageService.getDefaultProfileImage();
+      }
     }
   }
 
@@ -180,6 +202,20 @@ export class PostsComponent implements OnInit {
         this.posts = posts;
       });
     }
+  }
+
+  /**
+   * gets user and populates their posts
+   */
+  private getUser() {
+    this.userService.getUserByUsername(this.username).subscribe((user: User) => {
+      this.posts = [];
+      this.userData = user;
+      this.posts = user.posts.map(post => post.postId as Post);
+      this.posts.sort((current, next) => {
+        return +new Date(next.createdAt) - +new Date(current.createdAt);
+      });
+    });
   }
 
   /**
