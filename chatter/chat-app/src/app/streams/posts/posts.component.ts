@@ -40,9 +40,11 @@ export class PostsComponent implements OnInit {
     });
 
     this.getAllPosts();
-    this.postService.receiveNewPostSocket().subscribe(() => {
-      this.getAllPosts();
-    });
+    // this.postService.receiveNewPostSocket().subscribe(() => {
+    //   setTimeout(() => {
+    //     this.getAllPosts();
+    //   }, 500);
+    // });
   }
 
   /**
@@ -79,7 +81,30 @@ export class PostsComponent implements OnInit {
    */
   like(post: Post) {
     this.postService.addLike(post).subscribe((postId: string) => {
-      this.postService.emitNewPostSocket();
+      let userLiked = false;
+      post.likes.forEach(like => {
+        if (like.username === this.payload.username) {
+          userLiked = true;
+        }
+      });
+      let userDisliked = false;
+      post.dislikes.forEach(dislike => {
+        if (dislike.username === this.payload.username) {
+          userDisliked = true;
+        }
+      });
+
+      if (!userLiked) {
+        post.likes.push({
+          _id: '0',
+          username: this.payload.username
+        });
+        post.dislikes = post.dislikes.filter((dislike) => dislike.username !== this.payload.username);
+        post.totalLikes += 1;
+        if (post.totalDislikes > 0 && userDisliked) {
+          post.totalDislikes -= 1;
+        }
+      }
     }, (err: HttpErrorResponse) => {
       this.displayError(err.error.message);
     });
@@ -91,7 +116,30 @@ export class PostsComponent implements OnInit {
    */
   dislike(post: Post) {
     this.postService.addDislike(post).subscribe((postId: string) => {
-      this.postService.emitNewPostSocket();
+      let userLiked = false;
+      post.likes.forEach(like => {
+        if (like.username === this.payload.username) {
+          userLiked = true;
+        }
+      });
+      let userDisliked = false;
+      post.dislikes.forEach(dislike => {
+        if (dislike.username === this.payload.username) {
+          userDisliked = true;
+        }
+      });
+
+      if (!userDisliked) {
+        post.dislikes.push({
+          _id: '0',
+          username: this.payload.username
+        });
+        post.likes = post.likes.filter((like) => like.username !== this.payload.username);
+        post.totalDislikes += 1;
+        if (post.totalLikes > 0 && userLiked) {
+          post.totalLikes -= 1;
+        }
+      }
     }, (err: HttpErrorResponse) => {
       this.displayError(err.error.message);
     });

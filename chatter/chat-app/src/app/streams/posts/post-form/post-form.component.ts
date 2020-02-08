@@ -8,6 +8,8 @@ import { ImageService } from '../../services/image.service';
 import { Subject, Observable, Observer } from 'rxjs';
 import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
 import { environment } from 'src/environments/environment';
+import { PayloadData } from 'src/app/shared/interfaces/jwt-payload.interface';
+import { TokenService } from 'src/app/shared/services/token.service';
 
 @Component({
   selector: 'app-post-form',
@@ -21,6 +23,7 @@ export class PostFormComponent implements OnInit {
   postForm: FormGroup;
   @Input() isMobile: boolean;
 
+  loggedInUser: PayloadData;
   inputValue = '';
   submitting = false;
   isLoading = false;
@@ -32,6 +35,7 @@ export class PostFormComponent implements OnInit {
     private postService: PostService,
     private imageService: ImageService,
     private notification: NzNotificationService,
+    private tokenService: TokenService,
   ) { }
 
   ngOnInit() {
@@ -41,6 +45,8 @@ export class PostFormComponent implements OnInit {
       picVersion: [''],
       picId: [''],
     });
+
+    this.loggedInUser = this.tokenService.getPayload();
   }
 
   // TODO:: add and retrieve tags for posts
@@ -72,8 +78,12 @@ export class PostFormComponent implements OnInit {
   addPost() {
     this.postService.addPost(this.postForm.value).subscribe((data: Post) => {
       this.postForm.reset();
-      this.postService.emitNewPostSocket();
       this.isLoading = false;
+
+      if (data.username === this.loggedInUser.username) {
+        window.location.reload();
+        // this.postService.emitNewPostSocket();
+      }
     }, (err: HttpErrorResponse) => {
       this.displayError(err.error.message);
       this.isLoading = false;
