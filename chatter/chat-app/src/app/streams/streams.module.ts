@@ -16,7 +16,6 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { TrendingComponent } from './trending/trending.component';
 import { UserService } from './services/user.service';
 import { UploadImageModalComponent } from './profile/upload-image-modal/upload-image-modal.component';
-import { FileUploadModule } from 'ng2-file-upload';
 import { ImageService } from './services/image.service';
 
 @NgModule({
@@ -37,7 +36,6 @@ import { ImageService } from './services/image.service';
     CommonModule,
     SharedModule,
     StreamsRoutingModule,
-    FileUploadModule,
   ],
   exports: [StreamsComponent],
   providers: [PostService, UserService, ImageService]

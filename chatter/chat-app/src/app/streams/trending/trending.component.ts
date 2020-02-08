@@ -52,10 +52,21 @@ export class TrendingComponent implements OnInit {
    */
   getAvatarUrl(user: User) {
     if (user.picId) {
-      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+      return this.imageService.getImage(user.picVersion, user.picId);
     } else {
       return this.imageService.getDefaultProfileImage();
     }
+  }
+
+  /**
+   * gets post image
+   * @param post post contents
+   */
+  getPostImage(post: Post): string {
+    if (post.picId) {
+      return this.imageService.getImage(post.picVersion, post.picId);
+    }
+    return '';
   }
 
   /**
@@ -111,9 +122,17 @@ export class TrendingComponent implements OnInit {
    * gets all posts
    */
   private getTrendingPosts() {
-    this.postService.getTrendingPosts().subscribe(posts => {
-      this.posts = posts;
-    });
+    if (this.isMobile) {
+      setTimeout(() => {
+        this.postService.getTrendingPosts().subscribe(posts => {
+          this.posts = posts;
+        });
+      }, 500);
+    } else {
+      this.postService.getTrendingPosts().subscribe(posts => {
+        this.posts = posts;
+      });
+    }
   }
 
   /**

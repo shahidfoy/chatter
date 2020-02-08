@@ -12,6 +12,7 @@ import { ChatModule } from './chat/chat.module';
 import { ChatController } from './chat/chat.controller';
 import { ImagesModule } from './images/images.module';
 import { ImagesController } from './images/images.controller';
+import { AuthController } from './users/auth/auth.controller';
 
 @Module({
   imports: [
@@ -30,6 +31,6 @@ import { ImagesController } from './images/images.controller';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(GetUserMiddleware)
-      .forRoutes(PostsController, UsersController, ChatController, ImagesController);
+      .forRoutes(AuthController, PostsController, UsersController, ChatController, ImagesController);
   }
 }

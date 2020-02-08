@@ -4,11 +4,37 @@
     <app-header [isMobile]="isMobile" [payload]="payload"></app-header>
   </nz-header>
 
-  <nz-layout>
-    <nz-content>
-      <router-outlet></router-outlet>
-    </nz-content>
+  <nz-layout #desktopLayout
+    *ngIf="!isMobile; else mobileLayout">
+    <nz-sider
+      nzCollapsible
+      [(nzCollapsed)]="isCollapsed"
+      [nzBreakpoint]="'lg'"
+      [nzCollapsedWidth]="0"
+      [nzZeroTrigger]="zeroTrigger">
+      <app-side-nav></app-side-nav>
+    </nz-sider>
+
+    <nz-layout>
+      <nz-content>
+        <router-outlet></router-outlet>
+      </nz-content>
+    </nz-layout>
   </nz-layout>
+
+  <ng-template #mobileLayout>
+    <nz-layout>
+      <nz-content>
+        <router-outlet></router-outlet>
+      </nz-content>
+    </nz-layout>
+  </ng-template>
 
   <app-footer [isCollapsed]="!isCollapsed" [isMobile]="isMobile"></app-footer>
 </nz-layout>
+
+
+<!-- side-nav hamberger bar -->
+<ng-template #zeroTrigger>
+  <i nz-icon nzType="menu-fold" nzTheme="outline"></i>
+</ng-template>

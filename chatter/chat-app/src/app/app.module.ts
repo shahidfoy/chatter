@@ -23,7 +23,7 @@ const socketConfig: SocketIoConfig = { url: `${environment.BASEURL}`, options: {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

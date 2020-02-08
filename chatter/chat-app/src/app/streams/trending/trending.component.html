@@ -1,7 +1,11 @@
 <nz-content>
   <div class="posts">
 
-    <div class="inner-content" *ngFor="let post of posts" [ngClass]="{'mobile-content': isMobile}">
+    <ngx-masonry>
+      <div ngxMasonryItem
+      class="inner-content"
+      *ngFor="let post of posts"
+      [ngClass]="{'mobile-content': isMobile}">
         <div class="content">
 
             <nz-comment [nzAuthor]="post.username" [nzDatetime]="timeFromNow(post.createdAt)">
@@ -17,7 +21,7 @@
             <nz-comment>
               <nz-comment-content>
                 <p class="post">{{ post.post }}</p>
-                <!-- <img style="padding-bottom: 8px; width: 80%;" src="../../../assets/logo6.png"/> -->
+                <img style="padding-bottom: 8px;" [src]="getPostImage(post)"/>
                 <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag>
               </nz-comment-content>
               <nz-comment-action>
@@ -54,6 +58,7 @@
             </nz-comment>
         </div>
       </div>
+    </ngx-masonry>
 
   </div>
 </nz-content>

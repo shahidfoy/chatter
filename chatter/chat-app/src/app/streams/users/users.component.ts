@@ -43,7 +43,7 @@ export class UsersComponent implements OnInit {
    */
   getAvatarUrl(user: User) {
     if (user.picId) {
-      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+      return this.imageService.getImage(user.picVersion, user.picId);
     } else {
       return this.imageService.getDefaultProfileImage();
     }

@@ -67,6 +67,8 @@ export class MessageComponent implements OnInit, AfterViewChecked {
         this.typing = false;
       }
     });
+
+    this.scrollToBottom();
   }
 
   ngAfterViewChecked() {
@@ -107,7 +109,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
    */
   getUserAvatar(user: any): string {
     if (user.picId) {
-      return this.imageService.getUserProfileImage(user.picVersion, user.picId);
+      return this.imageService.getImage(user.picVersion, user.picId);
     } else {
       return this.imageService.getDefaultProfileImage();
     }
@@ -128,7 +130,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
    */
   private scrollToBottom(): void {
     try {
-        this.autoScrollContainer.nativeElement.scrollTop = this.autoScrollContainer.nativeElement.scrollHeight;
+      this.autoScrollContainer.nativeElement.scrollTop = this.autoScrollContainer.nativeElement.scrollHeight;
     } catch (err) {}
   }
 

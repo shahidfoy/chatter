@@ -1,14 +1,18 @@
 .message {
   overflow: scroll;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  // justify-content: space-between;
   height: 100%;
 }
 
 .message-header {
   z-index: 1000;
+  display: flex;
+  flex-direction: row;
   position: sticky;
   top: 0;
-  display: flex;
   padding-top: 8px;
   background: #505050;
 }
@@ -19,17 +23,16 @@
 }
 
 .message-footer {
-  position: fixed;
-  bottom: 0px;
-  padding: 8px;
-  width: 100%;
-  background: #505050;
-}
-
-.mobile-message-footer {
+  display: flex;
+  flex-direction: row-reverse;
+  flex: 1;
   position: sticky;
   bottom: 0;
   padding: 8px;
-  width: 100%;
   background: #505050;
+}
+
+.message-footer-form {
+  width: 100%;
+  align-self: flex-end;
 }

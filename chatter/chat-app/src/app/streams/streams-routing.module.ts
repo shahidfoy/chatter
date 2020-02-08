@@ -10,6 +10,7 @@ import { FollowersComponent } from './users/followers/followers.component';
 import { FollowingComponent } from './users/following/following.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { TrendingComponent } from './trending/trending.component';
+import { ChangePasswordModalComponent } from '../shared/change-password/change-password-modal.component';
 
 const routes: Routes = [
   {
@@ -27,8 +28,9 @@ const routes: Routes = [
       { path: 'followers/:username', component: FollowersComponent },
       { path: 'following', component: FollowingComponent },
       { path: 'following/:username', component: FollowingComponent },
-      { path: 'notifications', component: NotificationsComponent},
-      { path: 'users', component: UsersComponent  },
+      { path: 'notifications', component: NotificationsComponent },
+      { path: 'users', component: UsersComponent },
+      { path: 'change-password', component: ChangePasswordModalComponent }
     ]
   },
   { path: '**', redirectTo: '/404' },

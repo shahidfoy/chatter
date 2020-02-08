@@ -3,6 +3,7 @@ import { PayloadData } from '../interfaces/jwt-payload.interface';
 import { User } from '../interfaces/user.interface';
 import { UserService } from 'src/app/streams/services/user.service';
 import { ImageService } from 'src/app/streams/services/image.service';
+import { ApplicationStateService } from '../services/application-state.service';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private userService: UserService,
     private imageService: ImageService,
+    private applicationStatusService: ApplicationStateService,
   ) { }
 
   ngOnInit() {
@@ -33,6 +35,10 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  closeSideNav() {
+    this.applicationStatusService.isCollapsed.next(true);
+  }
+
   /**
    * gets user by id and sets the users profile image
    */
@@ -41,7 +47,7 @@ export class HeaderComponent implements OnInit {
       this.user = user;
 
       if (user.picId) {
-        this.avatarUrl = this.imageService.getUserProfileImage(user.picVersion, user.picId);
+        this.avatarUrl = this.imageService.getImage(user.picVersion, user.picId);
       } else {
         this.avatarUrl = this.imageService.getDefaultProfileImage();
       }

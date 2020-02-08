@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RouterModule } from '@angular/router';
@@ -10,7 +10,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TokenService } from './services/token.service';
 import { ApplicationStateService } from './services/application-state.service';
 import { SideNavComponent } from './side-nav/side-nav.component';
-
+import { ChangePasswordModalComponent } from './change-password/change-password-modal.component';
+import { GenericErrorHandler } from './services/generic-error.handler';
+import { NgxMasonryModule } from 'ngx-masonry';
 
 
 @NgModule({
@@ -20,6 +22,7 @@ import { SideNavComponent } from './side-nav/side-nav.component';
     FooterComponent,
     ActionBarComponent,
     SideNavComponent,
+    ChangePasswordModalComponent,
   ],
   imports: [
     RouterModule,
@@ -27,20 +30,24 @@ import { SideNavComponent } from './side-nav/side-nav.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxMasonryModule,
   ],
   exports: [
     NgZorroAntdModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxMasonryModule,
     HeaderComponent,
     FooterComponent,
     ActionBarComponent,
     SideNavComponent,
+    ChangePasswordModalComponent,
   ],
   providers: [
     TokenService,
     ApplicationStateService,
+    { provide: ErrorHandler, useClass: GenericErrorHandler }
   ]
 })
 export class SharedModule { }

@@ -1,5 +1,5 @@
 <div class="container">
-  <form [formGroup]="postForm" novalidate (ngSubmit)="submitPost()" class="full-width">
+  <form [formGroup]="postForm" novalidate class="full-width">
     <nz-comment>
       <nz-comment-content>
         <nz-form-item>
@@ -11,13 +11,20 @@
         <nz-form-item>
           <button
             nz-button
+            (click)="submitPost()"
             [nzType]="'primary'"
-            class="float-right"
             [nzLoading]="isLoading">
             Post
           </button>
-          <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" class="float-right">
-            <button nz-button><i nz-icon nzType="upload"></i></button>
+          <nz-upload
+            [nzAction]="FILE_UPLOAD_URL"
+            [nzBeforeUpload]="beforeUpload"
+            nzMultiple
+            [nzLimit]="1"
+            (nzChange)="handlePostImageChange($event)">
+            <button nz-button [disabled]="imageCount >= 1">
+              <i nz-icon nzType="upload"></i>
+            </button>
           </nz-upload>
         </nz-form-item>
       </nz-comment-content>

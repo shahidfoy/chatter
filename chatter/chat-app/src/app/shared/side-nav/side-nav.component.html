@@ -4,42 +4,39 @@
   nz-menu
   nzTheme="dark"
   nzMode="inline">
-  <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
+  <li (click)="closeSideNav()" nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
     <a [routerLink]="['/streams/posts']">
       <i nz-icon nzType="wifi"></i>
       <span>Posts</span>
     </a>
   </li>
-  <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
+  <li (click)="closeSideNav()" nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
     <a [routerLink]="['/streams/trending']">
       <i nz-icon nzType="shake"></i>
       <span>Trending</span>
     </a>
   </li>
+
   <!-- <li nz-menu-item>
     <i nz-icon nzType="appstore"></i>
     <span>Groups</span>
-  </li>
-  <li nz-menu-item>
-    <i nz-icon nzType="camera"></i>
-    <span>Photos</span>
   </li> -->
 
   <li nz-submenu nzTitle="Users" nzIcon="team">
     <ul>
-      <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
+      <li (click)="closeSideNav()" nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
         <a [routerLink]="['/streams/followers']">
           <i class="fas fa-users"></i>
           <span> Followers</span>
         </a>
       </li>
-      <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
+      <li (click)="closeSideNav()" nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
           <a [routerLink]="['/streams/following']">
             <i class="fas fa-address-book"></i>
             <span> Following</span>
           </a>
         </li>
-        <li nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
+        <li (click)="closeSideNav()" nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
           <a [routerLink]="['/streams/users']">
             <i nz-icon nzType="search"></i>
             <span>Search</span>
@@ -49,6 +46,12 @@
   </li>
   <li nz-submenu nzTitle="Settings" nzIcon="setting">
     <ul>
+      <li (click)="closeSideNav()"
+        nz-menu-item
+        (click)="displayChangePasswordModal()">
+        <i nz-icon [nzType]="'lock'"></i>
+        <span>Change Password</span>
+      </li>
       <li nz-menu-item (click)="logout()">
         <i nz-icon [nzType]="'logout'"></i>
         <span>Log out</span>
@@ -56,3 +59,7 @@
     </ul>
   </li>
 </ul>
+
+<app-change-password-modal
+  [isVisible]="isChangePasswordModalVisible"
+  (closeModal)="isChangePasswordModalVisible = $event"></app-change-password-modal>

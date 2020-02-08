@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
       // localStorage.setItem('token', data.token);
       setTimeout(() => {
         this.validateForm.reset();
-        this.router.navigate(['streams']);
+        this.router.navigate(['streams']).catch(err => console.log('ERROR', err));
       }, 2000);
     }, err => {
       this.displayError(err.error.message);

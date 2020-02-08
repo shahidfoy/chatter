@@ -16,6 +16,11 @@ export class ImagesService {
         @InjectModel('User') private readonly userModel: Model<User>,
     ) {}
 
+    /**
+     * upload profile image
+     * @param req custom request
+     * @param image user profile image
+     */
     async uploadProfileImage(req: CustomRequest, image: string): Promise<CloudinaryResponse> {
         if (image) {
 
@@ -27,7 +32,6 @@ export class ImagesService {
             return new Promise((resolve, reject) => {
 
                 cloudinary.uploader.upload(image, async (error: Cloudinary.ErrorCallBack, result: CloudinaryResponse) => {
-
                     if (error) {
                         throw new InternalServerErrorException({ message: `Error retrieving profile image ${error}` });
                     }
@@ -44,7 +48,23 @@ export class ImagesService {
                     });
                 });
             });
+        }
+    }
 
+    /**
+     * uploads post image
+     * @param image post image
+     */
+    async uploadPostImage(image: string): Promise<CloudinaryResponse> {
+        if (image) {
+            return new Promise((resolve, reject) => {
+                cloudinary.uploader.upload(image, async (error: Cloudinary.ErrorCallBack, result: CloudinaryResponse) => {
+                    if (error) {
+                        throw new InternalServerErrorException({ message: `Error retrieving profile image ${error}` });
+                    }
+                    resolve(result);
+                });
+            });
         }
     }
 }

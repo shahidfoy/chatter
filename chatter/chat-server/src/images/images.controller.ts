@@ -7,22 +7,18 @@ import { CloudinaryResponse } from './interfaces/cloudinary-response';
 export class ImagesController {
     constructor(private imagesService: ImagesService) {}
 
-    /**
-     * gets users profile image by username
-     * @param username username
-     */
-    @Get(':username')
-    async getUserProfileImage(
-        @Body('username') username: string,
-    ): Promise<any> {
-        return undefined;
-    }
-
     @Post('upload-profile-image')
     async uploadProfileImage(
         @Req() req: CustomRequest,
         @Body('image') image: string,
     ): Promise<CloudinaryResponse> {
         return this.imagesService.uploadProfileImage(req, image);
+    }
+
+    @Post('upload-post-image')
+    async uploadPostImage(
+        @Body('postImage') postImage: string,
+    ): Promise<CloudinaryResponse> {
+        return this.imagesService.uploadPostImage(postImage);
     }
 }

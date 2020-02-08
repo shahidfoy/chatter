@@ -13,6 +13,8 @@ export interface Post {
   totalDislikes: number;
   dislikes: UsernameObj[];
   createdAt: Date;
+  picVersion: string;
+  picId: string;
 }
 
 export interface UserComment {
