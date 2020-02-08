@@ -38,12 +38,12 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(this.validateForm.value).subscribe((data: TokenResponse) => {
       this.isLoading = true;
       this.tokenService.setToken(data.token);
-      // localStorage.setItem('token', data.token);
       setTimeout(() => {
         this.validateForm.reset();
-        this.router.navigate(['streams']).catch(err => console.log('ERROR', err));
-      }, 2000);
+        this.router.navigate(['streams']).catch(err => this.displayError(err));
+      }, 3000);
     }, err => {
+      console.log('error');
       this.displayError(err.error.message);
     });
   }

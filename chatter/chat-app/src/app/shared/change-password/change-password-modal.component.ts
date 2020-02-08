@@ -62,8 +62,6 @@ export class ChangePasswordModalComponent implements OnInit {
     const updatePassword = this.validate(this.validateForm);
     if (updatePassword) {
       this.authService.changePassword(this.validateForm.value).subscribe((response: MessageResponse) => {
-        console.log('changing password');
-        console.log(response);
         this.notification.create('success', 'Password Updated', response.message);
         this.handleModalOk();
       });

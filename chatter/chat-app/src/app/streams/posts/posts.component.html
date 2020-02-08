@@ -1,7 +1,8 @@
 <app-post-form [isMobile]="isMobile"></app-post-form>
 
 <nz-content class="posts">
-    <ngx-masonry>
+    <ngx-masonry
+      [options]="{ transitionDuration: '0.0s' }">
       <div ngxMasonryItem
         class="inner-content"
         *ngFor="let post of posts"
