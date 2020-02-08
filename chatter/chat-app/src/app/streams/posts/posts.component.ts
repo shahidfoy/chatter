@@ -192,11 +192,11 @@ export class PostsComponent implements OnInit, AfterViewInit {
    */
   private getAllPosts() {
     if (this.isMobile) {
-      setTimeout(() => {
         this.postService.getPosts().subscribe(posts => {
-          this.posts = posts;
+          setTimeout(() => {
+            this.posts = posts;
+          }, 500);
         });
-      }, 500);
     } else {
       this.postService.getPosts().subscribe(posts => {
         this.posts = posts;
