@@ -26,6 +26,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
   username: string;
   posts: Post[];
   userData: User;
+  updateMasonry = false;
 
   constructor(
     private tokenService: TokenService,
@@ -54,8 +55,13 @@ export class PostsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    console.log('actived url', this.activatedRoute.snapshot.url);
     if (this.activatedRoute.snapshot.url[0].path === this.PATH_PROFILE) {
-      this.getUser();
+      if (this.activatedRoute.snapshot.url[1]) {
+        this.getUser(this.activatedRoute.snapshot.url[1].path);
+      } else {
+        this.getUser(this.username);
+      }
     } else {
       this.getAllPosts();
     }
@@ -202,19 +208,26 @@ export class PostsComponent implements OnInit, AfterViewInit {
         this.posts = posts;
       });
     }
+
+    setTimeout(() => {
+      this.updateMasonry = true;
+    }, 500);
   }
 
   /**
    * gets user and populates their posts
    */
-  private getUser() {
-    this.userService.getUserByUsername(this.username).subscribe((user: User) => {
+  private getUser(username: string) {
+    this.userService.getUserByUsername(username).subscribe((user: User) => {
       this.posts = [];
       this.userData = user;
       this.posts = user.posts.map(post => post.postId as Post);
       this.posts.sort((current, next) => {
         return +new Date(next.createdAt) - +new Date(current.createdAt);
       });
+      setTimeout(() => {
+        this.updateMasonry = true;
+      }, 500);
     });
   }
 
