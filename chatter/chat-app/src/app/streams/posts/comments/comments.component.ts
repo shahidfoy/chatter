@@ -6,6 +6,7 @@ import { Post, UserComment } from '../../interfaces/post.interface';
 import { timeFromNow } from 'src/app/shared/shared.utils';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { ImageService } from '../../services/image.service';
+import { ApplicationStateService } from 'src/app/shared/services/application-state.service';
 
 @Component({
   selector: 'app-comments',
@@ -14,6 +15,7 @@ import { ImageService } from '../../services/image.service';
 })
 export class CommentsComponent implements OnInit {
 
+  isMobile: boolean;
   isLoading = false;
   commentForm: FormGroup;
   postId: string;
@@ -24,10 +26,15 @@ export class CommentsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private postService: PostService,
     private imageService: ImageService,
-    private activatedRoute: ActivatedRoute
-    ) { }
+    private activatedRoute: ActivatedRoute,
+    private applicationStateService: ApplicationStateService,
+  ) { }
 
   ngOnInit() {
+    this.applicationStateService.isMobile.subscribe(isMobile => {
+      this.isMobile = isMobile;
+    });
+
     this.postId = this.activatedRoute.snapshot.paramMap.get('id');
     this.commentForm = this.formBuilder.group({
       comment: ['', Validators.required]

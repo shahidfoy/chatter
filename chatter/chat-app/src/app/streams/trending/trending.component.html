@@ -1,11 +1,10 @@
-<nz-content>
-  <div class="posts">
+<nz-content class="posts">
 
     <ngx-masonry>
       <div ngxMasonryItem
-      class="inner-content"
-      *ngFor="let post of posts"
-      [ngClass]="{'mobile-content': isMobile}">
+        class="inner-content"
+        *ngFor="let post of posts"
+        [ngClass]="{'mobile-content': isMobile}">
         <div class="content">
 
             <nz-comment [nzAuthor]="post.username" [nzDatetime]="timeFromNow(post.createdAt)">
@@ -60,6 +59,5 @@
       </div>
     </ngx-masonry>
 
-  </div>
 </nz-content>
 
