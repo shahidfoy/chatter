@@ -3,6 +3,7 @@ import { PayloadData } from '../interfaces/jwt-payload.interface';
 import { User } from '../interfaces/user.interface';
 import { UserService } from 'src/app/streams/services/user.service';
 import { ImageService } from 'src/app/streams/services/image.service';
+import { ApplicationStateService } from '../services/application-state.service';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private userService: UserService,
     private imageService: ImageService,
+    private applicationStatusService: ApplicationStateService,
   ) { }
 
   ngOnInit() {
@@ -31,6 +33,10 @@ export class HeaderComponent implements OnInit {
     this.imageService.profileImageSubject.subscribe((imageUrl: string) => {
       this.avatarUrl = imageUrl;
     });
+  }
+
+  closeSideNav() {
+    this.applicationStatusService.isCollapsed.next(true);
   }
 
   /**

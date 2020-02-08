@@ -3,6 +3,8 @@ import { TokenService } from '../services/token.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { PayloadData } from '../interfaces/jwt-payload.interface';
+import { Subject } from 'rxjs';
+import { ApplicationStateService } from '../services/application-state.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -18,9 +20,15 @@ export class SideNavComponent implements OnInit {
   constructor(
     private tokenService: TokenService,
     private authService: AuthService,
+    private applicationState: ApplicationStateService,
     private router: Router) { }
 
   ngOnInit() {
+  }
+
+  closeSideNav() {
+    this.isCollapsed = true;
+    this.applicationState.isCollapsed.next(this.isCollapsed);
   }
 
   displayChangePasswordModal() {

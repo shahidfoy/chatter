@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Injectable({
@@ -7,6 +7,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 })
 export class ApplicationStateService {
   public isMobile: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public isCollapsed = new Subject<boolean>();
 
   constructor(private breakpointObserver: BreakpointObserver) {
     this.onResize();

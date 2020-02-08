@@ -122,9 +122,17 @@ export class TrendingComponent implements OnInit {
    * gets all posts
    */
   private getTrendingPosts() {
-    this.postService.getTrendingPosts().subscribe(posts => {
-      this.posts = posts;
-    });
+    if (this.isMobile) {
+      setTimeout(() => {
+        this.postService.getTrendingPosts().subscribe(posts => {
+          this.posts = posts;
+        });
+      }, 500);
+    } else {
+      this.postService.getTrendingPosts().subscribe(posts => {
+        this.posts = posts;
+      });
+    }
   }
 
   /**

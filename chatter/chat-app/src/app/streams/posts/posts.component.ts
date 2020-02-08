@@ -121,9 +121,17 @@ export class PostsComponent implements OnInit {
    * gets all posts
    */
   private getAllPosts() {
-    this.postService.getPosts().subscribe(posts => {
-      this.posts = posts;
-    });
+    if (this.isMobile) {
+      setTimeout(() => {
+        this.postService.getPosts().subscribe(posts => {
+          this.posts = posts;
+        });
+      }, 500);
+    } else {
+      this.postService.getPosts().subscribe(posts => {
+        this.posts = posts;
+      });
+    }
   }
 
   /**

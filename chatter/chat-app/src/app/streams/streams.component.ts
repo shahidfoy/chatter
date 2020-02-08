@@ -24,5 +24,11 @@ export class StreamsComponent implements OnInit {
     this.applicationStateService.isMobile.subscribe(isMobile => {
       this.isMobile = isMobile;
     });
+
+    this.applicationStateService.isCollapsed.subscribe((result: boolean) => {
+      if (this.isMobile) {
+        this.isCollapsed = result;
+      }
+    });
   }
 }
