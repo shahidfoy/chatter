@@ -1,12 +1,12 @@
 import { Injectable, BadRequestException, ConflictException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { User } from '../models/user.model';
+import { User } from '../users/models/user.model';
 import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import { dbConfig } from '../../config/db.config';
+import { dbConfig } from '../config/db.config';
 import { InjectModel } from '@nestjs/mongoose';
-import { Token } from '../../interfaces/response-token.interface';
+import { Token } from '../interfaces/response-token.interface';
 import { MessageResponse } from 'src/interfaces/message-response.interface';
 
 @Injectable()

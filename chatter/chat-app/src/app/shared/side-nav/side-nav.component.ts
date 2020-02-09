@@ -26,15 +26,25 @@ export class SideNavComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * emits side nav closing event
+   */
   closeSideNav() {
     this.isCollapsed = true;
     this.applicationState.isCollapsed.next(this.isCollapsed);
   }
 
+  /**
+   * displays change password modal
+   */
   displayChangePasswordModal() {
     this.isChangePasswordModalVisible = true;
   }
 
+  /**
+   * logs user out and deletes their token
+   * navigates to base url
+   */
   logout() {
     this.payload = this.tokenService.getPayload();
     this.authService.logoutUser(this.payload._id).subscribe();

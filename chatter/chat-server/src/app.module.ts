@@ -12,7 +12,8 @@ import { ChatModule } from './chat/chat.module';
 import { ChatController } from './chat/chat.controller';
 import { ImagesModule } from './images/images.module';
 import { ImagesController } from './images/images.controller';
-import { AuthController } from './users/auth/auth.controller';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AuthController } from './users/auth/auth.controller';
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }),
+    AuthModule,
     UsersModule,
     PostsModule,
     ChatModule,

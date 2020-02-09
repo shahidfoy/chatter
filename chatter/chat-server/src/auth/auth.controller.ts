@@ -1,5 +1,5 @@
 import { Controller, Post, Body, InternalServerErrorException, Req, Get } from '@nestjs/common';
-import { Token } from '../../interfaces/response-token.interface';
+import { Token } from '../interfaces/response-token.interface';
 import { AuthService } from './auth.service';
 import { CustomRequest } from 'src/interfaces/custom-request.interface';
 import { MessageResponse } from 'src/interfaces/message-response.interface';
