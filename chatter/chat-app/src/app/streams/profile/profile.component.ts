@@ -57,6 +57,9 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.getUser();
+    this.userService.receiveNewFollowSocket().subscribe(() => {
+      this.getUser();
+    });
   }
 
   /**

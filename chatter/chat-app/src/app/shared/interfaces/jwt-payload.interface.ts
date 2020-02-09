@@ -6,6 +6,7 @@ export interface JwtPayload {
 
 export interface PayloadData extends User {
   _id: string;
-  exp: number;
-  iat: number;
+  username: string;
+  picVersion: string;
+  picId: string;
 }

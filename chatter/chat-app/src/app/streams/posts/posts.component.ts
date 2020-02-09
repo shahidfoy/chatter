@@ -27,6 +27,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
   posts: Post[];
   userData: User;
   updateMasonry = false;
+  isLoggedInUser = false;
 
   constructor(
     private tokenService: TokenService,
@@ -45,25 +46,14 @@ export class PostsComponent implements OnInit, AfterViewInit {
     this.applicationStateService.isMobile.subscribe(isMobile => {
       this.isMobile = isMobile;
     });
-
-    // this.getAllPosts();
-    // this.postService.receiveNewPostSocket().subscribe(() => {
-    //   setTimeout(() => {
-    //     this.getAllPosts();
-    //   }, 500);
-    // });
   }
 
   ngAfterViewInit() {
-    if (this.activatedRoute.snapshot.url[0].path === this.PATH_PROFILE) {
-      if (this.activatedRoute.snapshot.url[1]) {
-        this.getUser(this.activatedRoute.snapshot.url[1].path);
-      } else {
-        this.getUser(this.username);
-      }
-    } else {
-      this.getAllPosts();
-    }
+    this.setUpPosts();
+
+    this.imageService.profileImageSubject.subscribe(() => {
+      this.setUpPosts();
+    });
   }
 
   /**
@@ -71,19 +61,20 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * @param user user of post
    */
   getAvatarUrl(user: User) {
-    if (this.activatedRoute.snapshot.url[0].path === this.PATH_PROFILE) {
-      if (this.userData.picId) {
-        return this.imageService.getImage(this.userData.picVersion, this.userData.picId);
-      } else {
-        return this.imageService.getDefaultProfileImage();
-      }
+    const snapshotRootPath = this.activatedRoute.snapshot.url[0].path;
+    if (snapshotRootPath === this.PATH_PROFILE) {
+      return this.setImage(this.userData.picVersion, this.userData.picId);
     } else {
-      if (user.picId) {
-        return this.imageService.getImage(user.picVersion, user.picId);
-      } else {
-        return this.imageService.getDefaultProfileImage();
-      }
+      return this.setImage(user.picVersion, user.picId);
     }
+  }
+
+  /**
+   * checkes to see if post belongs to logged in user
+   * @param username post's username
+   */
+  isloggedInUsersPost(username: string): boolean {
+    return this.payload.username === username ? true : false;
   }
 
   /**
@@ -193,6 +184,23 @@ export class PostsComponent implements OnInit, AfterViewInit {
   }
 
   /**
+   * sets up which posts will be displayed
+   * gets all posts or gets a users posts
+   */
+  setUpPosts() {
+    if (this.activatedRoute.snapshot.url[0].path === this.PATH_PROFILE) {
+      const pathUsername = this.activatedRoute.snapshot.url[1];
+      if (pathUsername) {
+        this.getUser(pathUsername.path);
+      } else {
+        this.getUser(this.username);
+      }
+    } else {
+      this.getAllPosts();
+    }
+  }
+
+  /**
    * gets all posts
    */
   private getAllPosts() {
@@ -210,7 +218,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       this.updateMasonry = true;
-    }, 500);
+    }, 1000);
   }
 
   /**
@@ -226,8 +234,21 @@ export class PostsComponent implements OnInit, AfterViewInit {
       });
       setTimeout(() => {
         this.updateMasonry = true;
-      }, 500);
+      }, 1000);
     });
+  }
+
+  /**
+   * sets users image
+   * @param picVersion user pic version
+   * @param picId user pic id
+   */
+  private setImage(picVersion: string, picId: string): string {
+    if (picId) {
+      return this.imageService.getImage(picVersion, picId);
+    } else {
+      return this.imageService.getDefaultProfileImage();
+    }
   }
 
   /**

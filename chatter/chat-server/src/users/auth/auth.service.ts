@@ -106,7 +106,14 @@ export class AuthService {
                         }, {
                             onlineStatus: 'ONLINE',
                         });
-                        const token: string = jwt.sign({ data: user }, dbConfig.secret, {});
+                        const tokenData: any = {
+                            _id: user._id,
+                            username: user.username,
+                            picVersion: user.picVersion,
+                            picId: user.picId,
+                        };
+                        // const token: string = jwt.sign({ data: user }, dbConfig.secret, {});
+                        const token: string = jwt.sign({ data: tokenData }, dbConfig.secret, {});
                         resolve({ token });
                     }).catch(tokenError => {
                         reject({ message: `Error occured ${tokenError.message.message}` });

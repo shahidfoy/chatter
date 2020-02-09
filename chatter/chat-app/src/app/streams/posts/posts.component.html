@@ -16,6 +16,7 @@
                 nzIcon="user"
                 [nzSrc]="getAvatarUrl(post.user)"
                 [nzSize]="'large'"></nz-avatar>
+
             </nz-comment>
 
             <nz-comment>
@@ -55,6 +56,9 @@
                     [theme]="checkUserInArray(post.comments, username) ? 'twotone' : 'outline'">
                   </i> comments {{ post.comments.length }}
                 </span>
+              </nz-comment-action>
+              <nz-comment-action>
+                <button *ngIf="isloggedInUsersPost(post.username)" class="float-right" nz-button [nzSize]="'small'" nzType="default">Edit</button>
               </nz-comment-action>
             </nz-comment>
         </div>
