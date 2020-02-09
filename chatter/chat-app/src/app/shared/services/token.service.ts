@@ -34,7 +34,6 @@ export class TokenService {
       payloadStr = token.split('.')[1]; // jwt payload
       this.payload = JSON.parse(window.atob(payloadStr));
     }
-    console.log('PAYLOAD', this.payload.data);
     return this.payload.data;
   }
 }
