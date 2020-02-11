@@ -17,6 +17,7 @@ import { TrendingComponent } from './trending/trending.component';
 import { UserService } from './services/user.service';
 import { UploadImageModalComponent } from './profile/upload-image-modal/upload-image-modal.component';
 import { ImageService } from './services/image.service';
+import { PostEditModalComponent } from './posts/post-edit-modal/post-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ImageService } from './services/image.service';
     FollowersComponent,
     NotificationsComponent,
     TrendingComponent,
-    UploadImageModalComponent
+    UploadImageModalComponent,
+    PostEditModalComponent
   ],
   imports: [
     CommonModule,

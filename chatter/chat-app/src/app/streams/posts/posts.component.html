@@ -54,10 +54,23 @@
                 </span>
               </nz-comment-action>
               <nz-comment-action>
-                <button *ngIf="isloggedInUsersPost(post.username)" class="float-right" nz-button [nzSize]="'small'" nzType="default">Edit</button>
+                <button
+                  *ngIf="isloggedInUsersPost(post.username)"
+                  (click)="openEditPostModal(post)"
+                  class="float-right"
+                  nz-button
+                  [nzSize]="'small'"
+                  nzType="default">Edit</button>
               </nz-comment-action>
             </nz-comment>
         </div>
       </div>
     </ngx-masonry>
 </nz-content>
+
+<!-- post edit modal -->
+<app-post-edit-modal
+  [isVisible]="isEditPostVisible"
+  [post]="editPost"
+  (newPostOutput)="updatePost($event)">
+</app-post-edit-modal>

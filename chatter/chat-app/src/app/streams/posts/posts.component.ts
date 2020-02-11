@@ -28,6 +28,8 @@ export class PostsComponent implements OnInit, AfterViewInit {
   userData: User;
   updateMasonry = false;
   isLoggedInUser = false;
+  editPost: Post;
+  isEditPostVisible = false;
 
   constructor(
     private tokenService: TokenService,
@@ -75,6 +77,15 @@ export class PostsComponent implements OnInit, AfterViewInit {
    */
   isloggedInUsersPost(username: string): boolean {
     return this.payload.username === username ? true : false;
+  }
+
+  openEditPostModal(post: Post) {
+    this.editPost = post;
+    this.isEditPostVisible = true;
+  }
+
+  updatePost() {
+    this.isEditPostVisible = false;
   }
 
   /**
