@@ -1,20 +1,6 @@
 <nz-content>
   <div>
-    <nz-comment
-      class="post-content"
-      [nzAuthor]="post?.username"
-      [nzDatetime]="timeFromNow(post?.createdAt)">
-      <nz-avatar
-        [routerLink]="['/streams/profile/', post?.username]"
-        nz-comment-avatar
-        nzIcon="user"
-        [nzSrc]="getUserAvatar(post?.user)"></nz-avatar>
-      <nz-comment-content>
-        <img class="img-width" ngClass="{ 'mobile-img-width' : isMobile }" [src]="getPostImage(post)">
-        <p>{{ post?.post }}</p>
-        <nz-tag *ngFor="let tag of post?.tags">{{tag}}</nz-tag>
-      </nz-comment-content>
-    </nz-comment>
+    <!-- TODO:: add total likes and dislikes -->
     <hr>
     <div class="container">
       <form class="full-width" [formGroup]="commentForm" (ngSubmit)="addNewComment()">

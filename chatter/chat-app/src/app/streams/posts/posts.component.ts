@@ -26,10 +26,12 @@ export class PostsComponent implements OnInit, AfterViewInit {
   username: string;
   posts: Post[];
   userData: User;
+  editPost: Post;
+
   updateMasonry = false;
   isLoggedInUser = false;
-  editPost: Post;
-  isEditPostVisible = false;
+  editUserPost = false;
+  isPostVisible = false;
 
   constructor(
     private tokenService: TokenService,
@@ -81,11 +83,13 @@ export class PostsComponent implements OnInit, AfterViewInit {
 
   openEditPostModal(post: Post) {
     this.editPost = post;
-    this.isEditPostVisible = true;
+    this.isPostVisible = true;
+    this.editUserPost = true;
   }
 
   updatePost() {
-    this.isEditPostVisible = false;
+    this.isPostVisible = false;
+    this.editUserPost = false;
   }
 
   /**
@@ -93,7 +97,9 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * @param post post comments
    */
   openComments(post: Post) {
-    this.router.navigate(['streams/post', post._id]);
+    // this.router.navigate(['streams/post', post._id]);
+    this.editPost = post;
+    this.isPostVisible = true;
   }
 
   /**

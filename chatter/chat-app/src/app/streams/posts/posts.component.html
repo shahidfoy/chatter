@@ -69,8 +69,9 @@
 </nz-content>
 
 <!-- post edit modal -->
-<app-post-edit-modal
-  [isVisible]="isEditPostVisible"
+<app-post-modal
+  [isVisible]="isPostVisible"
+  [editPostAction]="editUserPost"
   [post]="editPost"
   (newPostOutput)="updatePost($event)">
-</app-post-edit-modal>
+</app-post-modal>
