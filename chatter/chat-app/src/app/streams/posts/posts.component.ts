@@ -21,6 +21,8 @@ import { UserService } from '../services/user.service';
 export class PostsComponent implements OnInit, AfterViewInit {
 
   private readonly PATH_PROFILE = 'profile';
+  private readonly PATH_TRENDING = 'trending';
+
   isMobile: boolean;
   payload: PayloadData;
   username: string;
@@ -32,6 +34,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
   isLoggedInUser = false;
   editUserPost = false;
   isPostVisible = false;
+  isTrending = false;
 
   constructor(
     private tokenService: TokenService,
@@ -212,6 +215,8 @@ export class PostsComponent implements OnInit, AfterViewInit {
       } else {
         this.getUser(this.username);
       }
+    } else if (this.activatedRoute.snapshot.url[0].path === this.PATH_TRENDING) {
+      this.getTrendingPosts();
     } else {
       this.getAllPosts();
     }
@@ -253,6 +258,21 @@ export class PostsComponent implements OnInit, AfterViewInit {
         this.updateMasonry = true;
       }, 1000);
     });
+  }
+
+  private getTrendingPosts() {
+    this.isTrending = true;
+    if (this.isMobile) {
+      setTimeout(() => {
+        this.postService.getTrendingPosts().subscribe(posts => {
+          this.posts = posts;
+        });
+      }, 500);
+    } else {
+      this.postService.getTrendingPosts().subscribe(posts => {
+        this.posts = posts;
+      });
+    }
   }
 
   /**

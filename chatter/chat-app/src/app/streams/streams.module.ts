@@ -13,7 +13,6 @@ import { UsersComponent } from './users/users.component';
 import { FollowingComponent } from './users/following/following.component';
 import { FollowersComponent } from './users/followers/followers.component';
 import { NotificationsComponent } from './notifications/notifications.component';
-import { TrendingComponent } from './trending/trending.component';
 import { UserService } from './services/user.service';
 import { UploadImageModalComponent } from './profile/upload-image-modal/upload-image-modal.component';
 import { PostModalComponent } from './posts/post-modal/post-modal.component';
@@ -29,7 +28,6 @@ import { PostModalComponent } from './posts/post-modal/post-modal.component';
     FollowingComponent,
     FollowersComponent,
     NotificationsComponent,
-    TrendingComponent,
     UploadImageModalComponent,
     PostModalComponent
   ],
