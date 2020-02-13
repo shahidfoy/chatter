@@ -51,6 +51,12 @@ export class AuthController {
         this.authService.logoutUser(id);
     }
 
+    /**
+     * changes user's password
+     * @param req custom request
+     * @param oldPassword old password
+     * @param newPassword new password
+     */
     @Post('/change-password')
     async changePassword(
         @Req() req: CustomRequest,
