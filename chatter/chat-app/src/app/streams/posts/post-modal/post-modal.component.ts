@@ -1,10 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Post } from '../../interfaces/post.interface';
-import { ImageService } from '../../services/image.service';
+import { ImageService } from '../../../shared/services/image.service';
 import { PostService } from '../../services/post.service';
-import { UploadFile, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
+import { NzNotificationService } from 'ng-zorro-antd';
 import { Observable, Observer } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-post-modal',
@@ -13,20 +16,22 @@ import { environment } from 'src/environments/environment';
 })
 export class PostModalComponent implements OnInit, OnChanges {
 
-  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-post-image`;
+  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/edit-post-image`;
 
   @Input() isVisible: boolean;
   @Input() editPostAction: boolean;
   @Input() post: Post;
-  @Output() newPostOutput = new EventEmitter<any>();
+  @Output() newPostOutput = new EventEmitter<void>();
 
-  selectedTags: string[];
+  private readonly BACKSPACE: string = 'Backspace';
+
+  postForm: FormGroup;
   loading: boolean;
   postImage = '';
   imageCount = 0;
 
   constructor(
-    private msg: NzMessageService,
+    private fb: FormBuilder,
     private imageService: ImageService,
     private postService: PostService,
     private notification: NzNotificationService) { }
@@ -34,8 +39,47 @@ export class PostModalComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    this.selectedTags = this.post.tags;
+    this.postForm = this.fb.group({
+      postId: this.post._id,
+      post: [this.post.post, Validators.required],
+      tags: [this.post.tags],
+      picVersion: [this.post.picVersion],
+      picId: [this.post.picId],
+    });
     this.getPost();
+
+    if (this.post.picId) {
+      this.postImage = this.imageService.getImage(this.post.picVersion, this.post.picId);
+    } else {
+      this.postImage = '';
+    }
+  }
+
+  /**
+   * submits users post
+   * if image updated adds image to post form
+   */
+  submitPost() {
+    if (this.postImage !== '') {
+      this.imageService.editPostImage(this.post, this.postImage).subscribe((result: CloudinaryResponse) => {
+        this.postForm.controls.picVersion.setValue(result.version);
+        this.postForm.controls.picId.setValue(result.public_id);
+        this.updatePost();
+      });
+    } else {
+      this.updatePost();
+    }
+  }
+
+  /**
+   * updates post through post service
+   */
+  updatePost() {
+    this.postService.editPost(this.postForm.value).subscribe((data: Post) => {
+      window.location.reload();
+    }, (err: HttpErrorResponse) => {
+      this.displayError(err.error.message);
+    });
   }
 
   /**
@@ -43,6 +87,7 @@ export class PostModalComponent implements OnInit, OnChanges {
    * updates users profile image
    */
   handleModalOk() {
+    this.submitPost();
     this.isVisible = false;
     this.newPostOutput.emit();
   }
@@ -57,21 +102,14 @@ export class PostModalComponent implements OnInit, OnChanges {
   }
 
   /**
-   * gets post image
-   * @param post post contents
+   * gets keyboard event and updates post message
    */
-  getPostImage(post: Post): string {
-    if (post.picId) {
-      return this.imageService.getImage(post.picVersion, post.picId);
+  editPost(event: KeyboardEvent) {
+    if (event.key === this.BACKSPACE) {
+      this.post.post = this.post.post.substring(0, this.post.post.length - 1);
+    } else {
+      this.post.post += event.key;
     }
-    return '';
-  }
-
-  private getPost() {
-    this.postService.getPost(this.post._id).subscribe((post: Post) => {
-      this.post = post;
-      this.selectedTags = post.tags;
-    });
   }
 
   /**
@@ -135,6 +173,15 @@ export class PostModalComponent implements OnInit, OnChanges {
         this.notification.create('warning', 'Network error', 'unable to upload image');
         break;
     }
+  }
+
+  /**
+   * gets selected post
+   */
+  private getPost() {
+    this.postService.getPost(this.post._id).subscribe((post: Post) => {
+      this.post = post;
+    });
   }
 
   /**

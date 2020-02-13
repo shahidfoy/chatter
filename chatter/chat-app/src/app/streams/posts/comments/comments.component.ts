@@ -4,7 +4,7 @@ import { PostService } from '../../services/post.service';
 import { Post, UserComment } from '../../interfaces/post.interface';
 import { timeFromNow } from 'src/app/shared/shared.utils';
 import { User } from 'src/app/shared/interfaces/user.interface';
-import { ImageService } from '../../services/image.service';
+import { ImageService } from '../../../shared/services/image.service';
 import { ApplicationStateService } from 'src/app/shared/services/application-state.service';
 
 @Component({

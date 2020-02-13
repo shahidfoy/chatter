@@ -4,7 +4,7 @@ import { NotificationsObj, User } from '../../shared/interfaces/user.interface';
 import { UserService } from '../services/user.service';
 import { TokenService } from '../../shared/services/token.service';
 import { timeFromNow } from '../../shared/shared.utils';
-import { ImageService } from '../services/image.service';
+import { ImageService } from '../../shared/services/image.service';
 
 @Component({
   selector: 'app-notifications',

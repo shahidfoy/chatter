@@ -6,7 +6,7 @@ import { UserService } from '../../streams/services/user.service';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { MessageService } from '../services/message.service';
 import { Router } from '@angular/router';
-import { ImageService } from 'src/app/streams/services/image.service';
+import { ImageService } from 'src/app/shared/services/image.service';
 
 @Component({
   selector: 'app-notifications',

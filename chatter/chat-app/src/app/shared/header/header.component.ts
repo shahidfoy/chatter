@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PayloadData } from '../interfaces/jwt-payload.interface';
 import { User } from '../interfaces/user.interface';
 import { UserService } from 'src/app/streams/services/user.service';
-import { ImageService } from 'src/app/streams/services/image.service';
+import { ImageService } from 'src/app/shared/services/image.service';
 import { ApplicationStateService } from '../services/application-state.service';
 
 @Component({

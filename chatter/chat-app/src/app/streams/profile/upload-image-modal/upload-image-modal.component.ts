@@ -4,7 +4,7 @@ import { Observable, Observer } from 'rxjs';
 import { UploadImageModalState } from '../../interfaces/upload-image-modal-state';
 import { environment } from '../../../../environments/environment';
 import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
-import { ImageService } from '../../services/image.service';
+import { ImageService } from '../../../shared/services/image.service';
 
 @Component({
   selector: 'app-upload-image-modal',

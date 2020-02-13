@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { timeFromNow } from 'src/app/shared/shared.utils';
 import { User } from 'src/app/shared/interfaces/user.interface';
-import { ImageService } from '../services/image.service';
+import { ImageService } from '../../shared/services/image.service';
 import { UserService } from '../services/user.service';
 
 @Component({

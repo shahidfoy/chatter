@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { UserFollowing } from '../interfaces/user-following.interface';
 import { UploadImageModalState } from '../interfaces/upload-image-modal-state';
-import { ImageService } from '../services/image.service';
+import { ImageService } from '../../shared/services/image.service';
 
 @Component({
   selector: 'app-profile',

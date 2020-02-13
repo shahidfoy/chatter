@@ -20,6 +20,7 @@ import { AuthModule } from './auth/auth.module';
     MongooseModule.forRoot(dbConfig.url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useFindAndModify: true,
     }),
     AuthModule,
     UsersModule,

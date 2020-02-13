@@ -16,7 +16,6 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { TrendingComponent } from './trending/trending.component';
 import { UserService } from './services/user.service';
 import { UploadImageModalComponent } from './profile/upload-image-modal/upload-image-modal.component';
-import { ImageService } from './services/image.service';
 import { PostModalComponent } from './posts/post-modal/post-modal.component';
 
 @NgModule({
@@ -40,6 +39,6 @@ import { PostModalComponent } from './posts/post-modal/post-modal.component';
     StreamsRoutingModule,
   ],
   exports: [StreamsComponent],
-  providers: [PostService, UserService, ImageService]
+  providers: [PostService, UserService]
 })
 export class StreamsModule { }

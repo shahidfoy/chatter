@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { TokenService } from '../../../shared/services/token.service';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd';
-import { ImageService } from '../../services/image.service';
+import { ImageService } from '../../../shared/services/image.service';
 
 @Component({
   selector: 'app-following',

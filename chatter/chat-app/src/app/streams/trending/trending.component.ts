@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { timeFromNow } from 'src/app/shared/shared.utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import * as _ from 'lodash';
-import { ImageService } from '../services/image.service';
+import { ImageService } from '../../shared/services/image.service';
 import { User } from 'src/app/shared/interfaces/user.interface';
 
 @Component({

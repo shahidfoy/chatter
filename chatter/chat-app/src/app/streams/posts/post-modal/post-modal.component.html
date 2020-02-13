@@ -12,37 +12,45 @@
 
 <ng-template #modalContent>
   <!-- edit post -->
-  <div class="post" *ngIf="editPostAction; else viewPost">
-    <textarea nz-input formControlName="post" rows="2">{{ post.post }}</textarea>
+  <form class="post" [formGroup]="postForm" *ngIf="editPostAction; else viewPost">
+    <textarea
+      nz-input
+      formControlName="post"
+      (keydown)="editPost($event)"
+      rows="2">{{ post.post }}</textarea>
 
-    <nz-upload nz-block
+    <img [src]="postImage"/>
+
+    <nz-upload
       [nzAction]="FILE_UPLOAD_URL"
       [nzBeforeUpload]="beforeUpload"
       nzMultiple
       [nzLimit]="1"
       (nzChange)="handlePostImageChange($event)">
-      <img [src]="getPostImage(post)"/>
-      <button nz-button nzType="default" nzBlock [disabled]="imageCount >= 1">
+      <button nz-button
+        nzType="default"
+        [disabled]="imageCount >= 1">
         Edit post image<i nz-icon nzType="upload"></i>
       </button>
     </nz-upload>
 
     <br>
     <nz-select
+      formControlName="tags"
       [nzMaxTagCount]="3"
       [nzMaxTagPlaceholder]="tagPlaceHolder"
       nzMode="multiple"
-      nzPlaceHolder="Tags"
-      [(ngModel)]="selectedTags">
+      nzPlaceHolder="Tags">
       <nz-option *ngFor="let tag of post.tags" [nzLabel]="tag" [nzValue]="tag"></nz-option>
     </nz-select>
     <ng-template #tagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected </ng-template>
-  </div>
+    <!-- <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag> -->
+  </form>
 
   <!-- view post -->
   <ng-template class="post" #viewPost>
     <p>{{ post.post }}</p>
-    <img [src]="getPostImage(post)"/>
+    <img [src]="postImage"/>
     <br>
     <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag>
     <!-- post comments -->
