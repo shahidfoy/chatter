@@ -1,93 +1,115 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { PostService } from '../../services/post.service';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Post } from '../../interfaces/post.interface';
-import { HttpErrorResponse } from '@angular/common/http';
-import { NzNotificationService } from 'ng-zorro-antd';
 import { ImageService } from '../../../shared/services/image.service';
-import { Subject, Observable, Observer } from 'rxjs';
-import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
+import { PostService } from '../../services/post.service';
+import { NzNotificationService } from 'ng-zorro-antd';
+import { Observable, Observer } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { PayloadData } from 'src/app/shared/interfaces/jwt-payload.interface';
-import { TokenService } from 'src/app/shared/services/token.service';
+import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'app-post-form',
-  templateUrl: './post-form.component.html',
-  styleUrls: ['./post-form.component.scss']
+  selector: 'app-post-modal',
+  templateUrl: './post-modal.component.html',
+  styleUrls: ['./post-modal.component.scss']
 })
-export class PostFormComponent implements OnInit {
+export class PostModalComponent implements OnInit, OnChanges {
 
   FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/edit-post-image`;
 
-  postForm: FormGroup;
-  @Input() isMobile: boolean;
+  @Input() isVisible: boolean;
+  @Input() editPostAction: boolean;
+  @Input() post: Post;
+  @Output() newPostOutput = new EventEmitter<void>();
 
-  loggedInUser: PayloadData;
-  inputValue = '';
-  submitting = false;
-  isLoading = false;
+  private readonly BACKSPACE: string = 'Backspace';
+
+  postForm: FormGroup;
+  loading: boolean;
   postImage = '';
   imageCount = 0;
 
   constructor(
     private fb: FormBuilder,
-    private postService: PostService,
     private imageService: ImageService,
-    private notification: NzNotificationService,
-    private tokenService: TokenService,
-  ) { }
+    private postService: PostService,
+    private notification: NzNotificationService) { }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ngOnChanges() {
     this.postForm = this.fb.group({
-      post: ['', Validators.required],
-      tags: [],
-      picVersion: [''],
-      picId: [''],
+      postId: this.post._id,
+      post: [this.post.post, Validators.required],
+      tags: [this.post.tags],
+      picVersion: [this.post.picVersion],
+      picId: [this.post.picId],
     });
+    this.getPost();
 
-    this.loggedInUser = this.tokenService.getPayload();
+    if (this.post.picId) {
+      this.postImage = this.imageService.getImage(this.post.picVersion, this.post.picId);
+    } else {
+      this.postImage = '';
+    }
   }
-
-  // TODO:: add and retrieve tags for posts
-  // TODO:: add some form validations for post length and tags
-  // TODO:: fix empty tag on enter bug
-  // TODO:: limit tag length
 
   /**
    * submits users post
+   * if image updated adds image to post form
    */
   submitPost() {
-    this.isLoading = true;
-
     if (this.postImage !== '') {
-      this.imageService.uploadPostImage(this.postImage).subscribe((result: CloudinaryResponse) => {
+      this.imageService.editPostImage(this.post, this.postImage).subscribe((result: CloudinaryResponse) => {
         this.postForm.controls.picVersion.setValue(result.version);
         this.postForm.controls.picId.setValue(result.public_id);
-        this.addPost();
+        this.updatePost();
       });
     } else {
-      this.addPost();
+      this.updatePost();
     }
-
   }
 
   /**
-   * adds post through post service
+   * updates post through post service
    */
-  addPost() {
-    this.postService.addPost(this.postForm.value).subscribe((data: Post) => {
-      this.postForm.reset();
-      this.isLoading = false;
-
-      if (data.username === this.loggedInUser.username) {
-        window.location.reload();
-        // this.postService.emitNewPostSocket();
-      }
+  updatePost() {
+    this.postService.editPost(this.postForm.value).subscribe((data: Post) => {
+      window.location.reload();
     }, (err: HttpErrorResponse) => {
       this.displayError(err.error.message);
-      this.isLoading = false;
     });
+  }
+
+  /**
+   * closes model when ok button is clicked
+   * updates users profile image
+   */
+  handleModalOk() {
+    this.submitPost();
+    this.isVisible = false;
+    this.newPostOutput.emit();
+  }
+
+  /**
+   * closes model when user clicks away from modal
+   * updates users profile image
+   */
+  handleModalCancel() {
+    this.isVisible = false;
+    this.newPostOutput.emit();
+  }
+
+  /**
+   * gets keyboard event and updates post message
+   */
+  editPost(event: KeyboardEvent) {
+    if (event.key === this.BACKSPACE) {
+      this.post.post = this.post.post.substring(0, this.post.post.length - 1);
+    } else {
+      this.post.post += event.key;
+    }
   }
 
   /**
@@ -151,6 +173,15 @@ export class PostFormComponent implements OnInit {
         this.notification.create('warning', 'Network error', 'unable to upload image');
         break;
     }
+  }
+
+  /**
+   * gets selected post
+   */
+  private getPost() {
+    this.postService.getPost(this.post._id).subscribe((post: Post) => {
+      this.post = post;
+    });
   }
 
   /**

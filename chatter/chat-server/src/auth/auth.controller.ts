@@ -1,5 +1,5 @@
 import { Controller, Post, Body, InternalServerErrorException, Req, Get } from '@nestjs/common';
-import { Token } from '../../interfaces/response-token.interface';
+import { Token } from '../interfaces/response-token.interface';
 import { AuthService } from './auth.service';
 import { CustomRequest } from 'src/interfaces/custom-request.interface';
 import { MessageResponse } from 'src/interfaces/message-response.interface';
@@ -51,6 +51,12 @@ export class AuthController {
         this.authService.logoutUser(id);
     }
 
+    /**
+     * changes user's password
+     * @param req custom request
+     * @param oldPassword old password
+     * @param newPassword new password
+     */
     @Post('/change-password')
     async changePassword(
         @Req() req: CustomRequest,

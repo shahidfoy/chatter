@@ -1,8 +1,8 @@
-<app-post-form [isMobile]="isMobile"></app-post-form>
+<app-post-form *ngIf="!isTrending" [isMobile]="isMobile"></app-post-form>
 
 <nz-content class="posts">
     <ngx-masonry
-      [options]="{ transitionDuration: '0.0s' }">
+      [options]="{ transitionDuration: '0.0s' }" [updateLayout]="updateMasonry">
       <div ngxMasonryItem
         class="inner-content"
         *ngFor="let post of posts"
@@ -16,6 +16,7 @@
                 nzIcon="user"
                 [nzSrc]="getAvatarUrl(post.user)"
                 [nzSize]="'large'"></nz-avatar>
+
             </nz-comment>
 
             <nz-comment>
@@ -27,8 +28,6 @@
               </nz-comment-content>
               <nz-comment-action>
                 <i
-                  nz-tooltip
-                  nzTitle="Like"
                   nz-icon
                   nzType="like"
                   [theme]="checkUserInArray(post.likes, username) ? 'twotone' : 'outline'"
@@ -38,8 +37,6 @@
               </nz-comment-action>
               <nz-comment-action>
                 <i
-                  nz-tooltip
-                  nzTitle="Dislike"
                   nz-icon
                   nzType="dislike"
                   [theme]="checkUserInArray(post.dislikes, username) ? 'twotone' : 'outline'"
@@ -56,8 +53,25 @@
                   </i> comments {{ post.comments.length }}
                 </span>
               </nz-comment-action>
+              <nz-comment-action>
+                <button
+                  *ngIf="isloggedInUsersPost(post.username)"
+                  (click)="openEditPostModal(post)"
+                  class="float-right"
+                  nz-button
+                  [nzSize]="'small'"
+                  nzType="default">Edit</button>
+              </nz-comment-action>
             </nz-comment>
         </div>
       </div>
     </ngx-masonry>
 </nz-content>
+
+<!-- post edit modal -->
+<app-post-modal
+  [isVisible]="isPostVisible"
+  [editPostAction]="editUserPost"
+  [post]="editPost"
+  (newPostOutput)="updatePost()">
+</app-post-modal>

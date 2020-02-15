@@ -6,7 +6,7 @@ import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { UserFollowed } from '../interfaces/user-followed.interface';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { User } from '../../shared/interfaces/user.interface';
-import { ImageService } from '../services/image.service';
+import { ImageService } from '../../shared/services/image.service';
 
 @Component({
   selector: 'app-users',

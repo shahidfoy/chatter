@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { timeFromNow } from 'src/app/shared/shared.utils';
 import { User } from 'src/app/shared/interfaces/user.interface';
-import { ImageService } from '../services/image.service';
+import { ImageService } from '../../shared/services/image.service';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -21,11 +21,20 @@ import { UserService } from '../services/user.service';
 export class PostsComponent implements OnInit, AfterViewInit {
 
   private readonly PATH_PROFILE = 'profile';
+  private readonly PATH_TRENDING = 'trending';
+
   isMobile: boolean;
   payload: PayloadData;
   username: string;
   posts: Post[];
   userData: User;
+  editPost: Post;
+
+  updateMasonry = false;
+  isLoggedInUser = false;
+  editUserPost = false;
+  isPostVisible = false;
+  isTrending = false;
 
   constructor(
     private tokenService: TokenService,
@@ -44,21 +53,14 @@ export class PostsComponent implements OnInit, AfterViewInit {
     this.applicationStateService.isMobile.subscribe(isMobile => {
       this.isMobile = isMobile;
     });
-
-    // this.getAllPosts();
-    // this.postService.receiveNewPostSocket().subscribe(() => {
-    //   setTimeout(() => {
-    //     this.getAllPosts();
-    //   }, 500);
-    // });
   }
 
   ngAfterViewInit() {
-    if (this.activatedRoute.snapshot.url[0].path === this.PATH_PROFILE) {
-      this.getUser();
-    } else {
-      this.getAllPosts();
-    }
+    this.setUpPosts();
+
+    this.imageService.profileImageSubject.subscribe(() => {
+      this.setUpPosts();
+    });
   }
 
   /**
@@ -66,19 +68,31 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * @param user user of post
    */
   getAvatarUrl(user: User) {
-    if (this.activatedRoute.snapshot.url[0].path === this.PATH_PROFILE) {
-      if (this.userData.picId) {
-        return this.imageService.getImage(this.userData.picVersion, this.userData.picId);
-      } else {
-        return this.imageService.getDefaultProfileImage();
-      }
+    const snapshotRootPath = this.activatedRoute.snapshot.url[0].path;
+    if (snapshotRootPath === this.PATH_PROFILE) {
+      return this.setImage(this.userData.picVersion, this.userData.picId);
     } else {
-      if (user.picId) {
-        return this.imageService.getImage(user.picVersion, user.picId);
-      } else {
-        return this.imageService.getDefaultProfileImage();
-      }
+      return this.setImage(user.picVersion, user.picId);
     }
+  }
+
+  /**
+   * checkes to see if post belongs to logged in user
+   * @param username post's username
+   */
+  isloggedInUsersPost(username: string): boolean {
+    return this.payload.username === username ? true : false;
+  }
+
+  openEditPostModal(post: Post) {
+    this.editPost = post;
+    this.isPostVisible = true;
+    this.editUserPost = true;
+  }
+
+  updatePost() {
+    this.isPostVisible = false;
+    this.editUserPost = false;
   }
 
   /**
@@ -86,7 +100,9 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * @param post post comments
    */
   openComments(post: Post) {
-    this.router.navigate(['streams/post', post._id]);
+    // this.router.navigate(['streams/post', post._id]);
+    this.editPost = post;
+    this.isPostVisible = true;
   }
 
   /**
@@ -188,6 +204,25 @@ export class PostsComponent implements OnInit, AfterViewInit {
   }
 
   /**
+   * sets up which posts will be displayed
+   * gets all posts or gets a users posts
+   */
+  setUpPosts() {
+    if (this.activatedRoute.snapshot.url[0].path === this.PATH_PROFILE) {
+      const pathUsername = this.activatedRoute.snapshot.url[1];
+      if (pathUsername) {
+        this.getUser(pathUsername.path);
+      } else {
+        this.getUser(this.username);
+      }
+    } else if (this.activatedRoute.snapshot.url[0].path === this.PATH_TRENDING) {
+      this.getTrendingPosts();
+    } else {
+      this.getAllPosts();
+    }
+  }
+
+  /**
    * gets all posts
    */
   private getAllPosts() {
@@ -202,20 +237,55 @@ export class PostsComponent implements OnInit, AfterViewInit {
         this.posts = posts;
       });
     }
+
+    setTimeout(() => {
+      this.updateMasonry = true;
+    }, 1000);
   }
 
   /**
    * gets user and populates their posts
    */
-  private getUser() {
-    this.userService.getUserByUsername(this.username).subscribe((user: User) => {
+  private getUser(username: string) {
+    this.userService.getUserByUsername(username).subscribe((user: User) => {
       this.posts = [];
       this.userData = user;
       this.posts = user.posts.map(post => post.postId as Post);
       this.posts.sort((current, next) => {
         return +new Date(next.createdAt) - +new Date(current.createdAt);
       });
+      setTimeout(() => {
+        this.updateMasonry = true;
+      }, 1000);
     });
+  }
+
+  private getTrendingPosts() {
+    this.isTrending = true;
+    if (this.isMobile) {
+      setTimeout(() => {
+        this.postService.getTrendingPosts().subscribe(posts => {
+          this.posts = posts;
+        });
+      }, 500);
+    } else {
+      this.postService.getTrendingPosts().subscribe(posts => {
+        this.posts = posts;
+      });
+    }
+  }
+
+  /**
+   * sets users image
+   * @param picVersion user pic version
+   * @param picId user pic id
+   */
+  private setImage(picVersion: string, picId: string): string {
+    if (picId) {
+      return this.imageService.getImage(picVersion, picId);
+    } else {
+      return this.imageService.getDefaultProfileImage();
+    }
   }
 
   /**

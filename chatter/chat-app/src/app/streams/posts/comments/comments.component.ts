@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PostService } from '../../services/post.service';
-import { ActivatedRoute } from '@angular/router';
 import { Post, UserComment } from '../../interfaces/post.interface';
 import { timeFromNow } from 'src/app/shared/shared.utils';
 import { User } from 'src/app/shared/interfaces/user.interface';
-import { ImageService } from '../../services/image.service';
+import { ImageService } from '../../../shared/services/image.service';
 import { ApplicationStateService } from 'src/app/shared/services/application-state.service';
 
 @Component({
@@ -15,10 +14,11 @@ import { ApplicationStateService } from 'src/app/shared/services/application-sta
 })
 export class CommentsComponent implements OnInit {
 
+  @Input() postId: string;
+
   isMobile: boolean;
   isLoading = false;
   commentForm: FormGroup;
-  postId: string;
   post: Post;
   commentsArray: UserComment[];
 
@@ -26,7 +26,6 @@ export class CommentsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private postService: PostService,
     private imageService: ImageService,
-    private activatedRoute: ActivatedRoute,
     private applicationStateService: ApplicationStateService,
   ) { }
 
@@ -35,7 +34,7 @@ export class CommentsComponent implements OnInit {
       this.isMobile = isMobile;
     });
 
-    this.postId = this.activatedRoute.snapshot.paramMap.get('id');
+    // this.postId = this.activatedRoute.snapshot.paramMap.get('id');
     this.commentForm = this.formBuilder.group({
       comment: ['', Validators.required]
     });
@@ -58,17 +57,6 @@ export class CommentsComponent implements OnInit {
     } else {
       return this.imageService.getDefaultProfileImage();
     }
-  }
-
-  /**
-   * gets post image
-   * @param post post contents
-   */
-  getPostImage(post: Post): string {
-    if (post.picId) {
-      return this.imageService.getImage(post.picVersion, post.picId);
-    }
-    return '';
   }
 
   /**

@@ -12,14 +12,17 @@ import { ChatModule } from './chat/chat.module';
 import { ChatController } from './chat/chat.controller';
 import { ImagesModule } from './images/images.module';
 import { ImagesController } from './images/images.controller';
-import { AuthController } from './users/auth/auth.controller';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot(dbConfig.url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useFindAndModify: true,
     }),
+    AuthModule,
     UsersModule,
     PostsModule,
     ChatModule,

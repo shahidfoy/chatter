@@ -13,6 +13,7 @@ import { SideNavComponent } from './side-nav/side-nav.component';
 import { ChangePasswordModalComponent } from './change-password/change-password-modal.component';
 import { GenericErrorHandler } from './services/generic-error.handler';
 import { NgxMasonryModule } from 'ngx-masonry';
+import { ImageService } from './services/image.service';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { NgxMasonryModule } from 'ngx-masonry';
     ChangePasswordModalComponent,
   ],
   providers: [
+    ImageService,
     TokenService,
     ApplicationStateService,
     { provide: ErrorHandler, useClass: GenericErrorHandler }

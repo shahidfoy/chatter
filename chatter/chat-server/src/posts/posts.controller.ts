@@ -39,6 +39,8 @@ export class PostsController {
      * @param req custom request
      * @param post new post
      * @param tags tags for post
+     * @param picVersion picture cloudinary version
+     * @param picId picture cloudinary id
      */
     @Post('add-post')
     async addPost(
@@ -49,6 +51,26 @@ export class PostsController {
         @Body('picId') picId: string,
     ): Promise<Partial<UserPost>> {
         return this.postsService.addPost(req.user, post, tags, picVersion, picId);
+    }
+
+    /**
+     * edits selected post
+     * @param req custom request
+     * @param post new post
+     * @param tags tags for post
+     * @param picVersion picture cloudinary version
+     * @param picId picture cloudinary id
+     */
+    @Post('edit-post')
+    async editPost(
+        @Req() req: CustomRequest,
+        @Body('postId') postId: string,
+        @Body('post') post: string,
+        @Body('tags') tags: string[],
+        @Body('picVersion') picVersion: number,
+        @Body('picId') picId: string,
+    ): Promise<Partial<UserPost>> {
+        return this.postsService.editPost(postId, post, tags, picVersion, picId);
     }
 
     /**

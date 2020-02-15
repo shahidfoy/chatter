@@ -13,10 +13,9 @@ import { UsersComponent } from './users/users.component';
 import { FollowingComponent } from './users/following/following.component';
 import { FollowersComponent } from './users/followers/followers.component';
 import { NotificationsComponent } from './notifications/notifications.component';
-import { TrendingComponent } from './trending/trending.component';
 import { UserService } from './services/user.service';
 import { UploadImageModalComponent } from './profile/upload-image-modal/upload-image-modal.component';
-import { ImageService } from './services/image.service';
+import { PostModalComponent } from './posts/post-modal/post-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,8 +28,8 @@ import { ImageService } from './services/image.service';
     FollowingComponent,
     FollowersComponent,
     NotificationsComponent,
-    TrendingComponent,
-    UploadImageModalComponent
+    UploadImageModalComponent,
+    PostModalComponent
   ],
   imports: [
     CommonModule,
@@ -38,6 +37,6 @@ import { ImageService } from './services/image.service';
     StreamsRoutingModule,
   ],
   exports: [StreamsComponent],
-  providers: [PostService, UserService, ImageService]
+  providers: [PostService, UserService]
 })
 export class StreamsModule { }

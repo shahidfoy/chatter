@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, Observer } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { CloudinaryResponse } from '../interfaces/cloudinary-response';
+import { CloudinaryResponse } from '../../streams/interfaces/cloudinary-response';
 import { NzMessageService, UploadFile } from 'ng-zorro-antd';
+import { Post } from '../../streams/interfaces/post.interface';
 
 /**
  * Retrieves the REST endpoints for images
@@ -36,6 +37,15 @@ export class ImageService {
    */
   uploadPostImage(postImage: string): Observable<CloudinaryResponse> {
     return this.http.post<CloudinaryResponse>(`${environment.BASEURL}/api/images/upload-post-image`, { postImage });
+  }
+
+  /**
+   * edit image for post deletes old photo
+   * @param post post being edited
+   * @param postImage post image
+   */
+  editPostImage(post: Post, postImage: string): Observable<CloudinaryResponse> {
+    return this.http.post<CloudinaryResponse>(`${environment.BASEURL}/api/images/edit-post-image`, { post, postImage });
   }
 
   /**

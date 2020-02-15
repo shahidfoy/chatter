@@ -8,7 +8,7 @@ import { TokenService } from '../../../shared/services/token.service';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { User } from '../../../shared/interfaces/user.interface';
-import { ImageService } from '../../services/image.service';
+import { ImageService } from '../../../shared/services/image.service';
 
 @Component({
   selector: 'app-followers',

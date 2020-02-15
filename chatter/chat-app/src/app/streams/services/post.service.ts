@@ -46,6 +46,14 @@ export class PostService {
   }
 
   /**
+   * edit post
+   * @param body post to be edited
+   */
+  editPost(body: Post): Observable<Post> {
+    return this.http.post<Post>(`${environment.BASEURL}/api/posts/edit-post`, body);
+  }
+
+  /**
    * gets trending posts
    */
   getTrendingPosts(): Observable<Post[]> {

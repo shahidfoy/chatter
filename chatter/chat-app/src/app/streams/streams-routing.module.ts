@@ -4,12 +4,10 @@ import { StreamsComponent } from './streams.component';
 import { AuthGuard } from '../shared/services/guards/auth.guard';
 import { PostsComponent } from './posts/posts.component';
 import { ProfileComponent } from './profile/profile.component';
-import { CommentsComponent } from './posts/comments/comments.component';
 import { UsersComponent } from './users/users.component';
 import { FollowersComponent } from './users/followers/followers.component';
 import { FollowingComponent } from './users/following/following.component';
 import { NotificationsComponent } from './notifications/notifications.component';
-import { TrendingComponent } from './trending/trending.component';
 import { ChangePasswordModalComponent } from '../shared/change-password/change-password-modal.component';
 
 const routes: Routes = [
@@ -19,9 +17,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'posts', pathMatch: 'full' },
-      { path: 'post/:id', component: CommentsComponent, canActivate: [AuthGuard] },
       { path: 'posts', component: PostsComponent },
-      { path: 'trending', component: TrendingComponent },
+      { path: 'trending', component: PostsComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'profile/:username', component: ProfileComponent },
       { path: 'followers', component: FollowersComponent },

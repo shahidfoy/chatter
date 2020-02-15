@@ -8,7 +8,7 @@ import { PayloadData } from 'src/app/shared/interfaces/jwt-payload.interface';
 import { Message, MessageContents } from '../interfaces/message.interface';
 import { ApplicationStateService } from 'src/app/shared/services/application-state.service';
 import { ChatParams } from '../interfaces/chat-params.interface';
-import { ImageService } from 'src/app/streams/services/image.service';
+import { ImageService } from 'src/app/shared/services/image.service';
 
 @Component({
   selector: 'app-message',

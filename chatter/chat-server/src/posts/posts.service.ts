@@ -8,6 +8,7 @@ import { Tag } from './models/tag.model';
 
 @Injectable()
 export class PostsService {
+
     constructor(
         @InjectModel('User') private readonly userModel: Model<User>,
         @InjectModel('Post') private readonly postModel: Model<UserPost>,
@@ -95,6 +96,47 @@ export class PostsService {
             return newPost;
         }).catch(err => {
             throw new InternalServerErrorException({ message: `Posting Error Occured ${err}` });
+        });
+    }
+
+    /**
+     * updates selected post
+     * @param user user who posted
+     * @param post new post
+     * @param tags tags for post
+     * @param picVersion picture cloudinary version
+     * @param picId picture cloudinary id
+     */
+    async editPost(postId: string, post: string, tags: string[], picVersion: number, picId: string): Promise<Partial<UserPost>> {
+        const schema = Joi.object().keys({
+            post: Joi.string().required(),
+        });
+        const { error } = schema.validate({ post });
+
+        if (error && error.details) {
+            throw new BadRequestException({ message: error.details[0].message });
+        }
+
+        if (tags) {
+            tags = tags.map(tag => tag.toLowerCase());
+            tags.forEach(async (tag: string) => {
+                const existingTag = await this.tagModel.findOne({ tag });
+                if (!existingTag) {
+                    this.tagModel.create({ tag });
+                }
+            });
+        }
+
+        return await this.postModel.updateOne(
+            { _id: postId },
+            {
+                post,
+                tags,
+                picVersion,
+                picId,
+            },
+        ).then(async (newPost) => {
+            return await this.postModel.findOne({ _id: postId });
         });
     }
 
