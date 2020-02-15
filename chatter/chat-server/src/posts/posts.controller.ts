@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Req, Get, Param, Put } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CustomRequest } from '../interfaces/custom-request.interface';
 import { UserPost } from './models/post.model';
@@ -61,7 +61,7 @@ export class PostsController {
      * @param picVersion picture cloudinary version
      * @param picId picture cloudinary id
      */
-    @Post('edit-post')
+    @Put('edit-post')
     async editPost(
         @Req() req: CustomRequest,
         @Body('postId') postId: string,

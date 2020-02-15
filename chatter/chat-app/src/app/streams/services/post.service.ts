@@ -50,7 +50,7 @@ export class PostService {
    * @param body post to be edited
    */
   editPost(body: Post): Observable<Post> {
-    return this.http.post<Post>(`${environment.BASEURL}/api/posts/edit-post`, body);
+    return this.http.put<Post>(`${environment.BASEURL}/api/posts/edit-post`, body);
   }
 
   /**
