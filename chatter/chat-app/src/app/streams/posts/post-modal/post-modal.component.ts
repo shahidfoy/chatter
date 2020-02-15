@@ -16,7 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class PostModalComponent implements OnInit, OnChanges {
 
-  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/edit-post-image`;
+  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-post-image`;
 
   @Input() isVisible: boolean;
   @Input() editPostAction: boolean;
@@ -76,6 +76,7 @@ export class PostModalComponent implements OnInit, OnChanges {
    */
   updatePost() {
     this.postService.editPost(this.postForm.value).subscribe((data: Post) => {
+      this.displaySuccess('updating post!');
       window.location.reload();
     }, (err: HttpErrorResponse) => {
       this.displayError(err.error.message);
@@ -90,6 +91,26 @@ export class PostModalComponent implements OnInit, OnChanges {
     this.submitPost();
     this.isVisible = false;
     this.newPostOutput.emit();
+  }
+
+  /**
+   * deletes post
+   */
+  handleDeletePost() {
+    if (this.post.picId) {
+      this.imageService
+        .deletePostImage(this.post.picId)
+        .subscribe(() => {}, (err: Error) => this.displayError(err.message));
+    }
+    this.postService
+      .deletePost(this.post._id)
+      .subscribe(() => {
+        this.displaySuccess('post has been deleted');
+        setTimeout(() => {
+          window.location.reload();
+          this.handleModalCancel();
+        }, 1000);
+      }, (err: Error) => this.displayError(err.message));
   }
 
   /**
@@ -159,8 +180,10 @@ export class PostModalComponent implements OnInit, OnChanges {
     this.imageCount = info.fileList.length;
     switch (info.file.status) {
       case 'uploading':
+        console.log('UPLOADING');
         break;
       case 'done':
+        console.log('DONE');
         this.imageService.beforeUpload(info.file.originFileObj).subscribe((uploadResult) => {
           if (uploadResult) {
             this.imageService.getBase64(info.file.originFileObj, (img: string) => {
@@ -188,7 +211,15 @@ export class PostModalComponent implements OnInit, OnChanges {
    * displays error message
    * @param message error message
    */
+  private displaySuccess(message: string) {
+    this.notification.create('success', 'Success', message);
+  }
+
+  /**
+   * displays error message
+   * @param message error message
+   */
   private displayError(message: string) {
-    this.notification.create('warning', 'unable to post', message);
+    this.notification.create('warning', 'unable to edit post', message);
   }
 }

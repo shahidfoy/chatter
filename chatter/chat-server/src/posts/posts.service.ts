@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, BadRequestException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserPost } from './models/post.model';
@@ -100,7 +100,7 @@ export class PostsService {
     }
 
     /**
-     * updates selected post
+     * edits selected post
      * @param user user who posted
      * @param post new post
      * @param tags tags for post
@@ -139,6 +139,27 @@ export class PostsService {
         ).catch(err => {
             throw new InternalServerErrorException({ message: `Unable to edit post` });
         });
+    }
+
+    /**
+     * deletes post by id
+     * @param postId post id
+     */
+    async deletePost(userId: string, postId: string): Promise<void> {
+        try {
+            const deletedPost = await this.postModel.findByIdAndRemove(postId);
+            if (!deletedPost) {
+                throw new NotFoundException({ message: 'Unable to delete post. post not found' });
+            }
+
+            await this.userModel.updateOne({
+                _id: userId,
+            }, {
+                $pull: { posts: { postId: deletedPost._id } },
+            });
+        } catch (err) {
+            throw new InternalServerErrorException({ message: 'Unable to delete post. Please try again later' });
+        }
     }
 
     /**

@@ -54,6 +54,14 @@ export class PostService {
   }
 
   /**
+   * delete post
+   * @param postId post id
+   */
+  deletePost(postId: string): Observable<void> {
+    return this.http.delete<void>(`${environment.BASEURL}/api/posts/delete-post/${postId}`);
+  }
+
+  /**
    * gets trending posts
    */
   getTrendingPosts(): Observable<Post[]> {
