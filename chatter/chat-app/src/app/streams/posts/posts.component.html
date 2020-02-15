@@ -1,4 +1,4 @@
-<app-post-form *ngIf="!isTrending" [isMobile]="isMobile"></app-post-form>
+<app-post-form *ngIf="isLoggedInUser && !isTrending" [isMobile]="isMobile"></app-post-form>
 
 <nz-content class="posts">
     <ngx-masonry

@@ -39,6 +39,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
+    this.avatarUrl = this.imageService.getDefaultProfileImage();
     this.payload = this.tokenService.getPayload();
     this.applicationStateService.isMobile.subscribe(isMobile => {
       this.isMobile = isMobile;
