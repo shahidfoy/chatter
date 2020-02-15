@@ -127,7 +127,7 @@ export class PostsService {
             });
         }
 
-        return await this.postModel.updateOne(
+        return await this.postModel.findOneAndUpdate(
             { _id: postId },
             {
                 post,
@@ -135,8 +135,9 @@ export class PostsService {
                 picVersion,
                 picId,
             },
-        ).then(async (newPost) => {
-            return await this.postModel.findOne({ _id: postId });
+            { new: true },
+        ).catch(err => {
+            throw new InternalServerErrorException({ message: `Unable to edit post` });
         });
     }
 
