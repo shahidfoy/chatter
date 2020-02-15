@@ -18,7 +18,7 @@ import { TokenService } from 'src/app/shared/services/token.service';
 })
 export class PostFormComponent implements OnInit {
 
-  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/edit-post-image`;
+  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-post-image`;
 
   postForm: FormGroup;
   @Input() isMobile: boolean;
