@@ -14,9 +14,10 @@
   <!-- edit post -->
   <form class="post" [formGroup]="postForm" *ngIf="editPostAction; else viewPost">
     <textarea
+      #postInput
       nz-input
       formControlName="post"
-      (keydown)="editPost($event)"
+      (keyup)="editPost($event, postInput.value)"
       rows="2">{{ post.post }}</textarea>
 
     <img [src]="postImage"/>

@@ -126,19 +126,8 @@ export class PostModalComponent implements OnInit, OnChanges {
   /**
    * gets keyboard event and updates post message
    */
-  editPost(event: KeyboardEvent) {
-    console.log('EVENT', event);
-    const regexPost = /[0-9]*[^0-9]*/g;
-    if (event.key === this.BACKSPACE) {
-      this.post.post = this.post.post.substring(0, this.post.post.length - 1);
-    } else if (event.key === this.ENTER) {
-      this.post.post += '\n';
-    } else {
-      if (regexPost.test(event.key)) {
-        this.post.post += event.key;
-        console.log('post', this.post.post);
-      }
-    }
+  editPost(event: KeyboardEvent, post: string) {
+    this.post.post = post;
   }
 
   /**
