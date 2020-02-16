@@ -188,7 +188,10 @@ export class UsersComponent implements OnInit {
   }
 
   /**
-   * gets the list of people who follow the user
+   * gets the list of people who follow the user or
+   * people the user is following based on type received
+   * @param username user's username
+   * @param type type of list to populate
    */
   private getUsersList(username: string, type: string) {
     this.userService.getUserByUsername(username).subscribe((user: User) => {
