@@ -7,6 +7,8 @@ import { UserFollowed } from '../interfaces/user-followed.interface';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { User } from '../../shared/interfaces/user.interface';
 import { ImageService } from '../../shared/services/image.service';
+import { ActivatedRoute } from '@angular/router';
+import { UserFollowing } from '../interfaces/user-following.interface';
 
 @Component({
   selector: 'app-users',
@@ -24,16 +26,17 @@ export class UsersComponent implements OnInit {
     private imageService: ImageService,
     private tokenService: TokenService,
     private notification: NzNotificationService,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.loggedInUserToken = this.tokenService.getPayload();
     this.getLoggedInUser(this.loggedInUserToken._id);
-    this.getUsers();
+    this.populateUsers();
 
     this.userService.receiveNewFollowSocket().subscribe(() => {
       this.getLoggedInUser(this.loggedInUserToken._id);
-      this.getUsers();
+      this.populateUsers();
     });
   }
 
@@ -94,6 +97,20 @@ export class UsersComponent implements OnInit {
     return _.find(array, [ 'userFollowed._id', userId ]);
   }
 
+  private populateUsers() {
+    switch (this.activatedRoute.snapshot.url[0].path) {
+      case 'followers':
+        this.populateFollowersListByUsername();
+        break;
+      case 'following':
+        this.populateFollowingListByUsername();
+        break;
+      default:
+        this.getUsers();
+        break;
+    }
+  }
+
   /**
    * gets all users
    * TODO:: add pagination
@@ -112,6 +129,84 @@ export class UsersComponent implements OnInit {
   private getLoggedInUser(userId: string) {
     this.userService.getUserById(userId).subscribe((user: User) => {
       this.loggedInUser = user;
+    });
+  }
+
+  /**
+   * populates followers list by username
+   */
+  private populateFollowersListByUsername() {
+    const usernameParam = this.activatedRoute.snapshot.params.username;
+    if (usernameParam) {
+      this.userFollowersList(usernameParam);
+
+      this.userService.receiveNewFollowSocket().subscribe(() => {
+        this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
+          this.loggedInUser = user;
+        });
+        this.userFollowersList(usernameParam);
+      });
+    } else {
+      this.userFollowersList(this.loggedInUserToken.username);
+
+      this.userService.receiveNewFollowSocket().subscribe(() => {
+        this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
+          this.loggedInUser = user;
+        });
+        this.userFollowersList(this.loggedInUserToken.username);
+      });
+    }
+  }
+
+  /**
+   * gets the list of people who follow the user
+   */
+  private userFollowersList(username: string) {
+    this.userService.getUserByUsername(username).subscribe((user: User) => {
+      this.loggedInUser = user;
+      this.users = this.loggedInUser.followers
+                    .map((userFollowing: UserFollowing) => userFollowing.userFollower);
+      _.remove(this.users, { username: this.loggedInUser.username });
+      // _.remove(this.users, { username: this.loggedInUserData.username });
+    });
+  }
+
+  /**
+   * populates followers list by username
+   */
+  private populateFollowingListByUsername() {
+    const usernameParam = this.activatedRoute.snapshot.params.username;
+    if (usernameParam) {
+      this.userIsFollowingList(usernameParam);
+
+      this.userService.receiveNewFollowSocket().subscribe(() => {
+        this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
+          this.loggedInUser = user;
+        });
+        this.userIsFollowingList(usernameParam);
+      });
+    } else {
+      this.userIsFollowingList(this.loggedInUserToken.username);
+
+      this.userService.receiveNewFollowSocket().subscribe(() => {
+        this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
+          this.loggedInUser = user;
+        });
+        this.userIsFollowingList(this.loggedInUserToken.username);
+      });
+    }
+  }
+
+  /**
+   * gets the list of people who the user is following
+   */
+  private userIsFollowingList(username: string) {
+    this.userService.getUserByUsername(username).subscribe((user: User) => {
+      this.loggedInUser = user;
+      this.users = this.loggedInUser.following
+                    .map((userFollow: UserFollowed) => userFollow.userFollowed);
+      _.remove(this.users, { username: this.loggedInUser.username });
+      // _.remove(this.users, { username: this.loggedInUserData.username });
     });
   }
 }
