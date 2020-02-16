@@ -192,13 +192,12 @@ export class UsersComponent implements OnInit {
    */
   private getUsersList(username: string, type: string) {
     this.userService.getUserByUsername(username).subscribe((user: User) => {
-      this.loggedInUser = user;
       if (type === 'followers') {
-        this.users = this.loggedInUser.followers
+        this.users = user.followers
                       .map((userFollowing: UserFollowing) => userFollowing.userFollower);
         _.remove(this.users, { username: this.loggedInUser.username });
       } else if (type === 'following') {
-        this.users = this.loggedInUser.following
+        this.users = user.following
                       .map((userFollow: UserFollowed) => userFollow.userFollowed);
         _.remove(this.users, { username: this.loggedInUser.username });
       }
