@@ -7,7 +7,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
 export class GenericErrorHandler implements ErrorHandler {
 
   constructor(
-    private notification: NzNotificationService,
+    // private notification: NzNotificationService,
   ) {}
 
   /**
@@ -15,8 +15,8 @@ export class GenericErrorHandler implements ErrorHandler {
    * @param error incoming error
    */
   handleError(error: any) {
-    if (error.error) {
-      this.notification.create('error', 'Error', error.error.message);
-    }
+    // if (error.error) {
+    //   this.notification.create('error', 'Error', error.error.message);
+    // }
   }
 }
