@@ -5,15 +5,15 @@ import { Socket, Server } from 'socket.io';
 export class PostsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     @WebSocketServer() server: Server;
-    counter = 0;
+    // counter = 0;
 
     async handleConnection() {
-        this.counter++;
+        // this.counter++;
         // console.log('socket handling connections', this.counter);
     }
 
     async handleDisconnect() {
-        this.counter--;
+        // this.counter--;
         // console.log('socket disconnecting', this.counter);
     }
 

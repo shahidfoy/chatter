@@ -33,11 +33,6 @@ export class UsersComponent implements OnInit {
     this.loggedInUserToken = this.tokenService.getPayload();
     this.getLoggedInUser(this.loggedInUserToken._id);
     this.populateUsers();
-
-    this.userService.receiveNewFollowSocket().subscribe(() => {
-      this.getLoggedInUser(this.loggedInUserToken._id);
-      this.populateUsers();
-    });
   }
 
   /**
@@ -61,17 +56,14 @@ export class UsersComponent implements OnInit {
 
     if (!userInFollowedArray) {
       this.userService.followUser(userId).subscribe((followingUserId: string) => {
-        // TODO:: NOIFY USER THAT THEY ARE FOLLOWING THE OTHER USER
-        // this.loggedInUserData.following.push({ userFollowed: { _id: userId } });
-        // note:: emitting might use above method to pass the data
-        this.userService.emitNewFollowSocket();
+        this.loggedInUser.following.push({ _id: '', userFollowed: { _id: followingUserId } });
         this.displayNotification('success', 'following user');
       }, err => {
         this.displayNotification('error', err.error.message);
       });
     } else {
       this.userService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
-        this.userService.emitNewFollowSocket();
+        this.loggedInUser.following = this.loggedInUser.following.filter((follow) => follow.userFollowed._id !== unFollowedUserId);
         this.displayNotification('warning', 'unfollowing user');
       }, err => {
         this.displayNotification('error', err.error.message);
@@ -94,7 +86,7 @@ export class UsersComponent implements OnInit {
    * @param userId users id
    */
   checkUserInFollowedArray(array: UserFollowed[], userId: string) {
-    return _.find(array, [ 'userFollowed._id', userId ]);
+    return _.some(array, [ 'userFollowed._id', userId ]);
   }
 
   /**
@@ -130,7 +122,6 @@ export class UsersComponent implements OnInit {
    */
   private getUsers() {
     this.userService.getUsers().subscribe((users: User[]) => {
-      _.remove(users, { username: this.loggedInUserToken.username });
       this.users = users;
     });
   }
@@ -142,14 +133,8 @@ export class UsersComponent implements OnInit {
     const usernameParam = this.activatedRoute.snapshot.params.username;
     if (usernameParam) {
       this.getUsersList(usernameParam, 'followers');
-      this.userService.receiveNewFollowSocket().subscribe(() => {
-        this.getUsersList(usernameParam, 'followers');
-      });
     } else {
       this.getUsersList(this.loggedInUserToken.username, 'followers');
-      this.userService.receiveNewFollowSocket().subscribe(() => {
-        this.getUsersList(this.loggedInUserToken.username, 'followers');
-      });
     }
   }
 
@@ -160,14 +145,8 @@ export class UsersComponent implements OnInit {
     const usernameParam = this.activatedRoute.snapshot.params.username;
     if (usernameParam) {
       this.getUsersList(usernameParam, 'following');
-      this.userService.receiveNewFollowSocket().subscribe(() => {
-        this.getUsersList(usernameParam, 'following');
-      });
     } else {
       this.getUsersList(this.loggedInUserToken.username, 'following');
-      this.userService.receiveNewFollowSocket().subscribe(() => {
-        this.getUsersList(this.loggedInUserToken.username, 'following');
-      });
     }
   }
 
@@ -182,11 +161,9 @@ export class UsersComponent implements OnInit {
       if (type === 'followers') {
         this.users = user.followers
                       .map((userFollowing: UserFollowing) => userFollowing.userFollower);
-        _.remove(this.users, { username: this.loggedInUser.username });
       } else if (type === 'following') {
         this.users = user.following
                       .map((userFollow: UserFollowed) => userFollow.userFollowed);
-        _.remove(this.users, { username: this.loggedInUser.username });
       }
     });
   }

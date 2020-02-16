@@ -5,6 +5,6 @@ export interface UserFollowing {
   userFollower: Following;
 }
 
-export interface Following extends User {
+export interface Following {
   _id: string;
 }

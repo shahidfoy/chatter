@@ -10,7 +10,6 @@ import { Socket } from 'ngx-socket-io';
 })
 export class UserService {
 
-  private readonly WEBSOCKET_FOLLOW: string = 'follow';
   private readonly WEBSOCKET_NOTIFICATION: string = 'notification';
 
   constructor(
@@ -91,20 +90,6 @@ export class UserService {
   ///////////////////////////////////////////
   /// *** WEBSOCKETS
   ///////////////////////////////////////////
-
-  /**
-   * emits on new follow
-   */
-  emitNewFollowSocket() {
-    this.socket.emit(this.WEBSOCKET_FOLLOW);
-  }
-
-  /**
-   * receives new follow
-   */
-  receiveNewFollowSocket(): Observable<{}> {
-    return this.socket.fromEvent(this.WEBSOCKET_FOLLOW);
-  }
 
   /**
    * emits on notification action

@@ -4,17 +4,17 @@ import { Post } from '../../streams/interfaces/post.interface';
 
 export interface User {
   _id: string;
-  username: string;
-  email: string;
-  password: string;
-  onlineStatus: string;
-  posts: UserPost[];
-  following: UserFollowed[];
-  followers: UserFollowing[];
-  notifications: NotificationsObj[];
-  chatList: ChatList[];
-  picVersion: string;
-  picId: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  onlineStatus?: string;
+  posts?: UserPost[];
+  following?: UserFollowed[];
+  followers?: UserFollowing[];
+  notifications?: NotificationsObj[];
+  chatList?: ChatList[];
+  picVersion?: string;
+  picId?: string;
 }
 
 export interface UserPost {

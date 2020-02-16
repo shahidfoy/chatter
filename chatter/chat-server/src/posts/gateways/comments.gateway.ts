@@ -6,15 +6,15 @@ export class CommentsGateway implements OnGatewayConnection, OnGatewayDisconnect
 
     @WebSocketServer() server: Server;
 
-    counter = 0;
+    // counter = 0;
 
     async handleConnection() {
-        this.counter++;
+        // this.counter++;
         // console.log('comment socket handling connections', this.counter);
     }
 
     async handleDisconnect() {
-        this.counter--;
+        // this.counter--;
         // console.log('comment socket disconnecting', this.counter);
     }
 
