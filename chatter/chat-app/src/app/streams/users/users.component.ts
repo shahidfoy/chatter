@@ -98,6 +98,16 @@ export class UsersComponent implements OnInit {
   }
 
   /**
+   * gets logged in user
+   * @param userId logged in user id
+   */
+  private getLoggedInUser(userId: string) {
+    this.userService.getUserById(userId).subscribe((user: User) => {
+      this.loggedInUser = user;
+    });
+  }
+
+  /**
    * populates users based on route url path
    */
   private populateUsers() {
@@ -126,36 +136,18 @@ export class UsersComponent implements OnInit {
   }
 
   /**
-   * gets logged in user
-   * @param userId logged in user id
-   */
-  private getLoggedInUser(userId: string) {
-    this.userService.getUserById(userId).subscribe((user: User) => {
-      this.loggedInUser = user;
-    });
-  }
-
-  /**
    * populates followers list by username
    */
   private populateFollowersListByUsername() {
     const usernameParam = this.activatedRoute.snapshot.params.username;
     if (usernameParam) {
       this.getUsersList(usernameParam, 'followers');
-
       this.userService.receiveNewFollowSocket().subscribe(() => {
-        this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
-          this.loggedInUser = user;
-        });
         this.getUsersList(usernameParam, 'followers');
       });
     } else {
       this.getUsersList(this.loggedInUserToken.username, 'followers');
-
       this.userService.receiveNewFollowSocket().subscribe(() => {
-        this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
-          this.loggedInUser = user;
-        });
         this.getUsersList(this.loggedInUserToken.username, 'followers');
       });
     }
@@ -168,20 +160,12 @@ export class UsersComponent implements OnInit {
     const usernameParam = this.activatedRoute.snapshot.params.username;
     if (usernameParam) {
       this.getUsersList(usernameParam, 'following');
-
       this.userService.receiveNewFollowSocket().subscribe(() => {
-        this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
-          this.loggedInUser = user;
-        });
         this.getUsersList(usernameParam, 'following');
       });
     } else {
       this.getUsersList(this.loggedInUserToken.username, 'following');
-
       this.userService.receiveNewFollowSocket().subscribe(() => {
-        this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
-          this.loggedInUser = user;
-        });
         this.getUsersList(this.loggedInUserToken.username, 'following');
       });
     }
