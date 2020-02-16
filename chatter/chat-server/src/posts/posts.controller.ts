@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Req, Get, Param, Put, Delete } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CustomRequest } from '../interfaces/custom-request.interface';
 import { UserPost } from './models/post.model';
@@ -61,7 +61,7 @@ export class PostsController {
      * @param picVersion picture cloudinary version
      * @param picId picture cloudinary id
      */
-    @Post('edit-post')
+    @Put('edit-post')
     async editPost(
         @Req() req: CustomRequest,
         @Body('postId') postId: string,
@@ -71,6 +71,18 @@ export class PostsController {
         @Body('picId') picId: string,
     ): Promise<Partial<UserPost>> {
         return this.postsService.editPost(postId, post, tags, picVersion, picId);
+    }
+
+    /**
+     * deletes post by id
+     * @param postId post id
+     */
+    @Delete('delete-post/:postId')
+    async deletePost(
+        @Req() req: CustomRequest,
+        @Param('postId') postId: string,
+    ): Promise<void> {
+        return this.postsService.deletePost(req.user._id, postId);
     }
 
     /**

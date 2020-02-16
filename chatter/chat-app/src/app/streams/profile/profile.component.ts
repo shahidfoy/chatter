@@ -1,11 +1,10 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TokenService } from '../../shared/services/token.service';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationStateService } from 'src/app/shared/services/application-state.service';
 import { UserService } from '../services/user.service';
-import { Post } from '../interfaces/post.interface';
 import * as _ from 'lodash';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { UserFollowing } from '../interfaces/user-following.interface';
@@ -17,7 +16,7 @@ import { ImageService } from '../../shared/services/image.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, AfterViewInit {
+export class ProfileComponent implements OnInit {
 
   isVisible = false;
   isMobile: boolean;
@@ -39,6 +38,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
+    this.avatarUrl = this.imageService.getDefaultProfileImage();
     this.payload = this.tokenService.getPayload();
     this.applicationStateService.isMobile.subscribe(isMobile => {
       this.isMobile = isMobile;
@@ -53,13 +53,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     } else {
       this.isLoggedInUser = false;
     }
-  }
 
-  ngAfterViewInit() {
     this.getUser();
-    this.userService.receiveNewFollowSocket().subscribe(() => {
-      this.getUser();
-    });
   }
 
   /**
@@ -99,14 +94,14 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     const userInFollowingArray = this.checkUserInFollowingArray(this.user.followers, userId);
     if (!userInFollowingArray) {
       this.userService.followUser(this.user._id).subscribe((followingUserId: string) => {
-        this.userService.emitNewFollowSocket();
+        this.followingUser = true;
         this.displayNotification('success', 'following user');
       }, err => {
         this.displayNotification('error', err.error.message);
       });
     } else {
       this.userService.unFollowUser(this.user._id).subscribe((unFollowedUserId: string) => {
-        this.userService.emitNewFollowSocket();
+        this.followingUser = false;
         this.displayNotification('warning', 'unfollowing user');
       }, err => {
         this.displayNotification('error', err.error.message);
@@ -120,7 +115,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
    * @param userId users id
    */
   checkUserInFollowingArray(array: UserFollowing[], userId: string) {
-    return _.find(array, [ 'userFollower._id', userId ]);
+    return _.some(array, [ 'userFollower._id', userId ]);
   }
 
   /**

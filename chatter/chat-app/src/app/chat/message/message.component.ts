@@ -17,7 +17,7 @@ import { ImageService } from 'src/app/shared/services/image.service';
 })
 export class MessageComponent implements OnInit, AfterViewChecked {
 
-  @ViewChild('autoScroll', undefined) private autoScrollContainer: ElementRef;
+  @ViewChild('autoScroll') private autoScrollContainer: ElementRef;
   isMobile: boolean;
   receiverUsername: string;
   receiverData: User;

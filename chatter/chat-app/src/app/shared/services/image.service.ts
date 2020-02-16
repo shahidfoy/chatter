@@ -49,6 +49,14 @@ export class ImageService {
   }
 
   /**
+   * deletes post's image
+   * @param picId posts pic id
+   */
+  deletePostImage(picId: string): Observable<void> {
+    return this.http.delete<void>(`${environment.BASEURL}/api/images/delete-post-image/${picId}`);
+  }
+
+  /**
    * gets default profile image
    */
   getDefaultProfileImage(): string {

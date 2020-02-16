@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { TokenService } from '../../shared/services/token.service';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { timeFromNow } from 'src/app/shared/shared.utils';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { ImageService } from '../../shared/services/image.service';
@@ -43,7 +43,6 @@ export class PostsComponent implements OnInit, AfterViewInit {
     private imageService: ImageService,
     private userService: UserService,
     private notification: NzNotificationService,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
   ) { }
 
@@ -207,18 +206,25 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * sets up which posts will be displayed
    * gets all posts or gets a users posts
    */
-  setUpPosts() {
-    if (this.activatedRoute.snapshot.url[0].path === this.PATH_PROFILE) {
-      const pathUsername = this.activatedRoute.snapshot.url[1];
-      if (pathUsername) {
-        this.getUser(pathUsername.path);
-      } else {
-        this.getUser(this.username);
-      }
-    } else if (this.activatedRoute.snapshot.url[0].path === this.PATH_TRENDING) {
-      this.getTrendingPosts();
-    } else {
-      this.getAllPosts();
+  private setUpPosts() {
+    switch (this.activatedRoute.snapshot.url[0].path) {
+      case this.PATH_PROFILE:
+        const pathUsername = this.activatedRoute.snapshot.url[1];
+        if (pathUsername && pathUsername.path !== this.payload.username) {
+          this.isLoggedInUser = false;
+          this.getUser(pathUsername.path);
+        } else {
+          this.isLoggedInUser = true;
+          this.getUser(this.username);
+        }
+        break;
+      case this.PATH_TRENDING:
+        this.getTrendingPosts();
+        break;
+      default:
+        this.isLoggedInUser = true;
+        this.getAllPosts();
+        break;
     }
   }
 

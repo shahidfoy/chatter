@@ -16,7 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class PostModalComponent implements OnInit, OnChanges {
 
-  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/edit-post-image`;
+  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-post-image`;
 
   @Input() isVisible: boolean;
   @Input() editPostAction: boolean;
@@ -24,6 +24,7 @@ export class PostModalComponent implements OnInit, OnChanges {
   @Output() newPostOutput = new EventEmitter<void>();
 
   private readonly BACKSPACE: string = 'Backspace';
+  private readonly ENTER: string = 'Enter';
 
   postForm: FormGroup;
   loading: boolean;
@@ -76,6 +77,7 @@ export class PostModalComponent implements OnInit, OnChanges {
    */
   updatePost() {
     this.postService.editPost(this.postForm.value).subscribe((data: Post) => {
+      this.displaySuccess('updating post!');
       window.location.reload();
     }, (err: HttpErrorResponse) => {
       this.displayError(err.error.message);
@@ -93,6 +95,26 @@ export class PostModalComponent implements OnInit, OnChanges {
   }
 
   /**
+   * deletes post
+   */
+  handleDeletePost() {
+    if (this.post.picId) {
+      this.imageService
+        .deletePostImage(this.post.picId)
+        .subscribe(() => {}, (err: Error) => this.displayError(err.message));
+    }
+    this.postService
+      .deletePost(this.post._id)
+      .subscribe(() => {
+        this.displaySuccess('post has been deleted');
+        setTimeout(() => {
+          window.location.reload();
+          this.handleModalCancel();
+        }, 1000);
+      }, (err: Error) => this.displayError(err.message));
+  }
+
+  /**
    * closes model when user clicks away from modal
    * updates users profile image
    */
@@ -104,12 +126,8 @@ export class PostModalComponent implements OnInit, OnChanges {
   /**
    * gets keyboard event and updates post message
    */
-  editPost(event: KeyboardEvent) {
-    if (event.key === this.BACKSPACE) {
-      this.post.post = this.post.post.substring(0, this.post.post.length - 1);
-    } else {
-      this.post.post += event.key;
-    }
+  editPost(event: KeyboardEvent, post: string) {
+    this.post.post = post;
   }
 
   /**
@@ -159,8 +177,10 @@ export class PostModalComponent implements OnInit, OnChanges {
     this.imageCount = info.fileList.length;
     switch (info.file.status) {
       case 'uploading':
+        console.log('UPLOADING');
         break;
       case 'done':
+        console.log('DONE');
         this.imageService.beforeUpload(info.file.originFileObj).subscribe((uploadResult) => {
           if (uploadResult) {
             this.imageService.getBase64(info.file.originFileObj, (img: string) => {
@@ -188,7 +208,15 @@ export class PostModalComponent implements OnInit, OnChanges {
    * displays error message
    * @param message error message
    */
+  private displaySuccess(message: string) {
+    this.notification.create('success', 'Success', message);
+  }
+
+  /**
+   * displays error message
+   * @param message error message
+   */
   private displayError(message: string) {
-    this.notification.create('warning', 'unable to post', message);
+    this.notification.create('warning', 'unable to edit post', message);
   }
 }

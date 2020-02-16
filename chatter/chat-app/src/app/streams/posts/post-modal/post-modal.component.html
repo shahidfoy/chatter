@@ -14,9 +14,10 @@
   <!-- edit post -->
   <form class="post" [formGroup]="postForm" *ngIf="editPostAction; else viewPost">
     <textarea
+      #postInput
       nz-input
       formControlName="post"
-      (keydown)="editPost($event)"
+      (keyup)="editPost($event, postInput.value)"
       rows="2">{{ post.post }}</textarea>
 
     <img [src]="postImage"/>
@@ -60,6 +61,7 @@
 </ng-template>
 
 <ng-template #modalFooter>
+  <button nz-button nzType="danger" *ngIf="editPostAction" (click)="handleDeletePost()">Delete</button>
   <button nz-button nzType="primary" *ngIf="editPostAction" (click)="handleModalOk()">Update</button>
 </ng-template>
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Post, Req } from '@nestjs/common';
+import { Controller, Body, Post, Req, Delete, Param } from '@nestjs/common';
 import { ImagesService } from './images.service';
 import { CustomRequest } from 'src/interfaces/custom-request.interface';
 import { CloudinaryResponse } from './interfaces/cloudinary-response';
@@ -43,5 +43,12 @@ export class ImagesController {
         @Body('postImage') postImage: string,
     ): Promise<CloudinaryResponse> {
         return this.imagesService.editPostImage(post, postImage);
+    }
+
+    @Delete('delete-post-image/:picId')
+    async deletePostImage(
+        @Param('picId') picId: string,
+    ): Promise<any> {
+        return this.imagesService.deletePostImage(picId);
     }
 }

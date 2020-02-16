@@ -14,7 +14,10 @@ import { ChangePasswordModalComponent } from './change-password/change-password-
 import { GenericErrorHandler } from './services/generic-error.handler';
 import { NgxMasonryModule } from 'ngx-masonry';
 import { ImageService } from './services/image.service';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { environment } from '../../environments/environment';
 
+const socketConfig: SocketIoConfig = { url: `${environment.BASEURL}`, options: {} };
 
 @NgModule({
   declarations: [
@@ -32,8 +35,10 @@ import { ImageService } from './services/image.service';
     FormsModule,
     ReactiveFormsModule,
     NgxMasonryModule,
+    SocketIoModule.forRoot(socketConfig),
   ],
   exports: [
+    SocketIoModule,
     NgZorroAntdModule,
     HttpClientModule,
     FormsModule,

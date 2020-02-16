@@ -5,7 +5,7 @@ import { Post } from '../../interfaces/post.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { ImageService } from '../../../shared/services/image.service';
-import { Subject, Observable, Observer } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
 import { environment } from 'src/environments/environment';
 import { PayloadData } from 'src/app/shared/interfaces/jwt-payload.interface';
@@ -18,7 +18,7 @@ import { TokenService } from 'src/app/shared/services/token.service';
 })
 export class PostFormComponent implements OnInit {
 
-  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/edit-post-image`;
+  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-post-image`;
 
   postForm: FormGroup;
   @Input() isMobile: boolean;

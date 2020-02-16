@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/users/models/user.model';
@@ -15,7 +15,6 @@ cloudinary.config = cloudinaryConfig;
 export class ImagesService {
     constructor(
         @InjectModel('User') private readonly userModel: Model<User>,
-        @InjectModel('Post') private readonly postModel: Model<UserPost>,
     ) {}
 
     /**
@@ -29,7 +28,7 @@ export class ImagesService {
             const user = await this.userModel.findOne({
                 _id: req.user._id,
             });
-            cloudinary.uploader.destroy(user.picId);
+            this.deletePostImage(user.picId);
 
             return new Promise((resolve, reject) => {
 
@@ -76,19 +75,33 @@ export class ImagesService {
      * @param image post image
      */
     async editPostImage(post: UserPost, image: string): Promise<CloudinaryResponse> {
-        if (image) {
-            return new Promise((resolve, reject) => {
-                cloudinary.uploader.upload(image, async (error: Cloudinary.ErrorCallBack, result: CloudinaryResponse) => {
-                    if (error) {
-                        throw new InternalServerErrorException({ message: `Error retrieving profile image ${error}` });
-                    }
-
-                    cloudinary.uploader.destroy(post.picId);
-                    resolve(result);
-                });
-            });
+        if (!image) {
+            throw new BadRequestException({ message: `Error bad request unable to edit image` });
         }
 
-        return null;
+        return new Promise((resolve, reject) => {
+            cloudinary.uploader.upload(image, async (error: Cloudinary.ErrorCallBack, result: CloudinaryResponse) => {
+                if (error) {
+                    throw new InternalServerErrorException({ message: `Error retrieving post image ${error}` });
+                }
+
+                this.deletePostImage(post.picId);
+                resolve(result);
+            });
+        });
+    }
+
+    /**
+     * deletes post image
+     * @param picId post pic id
+     */
+    async deletePostImage(picId: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            cloudinary.uploader.destroy(picId).then(() => {
+                resolve();
+            }).catch(err => {
+                throw new InternalServerErrorException({ message: `Error deleting image ${err}` });
+            });
+        });
     }
 }

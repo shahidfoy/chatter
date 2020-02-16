@@ -5,15 +5,15 @@ import { ChatParams } from '../interfaces/chat-params.interface';
 @WebSocketGateway()
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @WebSocketServer() server: Server;
-    counter = 0;
+    // counter = 0;
 
     async handleConnection() {
-        this.counter++;
+        // this.counter++;
         // console.log('user socket handling connections', this.counter);
     }
 
     async handleDisconnect() {
-        this.counter--;
+        // this.counter--;
         // console.log('user socket disconnecting', this.counter);
     }
 
