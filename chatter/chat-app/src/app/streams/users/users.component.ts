@@ -97,6 +97,9 @@ export class UsersComponent implements OnInit {
     return _.find(array, [ 'userFollowed._id', userId ]);
   }
 
+  /**
+   * populates users based on route url path
+   */
   private populateUsers() {
     switch (this.activatedRoute.snapshot.url[0].path) {
       case 'followers':
@@ -138,37 +141,24 @@ export class UsersComponent implements OnInit {
   private populateFollowersListByUsername() {
     const usernameParam = this.activatedRoute.snapshot.params.username;
     if (usernameParam) {
-      this.userFollowersList(usernameParam);
+      this.getUsersList(usernameParam, 'followers');
 
       this.userService.receiveNewFollowSocket().subscribe(() => {
         this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
           this.loggedInUser = user;
         });
-        this.userFollowersList(usernameParam);
+        this.getUsersList(usernameParam, 'followers');
       });
     } else {
-      this.userFollowersList(this.loggedInUserToken.username);
+      this.getUsersList(this.loggedInUserToken.username, 'followers');
 
       this.userService.receiveNewFollowSocket().subscribe(() => {
         this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
           this.loggedInUser = user;
         });
-        this.userFollowersList(this.loggedInUserToken.username);
+        this.getUsersList(this.loggedInUserToken.username, 'followers');
       });
     }
-  }
-
-  /**
-   * gets the list of people who follow the user
-   */
-  private userFollowersList(username: string) {
-    this.userService.getUserByUsername(username).subscribe((user: User) => {
-      this.loggedInUser = user;
-      this.users = this.loggedInUser.followers
-                    .map((userFollowing: UserFollowing) => userFollowing.userFollower);
-      _.remove(this.users, { username: this.loggedInUser.username });
-      // _.remove(this.users, { username: this.loggedInUserData.username });
-    });
   }
 
   /**
@@ -177,36 +167,41 @@ export class UsersComponent implements OnInit {
   private populateFollowingListByUsername() {
     const usernameParam = this.activatedRoute.snapshot.params.username;
     if (usernameParam) {
-      this.userIsFollowingList(usernameParam);
+      this.getUsersList(usernameParam, 'following');
 
       this.userService.receiveNewFollowSocket().subscribe(() => {
         this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
           this.loggedInUser = user;
         });
-        this.userIsFollowingList(usernameParam);
+        this.getUsersList(usernameParam, 'following');
       });
     } else {
-      this.userIsFollowingList(this.loggedInUserToken.username);
+      this.getUsersList(this.loggedInUserToken.username, 'following');
 
       this.userService.receiveNewFollowSocket().subscribe(() => {
         this.userService.getUserById(this.loggedInUserToken._id).subscribe((user: User) => {
           this.loggedInUser = user;
         });
-        this.userIsFollowingList(this.loggedInUserToken.username);
+        this.getUsersList(this.loggedInUserToken.username, 'following');
       });
     }
   }
 
   /**
-   * gets the list of people who the user is following
+   * gets the list of people who follow the user
    */
-  private userIsFollowingList(username: string) {
+  private getUsersList(username: string, type: string) {
     this.userService.getUserByUsername(username).subscribe((user: User) => {
       this.loggedInUser = user;
-      this.users = this.loggedInUser.following
-                    .map((userFollow: UserFollowed) => userFollow.userFollowed);
-      _.remove(this.users, { username: this.loggedInUser.username });
-      // _.remove(this.users, { username: this.loggedInUserData.username });
+      if (type === 'followers') {
+        this.users = this.loggedInUser.followers
+                      .map((userFollowing: UserFollowing) => userFollowing.userFollower);
+        _.remove(this.users, { username: this.loggedInUser.username });
+      } else if (type === 'following') {
+        this.users = this.loggedInUser.following
+                      .map((userFollow: UserFollowed) => userFollow.userFollowed);
+        _.remove(this.users, { username: this.loggedInUser.username });
+      }
     });
   }
 }
