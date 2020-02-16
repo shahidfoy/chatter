@@ -1,6 +1,8 @@
 <nz-content>
   <h3 class="margin-left-24">USERS</h3>
   <!-- TODO ADD USER SEARCH FEATURE -->
+
+  <app-loading *ngIf="isLoading"></app-loading>
   <div class="users">
 
     <div *ngFor="let user of users">

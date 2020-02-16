@@ -16,6 +16,7 @@ import { NgxMasonryModule } from 'ngx-masonry';
 import { ImageService } from './services/image.service';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { environment } from '../../environments/environment';
+import { LoadingComponent } from './loading/loading.component';
 
 const socketConfig: SocketIoConfig = { url: `${environment.BASEURL}`, options: {} };
 
@@ -27,6 +28,7 @@ const socketConfig: SocketIoConfig = { url: `${environment.BASEURL}`, options: {
     ActionBarComponent,
     SideNavComponent,
     ChangePasswordModalComponent,
+    LoadingComponent,
   ],
   imports: [
     RouterModule,
@@ -49,6 +51,7 @@ const socketConfig: SocketIoConfig = { url: `${environment.BASEURL}`, options: {
     ActionBarComponent,
     SideNavComponent,
     ChangePasswordModalComponent,
+    LoadingComponent,
   ],
   providers: [
     ImageService,

@@ -15,6 +15,7 @@ import { ImageService } from 'src/app/shared/services/image.service';
 })
 export class NotificationsComponent implements OnInit {
 
+  isLoading = true;
   initLoading: boolean;
   loadingMore: boolean;
   data: any[] = [];
@@ -105,6 +106,7 @@ export class NotificationsComponent implements OnInit {
       this.loggedInUserData = user;
       this.chatList = user.chatList;
       this.initLoading = false;
+      this.isLoading = false;
     });
   }
 }

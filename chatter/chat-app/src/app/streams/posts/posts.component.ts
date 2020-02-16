@@ -30,6 +30,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
   userData: User;
   editPost: Post;
 
+  isLoading = true;
   updateMasonry = false;
   isLoggedInUser = false;
   editUserPost = false;
@@ -232,21 +233,10 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * gets all posts
    */
   private getAllPosts() {
-    if (this.isMobile) {
-        this.postService.getPosts().subscribe(posts => {
-          setTimeout(() => {
-            this.posts = posts;
-          }, 500);
-        });
-    } else {
-      this.postService.getPosts().subscribe(posts => {
-        this.posts = posts;
-      });
-    }
-
-    setTimeout(() => {
-      this.updateMasonry = true;
-    }, 1000);
+    this.postService.getPosts().subscribe(posts => {
+      this.posts = posts;
+      this.isLoading = false;
+    });
   }
 
   /**
@@ -260,25 +250,16 @@ export class PostsComponent implements OnInit, AfterViewInit {
       this.posts.sort((current, next) => {
         return +new Date(next.createdAt) - +new Date(current.createdAt);
       });
-      setTimeout(() => {
-        this.updateMasonry = true;
-      }, 1000);
+      this.isLoading = false;
     });
   }
 
   private getTrendingPosts() {
     this.isTrending = true;
-    if (this.isMobile) {
-      setTimeout(() => {
-        this.postService.getTrendingPosts().subscribe(posts => {
-          this.posts = posts;
-        });
-      }, 500);
-    } else {
-      this.postService.getTrendingPosts().subscribe(posts => {
-        this.posts = posts;
-      });
-    }
+    this.postService.getTrendingPosts().subscribe(posts => {
+      this.posts = posts;
+      this.isLoading = false;
+    });
   }
 
   /**

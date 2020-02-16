@@ -25,6 +25,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   message: string;
   messages: MessageContents[];
   typing = false;
+  isLoading = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -155,6 +156,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     this.messageService.getMessages(senderId, receiverId).subscribe((data: Message) => {
       if (data !== null) {
         this.messages = data.message;
+        this.isLoading = false;
       }
     });
   }

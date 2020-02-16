@@ -1,5 +1,7 @@
 <div style="margin: 30px;">
 
+  <app-loading *ngIf="isLoading"></app-loading>
+
   <!-- add to nz-list for pagination [nzLoadMore]="loadMore" -->
   <nz-list
     class="notifications-list"
