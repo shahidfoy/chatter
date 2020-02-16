@@ -30,6 +30,8 @@ export class HeaderComponent implements OnInit {
     this.username = this.payload.username;
     this.getUser();
 
+    this.avatarUrl = this.imageService.getDefaultProfileImage();
+
     this.imageService.profileImageSubject.subscribe((imageUrl: string) => {
       this.avatarUrl = imageUrl;
     });
