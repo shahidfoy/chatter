@@ -6,6 +6,7 @@
       (click)="markAllNotifications()">Mark all as read</button>
   </div>
 
+  <app-loading *ngIf="isLoading"></app-loading>
   <!-- add to nz-list for pagination [nzLoadMore]="loadMore" -->
   <nz-list
     class="notifications-list"

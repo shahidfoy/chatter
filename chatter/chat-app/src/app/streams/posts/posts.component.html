@@ -1,5 +1,6 @@
 <app-post-form *ngIf="isLoggedInUser && !isTrending" [isMobile]="isMobile"></app-post-form>
 
+<app-loading *ngIf="isLoading"></app-loading>
 <nz-content class="posts">
     <ngx-masonry
       [options]="{ transitionDuration: '0.0s' }" [updateLayout]="updateMasonry">

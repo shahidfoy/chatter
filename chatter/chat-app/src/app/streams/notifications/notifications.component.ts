@@ -13,6 +13,7 @@ import { ImageService } from '../../shared/services/image.service';
 })
 export class NotificationsComponent implements OnInit {
 
+  isLoading = true;
   initLoading: boolean;
   loadingMore: boolean;
   data: any[] = [];
@@ -111,6 +112,7 @@ export class NotificationsComponent implements OnInit {
                                 });
       this.list = this.notifications.map(notification => ({ loading: false, notification }));
       this.initLoading = false;
+      this.isLoading = false;
     });
   }
 }

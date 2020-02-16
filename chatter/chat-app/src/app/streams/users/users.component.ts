@@ -17,6 +17,7 @@ import { UserFollowing } from '../interfaces/user-following.interface';
 })
 export class UsersComponent implements OnInit {
 
+  isLoading = true;
   users: User[];
   loggedInUserToken: PayloadData;
   loggedInUser: User;
@@ -123,6 +124,7 @@ export class UsersComponent implements OnInit {
   private getUsers() {
     this.userService.getUsers().subscribe((users: User[]) => {
       this.users = users;
+      this.isLoading = false;
     });
   }
 
@@ -165,6 +167,7 @@ export class UsersComponent implements OnInit {
         this.users = user.following
                       .map((userFollow: UserFollowed) => userFollow.userFollowed);
       }
+      this.isLoading = false;
     });
   }
 }
