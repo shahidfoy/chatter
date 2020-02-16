@@ -5,7 +5,7 @@ import { Post } from '../../interfaces/post.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { ImageService } from '../../../shared/services/image.service';
-import { Subject, Observable, Observer } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
 import { environment } from 'src/environments/environment';
 import { PayloadData } from 'src/app/shared/interfaces/jwt-payload.interface';

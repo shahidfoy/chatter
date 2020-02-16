@@ -5,7 +5,6 @@ import { User } from '../../shared/interfaces/user.interface';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationStateService } from 'src/app/shared/services/application-state.service';
 import { UserService } from '../services/user.service';
-import { Post } from '../interfaces/post.interface';
 import * as _ from 'lodash';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { UserFollowing } from '../interfaces/user-following.interface';

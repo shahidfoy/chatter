@@ -24,6 +24,7 @@ export class PostModalComponent implements OnInit, OnChanges {
   @Output() newPostOutput = new EventEmitter<void>();
 
   private readonly BACKSPACE: string = 'Backspace';
+  private readonly ENTER: string = 'Enter';
 
   postForm: FormGroup;
   loading: boolean;
@@ -126,10 +127,17 @@ export class PostModalComponent implements OnInit, OnChanges {
    * gets keyboard event and updates post message
    */
   editPost(event: KeyboardEvent) {
+    console.log('EVENT', event);
+    const regexPost = /[0-9]*[^0-9]*/g;
     if (event.key === this.BACKSPACE) {
       this.post.post = this.post.post.substring(0, this.post.post.length - 1);
+    } else if (event.key === this.ENTER) {
+      this.post.post += '\n';
     } else {
-      this.post.post += event.key;
+      if (regexPost.test(event.key)) {
+        this.post.post += event.key;
+        console.log('post', this.post.post);
+      }
     }
   }
 
