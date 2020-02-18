@@ -236,6 +236,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
     this.postService.getPosts().subscribe(posts => {
       this.posts = posts;
       this.isLoading = false;
+      this.updateMasonry = true;
     });
   }
 
@@ -251,6 +252,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
         return +new Date(next.createdAt) - +new Date(current.createdAt);
       });
       this.isLoading = false;
+      this.updateMasonry = true;
     });
   }
 
@@ -259,6 +261,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
     this.postService.getTrendingPosts().subscribe(posts => {
       this.posts = posts;
       this.isLoading = false;
+      this.updateMasonry = true;
     });
   }
 
