@@ -36,6 +36,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
   editUserPost = false;
   isPostVisible = false;
   isTrending = false;
+  page = 0;
 
   constructor(
     private tokenService: TokenService,
@@ -103,6 +104,15 @@ export class PostsComponent implements OnInit, AfterViewInit {
     // this.router.navigate(['streams/post', post._id]);
     this.editPost = post;
     this.isPostVisible = true;
+  }
+
+  loadMorePosts() {
+    this.page++;
+    this.postService.getPosts(this.page).subscribe(posts => {
+      this.posts = this.posts.concat(posts);
+      this.isLoading = false;
+      this.updateMasonry = true;
+    });
   }
 
   /**
@@ -245,14 +255,14 @@ export class PostsComponent implements OnInit, AfterViewInit {
    */
   private getUser(username: string) {
     this.userService.getUserByUsername(username).subscribe((user: User) => {
-      this.posts = [];
       this.userData = user;
-      this.posts = user.posts.map(post => post.postId as Post);
-      this.posts.sort((current, next) => {
-        return +new Date(next.createdAt) - +new Date(current.createdAt);
+
+      this.postService.getPostsByUserId(user._id).subscribe((posts: Post[]) => {
+        this.posts = [];
+        this.posts = posts;
+        this.isLoading = false;
+        this.updateMasonry = true;
       });
-      this.isLoading = false;
-      this.updateMasonry = true;
     });
   }
 

@@ -43,7 +43,6 @@ export class AuthService {
         });
 
         const { error, value } = schema.validate({ username, email, password });
-
         if (error && error.details) {
             throw new BadRequestException({ message: error.details[0].message });
         }
@@ -56,7 +55,6 @@ export class AuthService {
         if (userEmail) {
             throw new ConflictException({ message: 'Email already exists' });
         }
-
         const userName = await this.userModel.findOne({ username });
         if (userName) {
             throw new ConflictException({ message: 'Username already exists' });

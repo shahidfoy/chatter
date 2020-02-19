@@ -6,13 +6,6 @@ export const UserSchema =  new mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     onlineStatus: { type: String },
-    posts: [
-        {
-            postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
-            post: { type: String },
-            createdAt: { type: Date, default: Date.now() },
-        },
-    ],
     following: [
         { userFollowed: { type: mongoose.Schema.Types.ObjectId, ref: 'User'} },
     ],

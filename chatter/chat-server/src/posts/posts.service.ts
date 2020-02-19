@@ -9,6 +9,9 @@ import { Tag } from './models/tag.model';
 @Injectable()
 export class PostsService {
 
+    private limit = 10;
+    private skip = 0;
+
     constructor(
         @InjectModel('User') private readonly userModel: Model<User>,
         @InjectModel('Post') private readonly postModel: Model<UserPost>,
@@ -18,15 +21,35 @@ export class PostsService {
     /**
      * gets all user posts
      */
-    async getPosts(): Promise<UserPost[]> {
+    async getPosts(page: number = 0): Promise<UserPost[]> {
+        this.skip = page * this.limit;
         try {
-            const posts = await this.postModel.find({})
+            // const posts = await this.postModel.find({}, {}, { this.skip, this.limit })
+            const posts = await this.postModel.find()
                 .populate('user')
                 .sort({ createdAt: -1 });
             return posts;
         } catch (err) {
             throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
         }
+    }
+
+    /**
+     * gets posts by user id
+     * @param userId user id
+     * @param page current page
+     */
+    async getPostsByUserId(userId: string, page: number = 0): Promise<UserPost[]> {
+        this.skip = page * this.limit;
+        try {
+            const posts = await this.postModel.find({
+                user: userId,
+            }).populate('user').sort({ createdAt: -1 });
+            return posts;
+        } catch (err) {
+            throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
+        }
+
     }
 
     /**

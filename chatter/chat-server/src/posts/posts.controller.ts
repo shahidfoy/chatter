@@ -10,9 +10,22 @@ export class PostsController {
     /**
      * gets all posts
      */
-    @Get()
-    async getPosts(): Promise<UserPost[]> {
-        return this.postsService.getPosts();
+    @Get('all/:page')
+    async getPosts(
+        @Param('page') page: number = 0,
+    ): Promise<UserPost[]> {
+        return this.postsService.getPosts(page);
+    }
+
+    /**
+     * gets posts by user id
+     * @param userId user id
+     */
+    @Get('userId/:userId')
+    async getPostsByUserId(
+        @Param('userId') userId: string,
+    ): Promise<UserPost[]> {
+        return this.postsService.getPostsByUserId(userId);
     }
 
     /**
