@@ -21,19 +21,22 @@ export class PostsController {
      * gets posts by user id
      * @param userId user id
      */
-    @Get('userId/:userId')
+    @Get('userId/:userId/:page')
     async getPostsByUserId(
         @Param('userId') userId: string,
+        @Param('page') page: number = 0,
     ): Promise<UserPost[]> {
-        return this.postsService.getPostsByUserId(userId);
+        return this.postsService.getPostsByUserId(userId, page);
     }
 
     /**
      * gets trending posts
      */
-    @Get('trending')
-    async getTrendingPosts(): Promise<UserPost[]> {
-        return this.postsService.getTrendingPosts();
+    @Get('trending/:page')
+    async getTrendingPosts(
+        @Param('page') page: number = 0,
+    ): Promise<UserPost[]> {
+        return this.postsService.getTrendingPosts(page);
     }
 
     /**

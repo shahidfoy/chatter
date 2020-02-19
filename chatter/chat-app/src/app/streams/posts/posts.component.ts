@@ -8,8 +8,8 @@ import { TokenService } from '../../shared/services/token.service';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { timeFromNow } from 'src/app/shared/shared.utils';
-import { User } from 'src/app/shared/interfaces/user.interface';
+import { timeFromNow } from '../../shared/shared.utils';
+import { User } from '../../shared/interfaces/user.interface';
 import { ImageService } from '../../shared/services/image.service';
 import { UserService } from '../services/user.service';
 
@@ -22,21 +22,23 @@ export class PostsComponent implements OnInit, AfterViewInit {
 
   private readonly PATH_PROFILE = 'profile';
   private readonly PATH_TRENDING = 'trending';
+  private readonly LIMIT = 15;
+  private PAGE = 0;
 
   isMobile: boolean;
   payload: PayloadData;
   username: string;
-  posts: Post[];
+  posts: Post[] = [];
   userData: User;
   editPost: Post;
 
   isLoading = true;
+  paginateMorePosts = true;
   updateMasonry = false;
   isLoggedInUser = false;
   editUserPost = false;
   isPostVisible = false;
   isTrending = false;
-  page = 0;
 
   constructor(
     private tokenService: TokenService,
@@ -104,15 +106,6 @@ export class PostsComponent implements OnInit, AfterViewInit {
     // this.router.navigate(['streams/post', post._id]);
     this.editPost = post;
     this.isPostVisible = true;
-  }
-
-  loadMorePosts() {
-    this.page++;
-    this.postService.getPosts(this.page).subscribe(posts => {
-      this.posts = this.posts.concat(posts);
-      this.isLoading = false;
-      this.updateMasonry = true;
-    });
   }
 
   /**
@@ -213,6 +206,42 @@ export class PostsComponent implements OnInit, AfterViewInit {
     return '';
   }
 
+  loadMorePosts() {
+    this.PAGE++;
+    this.updateMasonry = false;
+    if (this.paginateMorePosts) {
+      switch (this.activatedRoute.snapshot.url[0].path) {
+        case this.PATH_PROFILE:
+          const pathUsername = this.activatedRoute.snapshot.url[1];
+          if (pathUsername && pathUsername.path !== this.payload.username) {
+            this.isLoggedInUser = false;
+            this.getUser(pathUsername.path);
+          } else {
+            this.isLoggedInUser = true;
+            this.getUser(this.username);
+          }
+          break;
+        case this.PATH_TRENDING:
+          this.postService.getTrendingPosts(this.PAGE).subscribe(posts => {
+            if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
+            this.posts = this.posts.concat(posts);
+            this.isLoading = false;
+            this.updateMasonry = true;
+          });
+          break;
+        default:
+          this.isLoggedInUser = true;
+          this.postService.getPosts(this.PAGE).subscribe(posts => {
+            if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
+            this.posts = this.posts.concat(posts);
+            this.isLoading = false;
+            this.updateMasonry = true;
+          });
+          break;
+      }
+    }
+  }
+
   /**
    * sets up which posts will be displayed
    * gets all posts or gets a users posts
@@ -243,7 +272,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * gets all posts
    */
   private getAllPosts() {
-    this.postService.getPosts().subscribe(posts => {
+    this.postService.getPosts(this.PAGE).subscribe(posts => {
       this.posts = posts;
       this.isLoading = false;
       this.updateMasonry = true;
@@ -257,9 +286,9 @@ export class PostsComponent implements OnInit, AfterViewInit {
     this.userService.getUserByUsername(username).subscribe((user: User) => {
       this.userData = user;
 
-      this.postService.getPostsByUserId(user._id).subscribe((posts: Post[]) => {
-        this.posts = [];
-        this.posts = posts;
+      this.postService.getPostsByUserId(user._id, this.PAGE).subscribe((posts: Post[]) => {
+        if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
+        this.posts = this.posts.length < 1 ?  posts : this.posts.concat(posts);
         this.isLoading = false;
         this.updateMasonry = true;
       });
@@ -268,7 +297,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
 
   private getTrendingPosts() {
     this.isTrending = true;
-    this.postService.getTrendingPosts().subscribe(posts => {
+    this.postService.getTrendingPosts(this.PAGE).subscribe(posts => {
       this.posts = posts;
       this.isLoading = false;
       this.updateMasonry = true;

@@ -1,76 +1,84 @@
-<app-post-form *ngIf="isLoggedInUser && !isTrending" [isMobile]="isMobile"></app-post-form>
+<div>
+  <app-post-form *ngIf="isLoggedInUser && !isTrending" [isMobile]="isMobile"></app-post-form>
 
-<app-loading *ngIf="isLoading"></app-loading>
-<nz-content class="posts">
-    <ngx-masonry
-      [options]="{ transitionDuration: '0.0s' }" [updateLayout]="updateMasonry">
-      <div ngxMasonryItem
-        class="inner-content"
-        *ngFor="let post of posts"
-        [ngClass]="{'mobile-content': isMobile}">
-        <div class="content">
+  <app-loading *ngIf="isLoading"></app-loading>
+  <nz-content class="posts">
+      <ngx-masonry
+        [options]="{ transitionDuration: '0.0s' }" [updateLayout]="updateMasonry">
+        <div ngxMasonryItem
+          class="inner-content"
+          *ngFor="let post of posts"
+          [ngClass]="{'mobile-content': isMobile}">
+          <div class="content">
 
-            <nz-comment [nzAuthor]="post.username" [nzDatetime]="timeFromNow(post.createdAt)">
-              <nz-avatar
-                [routerLink]="['/streams/profile/', post.username]"
-                nz-comment-avatar
-                nzIcon="user"
-                [nzSrc]="getAvatarUrl(post.user)"
-                [nzSize]="'large'"></nz-avatar>
+              <nz-comment [nzAuthor]="post.username" [nzDatetime]="timeFromNow(post.createdAt)">
+                <nz-avatar
+                  [routerLink]="['/streams/profile/', post.username]"
+                  nz-comment-avatar
+                  nzIcon="user"
+                  [nzSrc]="getAvatarUrl(post.user)"
+                  [nzSize]="'large'"></nz-avatar>
 
-            </nz-comment>
+              </nz-comment>
 
-            <nz-comment>
-              <nz-comment-content>
-                <p class="post">{{ post.post }}</p>
-                <img [src]="getPostImage(post)"/>
-                <br>
-                <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag>
-              </nz-comment-content>
-              <nz-comment-action>
-                <i
-                  nz-icon
-                  nzType="like"
-                  [theme]="checkUserInArray(post.likes, username) ? 'twotone' : 'outline'"
-                  (click)="like(post)"
-                ></i>
-                <span class="count like">{{ post.totalLikes }}</span>
-              </nz-comment-action>
-              <nz-comment-action>
-                <i
-                  nz-icon
-                  nzType="dislike"
-                  [theme]="checkUserInArray(post.dislikes, username) ? 'twotone' : 'outline'"
-                  (click)="dislike(post)"
-                ></i>
-                <span class="count dislike">{{ post.totalDislikes }}</span>
-              </nz-comment-action>
-              <nz-comment-action >
-                <span (click)="openComments(post)">
+              <nz-comment>
+                <nz-comment-content>
+                  <p class="post">{{ post.post }}</p>
+                  <img [src]="getPostImage(post)"/>
+                  <br>
+                  <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag>
+                </nz-comment-content>
+                <nz-comment-action>
                   <i
                     nz-icon
-                    nzType="message"
-                    [theme]="checkUserInArray(post.comments, username) ? 'twotone' : 'outline'">
-                  </i> comments {{ post.comments.length }}
-                </span>
-              </nz-comment-action>
-              <nz-comment-action>
-                <button
-                  *ngIf="isloggedInUsersPost(post.username)"
-                  (click)="openEditPostModal(post)"
-                  class="float-right"
-                  nz-button
-                  [nzSize]="'small'"
-                  nzType="default">Edit</button>
-              </nz-comment-action>
-            </nz-comment>
+                    nzType="like"
+                    [theme]="checkUserInArray(post.likes, username) ? 'twotone' : 'outline'"
+                    (click)="like(post)"
+                  ></i>
+                  <span class="count like">{{ post.totalLikes }}</span>
+                </nz-comment-action>
+                <nz-comment-action>
+                  <i
+                    nz-icon
+                    nzType="dislike"
+                    [theme]="checkUserInArray(post.dislikes, username) ? 'twotone' : 'outline'"
+                    (click)="dislike(post)"
+                  ></i>
+                  <span class="count dislike">{{ post.totalDislikes }}</span>
+                </nz-comment-action>
+                <nz-comment-action >
+                  <span (click)="openComments(post)">
+                    <i
+                      nz-icon
+                      nzType="message"
+                      [theme]="checkUserInArray(post.comments, username) ? 'twotone' : 'outline'">
+                    </i> comments {{ post.comments.length }}
+                  </span>
+                </nz-comment-action>
+                <nz-comment-action>
+                  <button
+                    *ngIf="isloggedInUsersPost(post.username)"
+                    (click)="openEditPostModal(post)"
+                    class="float-right"
+                    nz-button
+                    [nzSize]="'small'"
+                    nzType="default">Edit</button>
+                </nz-comment-action>
+              </nz-comment>
+          </div>
         </div>
-      </div>
-    </ngx-masonry>
+      </ngx-masonry>
+  </nz-content>
 
-    <!-- <button (click)="loadMorePosts()">load more</button> -->
-</nz-content>
-
+  <div class="load-more" >
+    <!-- <button nz-button >load more</button> -->
+    <button
+      *ngIf="paginateMorePosts"
+      nz-button
+      nzShape="round"
+      (click)="loadMorePosts()"><i nz-icon nzType="cloud-download"></i>Load More</button>
+  </div>
+</div>
 
 <!-- post edit modal -->
 <app-post-modal

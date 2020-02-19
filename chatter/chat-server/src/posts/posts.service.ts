@@ -9,8 +9,7 @@ import { Tag } from './models/tag.model';
 @Injectable()
 export class PostsService {
 
-    private limit = 10;
-    private skip = 0;
+    private limit = 15;
 
     constructor(
         @InjectModel('User') private readonly userModel: Model<User>,
@@ -22,10 +21,10 @@ export class PostsService {
      * gets all user posts
      */
     async getPosts(page: number = 0): Promise<UserPost[]> {
-        this.skip = page * this.limit;
+        const skip = page * this.limit;
         try {
-            // const posts = await this.postModel.find({}, {}, { this.skip, this.limit })
-            const posts = await this.postModel.find()
+            const posts = await this.postModel.find({}, {},
+                { skip, limit: this.limit })
                 .populate('user')
                 .sort({ createdAt: -1 });
             return posts;
@@ -40,16 +39,33 @@ export class PostsService {
      * @param page current page
      */
     async getPostsByUserId(userId: string, page: number = 0): Promise<UserPost[]> {
-        this.skip = page * this.limit;
+        const skip = page * this.limit;
         try {
-            const posts = await this.postModel.find({
-                user: userId,
-            }).populate('user').sort({ createdAt: -1 });
+            const posts = await this.postModel.find({ user: userId }, {},
+                { skip, limit: this.limit })
+                .populate('user')
+                .sort({ createdAt: -1 });
             return posts;
         } catch (err) {
             throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
         }
+    }
 
+    /**
+     * gets all trending posts
+     * currently gets most likes
+     */
+    async getTrendingPosts(page: number = 0): Promise<UserPost[]> {
+        const skip = page * this.limit;
+        try {
+            const posts = await this.postModel.find({ totalLikes: { $gte: 3 } }, {},
+                { skip, limit: this.limit })
+                .populate('user')
+                .sort({ totalLikes: -1 });
+            return posts;
+        } catch (err) {
+            throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
+        }
     }
 
     /**
@@ -182,21 +198,6 @@ export class PostsService {
             });
         } catch (err) {
             throw new InternalServerErrorException({ message: 'Unable to delete post. Please try again later' });
-        }
-    }
-
-    /**
-     * gets all trending posts
-     * currently gets most likes
-     */
-    async getTrendingPosts(): Promise<UserPost[]> {
-        try {
-            const posts = await this.postModel.find({ totalLikes: { $gte: 3 } })
-                .populate('user')
-                .sort({ totalLikes: -1 });
-            return posts;
-        } catch (err) {
-            throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
         }
     }
 
