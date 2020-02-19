@@ -87,13 +87,20 @@ export class PostsComponent implements OnInit, AfterViewInit {
     return this.payload.username === username ? true : false;
   }
 
+  /**
+   * opens edit post modal
+   * @param post selected post
+   */
   openEditPostModal(post: Post) {
     this.editPost = post;
     this.isPostVisible = true;
     this.editUserPost = true;
   }
 
-  updatePost() {
+  /**
+   * hides post modal
+   */
+  hidePost() {
     this.isPostVisible = false;
     this.editUserPost = false;
   }
@@ -206,6 +213,9 @@ export class PostsComponent implements OnInit, AfterViewInit {
     return '';
   }
 
+  /**
+   * loads more posts using pagination
+   */
   loadMorePosts() {
     this.PAGE++;
     this.updateMasonry = false;
