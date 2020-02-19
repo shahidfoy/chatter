@@ -236,7 +236,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
             if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
             this.posts = this.posts.concat(posts);
             this.isLoading = false;
-            this.updateMasonry = true;
+            this.updateLayout();
           });
           break;
         default:
@@ -245,11 +245,20 @@ export class PostsComponent implements OnInit, AfterViewInit {
             if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
             this.posts = this.posts.concat(posts);
             this.isLoading = false;
-            this.updateMasonry = true;
+            this.updateLayout();
           });
           break;
       }
     }
+  }
+
+  /**
+   * updates masonry layout
+   */
+  private updateLayout() {
+    setTimeout(() => {
+      this.updateMasonry = true;
+    }, 3000);
   }
 
   /**
@@ -285,7 +294,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
     this.postService.getPosts(this.PAGE).subscribe(posts => {
       this.posts = posts;
       this.isLoading = false;
-      this.updateMasonry = true;
+      this.updateLayout();
     });
   }
 
@@ -300,7 +309,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
         if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
         this.posts = this.posts.length < 1 ?  posts : this.posts.concat(posts);
         this.isLoading = false;
-        this.updateMasonry = true;
+        this.updateLayout();
       });
     });
   }
@@ -310,7 +319,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
     this.postService.getTrendingPosts(this.PAGE).subscribe(posts => {
       this.posts = posts;
       this.isLoading = false;
-      this.updateMasonry = true;
+      this.updateLayout();
     });
   }
 
