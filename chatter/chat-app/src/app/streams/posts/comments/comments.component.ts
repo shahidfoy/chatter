@@ -14,13 +14,15 @@ import { ApplicationStateService } from 'src/app/shared/services/application-sta
 })
 export class CommentsComponent implements OnInit {
 
+  private readonly MAX_CHARS: number = 300;
+
   @Input() postId: string;
 
   isMobile: boolean;
   commentForm: FormGroup;
   post: Post;
   commentsArray: UserComment[];
-  charCount = 300;
+  charCount = this.MAX_CHARS;
   isLoading = false;
 
   constructor(
@@ -75,7 +77,7 @@ export class CommentsComponent implements OnInit {
    * @param commentValue post value
    */
   checkCharLength(commentValue: string) {
-    this.charCount = 300;
+    this.charCount = this.MAX_CHARS;
     this.charCount -= commentValue.length;
   }
 

@@ -18,8 +18,7 @@
       #postInput
       nz-input
       formControlName="post"
-      (keydown)="checkCharLength(postInput.value)"
-      (keyup)="editPost($event, postInput.value)"
+      (keyup)="[editPost($event, postInput.value), checkCharLength(postInput.value)]"
       rows="2">{{ post.post }}</textarea>
 
     <img [src]="postImage"/>

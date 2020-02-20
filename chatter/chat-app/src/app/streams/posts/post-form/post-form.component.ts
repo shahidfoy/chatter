@@ -18,8 +18,9 @@ import { TokenService } from 'src/app/shared/services/token.service';
 })
 export class PostFormComponent implements OnInit {
 
-  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-post-image`;
+  private readonly MAX_CHARS: number = 300;
 
+  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-post-image`;
   postForm: FormGroup;
   @Input() isMobile: boolean;
 
@@ -27,7 +28,7 @@ export class PostFormComponent implements OnInit {
   inputValue = '';
   postImage = '';
   imageCount = 0;
-  charCount = 300;
+  charCount = this.MAX_CHARS;
   submitting = false;
   isLoading = false;
 
@@ -159,7 +160,7 @@ export class PostFormComponent implements OnInit {
    * @param postValue post value
    */
   checkCharLength(postValue: string) {
-    this.charCount = 300;
+    this.charCount = this.MAX_CHARS;
     this.charCount -= postValue.length;
   }
 

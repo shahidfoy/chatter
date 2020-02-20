@@ -23,14 +23,13 @@ export class PostModalComponent implements OnInit, OnChanges {
   @Input() post: Post;
   @Output() newPostOutput = new EventEmitter<void>();
 
-  private readonly BACKSPACE: string = 'Backspace';
-  private readonly ENTER: string = 'Enter';
+  private readonly MAX_CHARS: number = 300;
 
   postForm: FormGroup;
   loading: boolean;
   postImage = '';
   imageCount = 0;
-  charCount = 300;
+  charCount = this.MAX_CHARS;
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +40,6 @@ export class PostModalComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    this.charCount -= this.post.post.length;
     this.postForm = this.fb.group({
       postId: this.post._id,
       post: [this.post.post, Validators.required],
@@ -202,7 +200,7 @@ export class PostModalComponent implements OnInit, OnChanges {
    * @param postValue post value
    */
   checkCharLength(postValue: string) {
-    this.charCount = 300;
+    this.charCount = this.MAX_CHARS;
     this.charCount -= postValue.length;
   }
 
@@ -212,6 +210,10 @@ export class PostModalComponent implements OnInit, OnChanges {
   private getPost() {
     this.postService.getPost(this.post._id).subscribe((post: Post) => {
       this.post = post;
+      console.log('post', this.post.post.length);
+      console.log('char', this.charCount);
+      this.charCount = this.MAX_CHARS;
+      this.charCount -= this.post.post.length;
     });
   }
 
