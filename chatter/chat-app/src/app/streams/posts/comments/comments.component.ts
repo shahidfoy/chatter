@@ -48,8 +48,6 @@ export class CommentsComponent implements OnInit {
     });
   }
 
-  // TODO:: limit comment length
-
   /**
    * gets user's avatar
    * @param user user

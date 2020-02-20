@@ -52,7 +52,6 @@ export class PostFormComponent implements OnInit {
   }
 
   // TODO:: add and retrieve tags for posts
-  // TODO:: add some form validations for post length and tags
   // TODO:: fix empty tag on enter bug
   // TODO:: limit tag length
 
