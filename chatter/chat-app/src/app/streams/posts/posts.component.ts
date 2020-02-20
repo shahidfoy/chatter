@@ -258,7 +258,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
   private updateLayout() {
     setTimeout(() => {
       this.updateMasonry = true;
-    }, 3000);
+    }, 1000);
   }
 
   /**
@@ -292,6 +292,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
    */
   private getAllPosts() {
     this.postService.getPosts(this.PAGE).subscribe(posts => {
+      if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
       this.posts = posts;
       this.isLoading = false;
       this.updateLayout();
@@ -317,6 +318,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
   private getTrendingPosts() {
     this.isTrending = true;
     this.postService.getTrendingPosts(this.PAGE).subscribe(posts => {
+      if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
       this.posts = posts;
       this.isLoading = false;
       this.updateLayout();

@@ -8,20 +8,12 @@ export interface User {
   email?: string;
   password?: string;
   onlineStatus?: string;
-  posts?: UserPost[];
   following?: UserFollowed[];
   followers?: UserFollowing[];
   notifications?: NotificationsObj[];
   chatList?: ChatList[];
   picVersion?: string;
   picId?: string;
-}
-
-export interface UserPost {
-  _id: string;
-  postId: string | Post;
-  post: string;
-  createdAt: Date;
 }
 
 export interface NotificationsObj {

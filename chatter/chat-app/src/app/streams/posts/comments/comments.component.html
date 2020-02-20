@@ -8,7 +8,14 @@
           <!-- change comment style make text area and button align -->
           <nz-comment-content>
             <nz-form-item>
-              <textarea nz-input formControlName="comment" rows="1" placeholder="add comment.."></textarea>
+              <textarea
+                #commentTextarea
+                nz-input
+                formControlName="comment"
+                rows="1"
+                (keydown)="checkCharLength(commentTextarea.value)"
+                placeholder="add comment.."></textarea>
+              <span class="float-right">Limit: {{ charCount }}</span>
             </nz-form-item>
             <nz-form-item>
               <button
@@ -16,7 +23,7 @@
                 [nzType]="'primary'"
                 class="float-right"
                 [nzLoading]="isLoading"
-                [disabled]="!commentForm.valid">
+                [disabled]="!commentForm.valid || charCount < 0">
                 Comment
               </button>
             </nz-form-item>

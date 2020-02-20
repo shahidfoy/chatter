@@ -92,7 +92,7 @@ export class PostsService {
      */
     async addPost(user: User, post: string, tags: string[], picVersion: number, picId: string): Promise<Partial<UserPost>> {
         const schema = Joi.object().keys({
-            post: Joi.string().required(),
+            post: Joi.string().required().max(300),
         });
         const { error } = schema.validate({ post });
 
@@ -148,7 +148,7 @@ export class PostsService {
      */
     async editPost(postId: string, post: string, tags: string[], picVersion: number, picId: string): Promise<Partial<UserPost>> {
         const schema = Joi.object().keys({
-            post: Joi.string().required(),
+            post: Joi.string().required().max(300),
         });
         const { error } = schema.validate({ post });
 
@@ -274,6 +274,15 @@ export class PostsService {
      * @param comment comment being added to post
      */
     async addComment(user: User, postId: string, comment: string): Promise<string> {
+        const schema = Joi.object().keys({
+            comment: Joi.string().required().max(300),
+        });
+        const { error } = schema.validate({ comment });
+
+        if (error && error.details) {
+            throw new BadRequestException({ message: error.details[0].message });
+        }
+
         return await this.postModel.updateOne({
             _id: postId,
         }, {

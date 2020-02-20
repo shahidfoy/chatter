@@ -17,10 +17,11 @@ export class CommentsComponent implements OnInit {
   @Input() postId: string;
 
   isMobile: boolean;
-  isLoading = false;
   commentForm: FormGroup;
   post: Post;
   commentsArray: UserComment[];
+  charCount = 300;
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -67,6 +68,15 @@ export class CommentsComponent implements OnInit {
       this.commentForm.reset();
       this.postService.emitNewCommentSocket();
     });
+  }
+
+  /**
+   * checks comment character length
+   * @param commentValue post value
+   */
+  checkCharLength(commentValue: string) {
+    this.charCount = 300;
+    this.charCount -= commentValue.length;
   }
 
   /**

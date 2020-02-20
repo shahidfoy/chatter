@@ -30,6 +30,7 @@ export class PostModalComponent implements OnInit, OnChanges {
   loading: boolean;
   postImage = '';
   imageCount = 0;
+  charCount = 300;
 
   constructor(
     private fb: FormBuilder,
@@ -40,6 +41,7 @@ export class PostModalComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
+    this.charCount -= this.post.post.length;
     this.postForm = this.fb.group({
       postId: this.post._id,
       post: [this.post.post, Validators.required],
@@ -193,6 +195,15 @@ export class PostModalComponent implements OnInit, OnChanges {
         this.notification.create('warning', 'Network error', 'unable to upload image');
         break;
     }
+  }
+
+  /**
+   * checks posts character length
+   * @param postValue post value
+   */
+  checkCharLength(postValue: string) {
+    this.charCount = 300;
+    this.charCount -= postValue.length;
   }
 
   /**

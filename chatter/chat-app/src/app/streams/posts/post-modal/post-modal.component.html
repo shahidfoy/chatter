@@ -13,10 +13,12 @@
 <ng-template #modalContent>
   <!-- edit post -->
   <form class="post" [formGroup]="postForm" *ngIf="editPostAction; else viewPost">
+    <span class="float-right">Limit: {{ charCount }}</span>
     <textarea
       #postInput
       nz-input
       formControlName="post"
+      (keydown)="checkCharLength(postInput.value)"
       (keyup)="editPost($event, postInput.value)"
       rows="2">{{ post.post }}</textarea>
 
@@ -30,7 +32,7 @@
       (nzChange)="handlePostImageChange($event)">
       <button nz-button
         nzType="default"
-        [disabled]="imageCount >= 1">
+        [disabled]="imageCount >= 1 || charCount < 0">
         Edit post image<i nz-icon nzType="upload"></i>
       </button>
     </nz-upload>

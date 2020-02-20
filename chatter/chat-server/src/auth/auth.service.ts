@@ -26,7 +26,7 @@ export class AuthService {
         const schema = Joi.object().keys({
             username: Joi.string()
                 .min(5)
-                .max(30)
+                .max(28)
                 .required(),
             email: Joi.string()
                 .email()

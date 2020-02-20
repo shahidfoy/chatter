@@ -25,10 +25,11 @@ export class PostFormComponent implements OnInit {
 
   loggedInUser: PayloadData;
   inputValue = '';
-  submitting = false;
-  isLoading = false;
   postImage = '';
   imageCount = 0;
+  charCount = 300;
+  submitting = false;
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -151,6 +152,15 @@ export class PostFormComponent implements OnInit {
         this.notification.create('warning', 'Network error', 'unable to upload image');
         break;
     }
+  }
+
+  /**
+   * checks posts character length
+   * @param postValue post value
+   */
+  checkCharLength(postValue: string) {
+    this.charCount = 300;
+    this.charCount -= postValue.length;
   }
 
   /**
