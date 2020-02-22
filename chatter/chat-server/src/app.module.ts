@@ -14,6 +14,8 @@ import { ImagesModule } from './images/images.module';
 import { ImagesController } from './images/images.controller';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { ContactsModule } from './contacts/contacts.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { AuthModule } from './auth/auth.module';
     PostsModule,
     ChatModule,
     ImagesModule,
+    NotificationsModule,
+    ContactsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

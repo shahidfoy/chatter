@@ -45,10 +45,14 @@ export class ImagesController {
         return this.imagesService.editPostImage(post, postImage);
     }
 
+    /**
+     * deletes post image
+     * @param picId picture id
+     */
     @Delete('delete-post-image/:picId')
     async deletePostImage(
         @Param('picId') picId: string,
-    ): Promise<any> {
+    ): Promise<void> {
         return this.imagesService.deletePostImage(picId);
     }
 }

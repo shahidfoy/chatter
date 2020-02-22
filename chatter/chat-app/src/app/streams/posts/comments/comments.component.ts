@@ -14,13 +14,16 @@ import { ApplicationStateService } from 'src/app/shared/services/application-sta
 })
 export class CommentsComponent implements OnInit {
 
+  private readonly MAX_CHARS: number = 300;
+
   @Input() postId: string;
 
   isMobile: boolean;
-  isLoading = false;
   commentForm: FormGroup;
   post: Post;
   commentsArray: UserComment[];
+  charCount = this.MAX_CHARS;
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,8 +48,6 @@ export class CommentsComponent implements OnInit {
     });
   }
 
-  // TODO:: limit comment length
-
   /**
    * gets user's avatar
    * @param user user
@@ -67,6 +68,15 @@ export class CommentsComponent implements OnInit {
       this.commentForm.reset();
       this.postService.emitNewCommentSocket();
     });
+  }
+
+  /**
+   * checks comment character length
+   * @param commentValue post value
+   */
+  checkCharLength(commentValue: string) {
+    this.charCount = this.MAX_CHARS;
+    this.charCount -= commentValue.length;
   }
 
   /**

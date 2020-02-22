@@ -57,7 +57,7 @@ const socketConfig: SocketIoConfig = { url: `${environment.BASEURL}`, options: {
     ImageService,
     TokenService,
     ApplicationStateService,
-    { provide: ErrorHandler, useClass: GenericErrorHandler }
+    { provide: ErrorHandler, useClass: GenericErrorHandler },
   ]
 })
 export class SharedModule { }

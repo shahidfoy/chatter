@@ -18,17 +18,19 @@ import { TokenService } from 'src/app/shared/services/token.service';
 })
 export class PostFormComponent implements OnInit {
 
-  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-post-image`;
+  private readonly MAX_CHARS: number = 300;
 
+  FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-post-image`;
   postForm: FormGroup;
   @Input() isMobile: boolean;
 
   loggedInUser: PayloadData;
   inputValue = '';
-  submitting = false;
-  isLoading = false;
   postImage = '';
   imageCount = 0;
+  charCount = this.MAX_CHARS;
+  submitting = false;
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -50,7 +52,6 @@ export class PostFormComponent implements OnInit {
   }
 
   // TODO:: add and retrieve tags for posts
-  // TODO:: add some form validations for post length and tags
   // TODO:: fix empty tag on enter bug
   // TODO:: limit tag length
 
@@ -151,6 +152,15 @@ export class PostFormComponent implements OnInit {
         this.notification.create('warning', 'Network error', 'unable to upload image');
         break;
     }
+  }
+
+  /**
+   * checks posts character length
+   * @param postValue post value
+   */
+  checkCharLength(postValue: string) {
+    this.charCount = this.MAX_CHARS;
+    this.charCount -= postValue.length;
   }
 
   /**

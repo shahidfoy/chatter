@@ -1,18 +1,11 @@
 import * as mongoose from 'mongoose';
-import { UsernameObj } from 'src/interfaces/username-obj.interface';
+import { UsernameObj } from '../../interfaces/username-obj.interface';
 
 export const UserSchema =  new mongoose.Schema({
     username: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
     onlineStatus: { type: String },
-    posts: [
-        {
-            postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
-            post: { type: String },
-            createdAt: { type: Date, default: Date.now() },
-        },
-    ],
     following: [
         { userFollowed: { type: mongoose.Schema.Types.ObjectId, ref: 'User'} },
     ],
@@ -46,19 +39,12 @@ export interface User extends mongoose.Document {
     email: string;
     password: string;
     onlineStatus: string;
-    posts: UserPost[]; // may replace with interface later
     following: UsernameObj[];
     followers: UsernameObj[];
     notifications: NotificationsObj[];
     chatList: ChatList[];
     picVersion: string;
     picId: string;
-}
-
-export interface UserPost {
-    postId: string;
-    post: string;
-    createdAt: Date;
 }
 
 export interface NotificationsObj {

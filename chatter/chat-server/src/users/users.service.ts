@@ -14,7 +14,6 @@ export class UsersService {
      */
     async getUsers(): Promise<User[]> {
         return await this.userModel.find()
-                                    .populate('posts.postId')
                                     .then((users: User[]) => {
                                         return users;
                                     })
@@ -29,7 +28,6 @@ export class UsersService {
      */
     async getUserById(userId: string): Promise<User> {
         return await this.userModel.findOne({ _id: userId })
-                                    .populate('posts.postId')
                                     .populate('following.userFollowed')
                                     .populate('followers.userFollower')
                                     .populate('chatList.receiverId')
@@ -49,7 +47,6 @@ export class UsersService {
      */
     async getUserByUsername(username: string): Promise<User> {
         return await this.userModel.findOne({ username })
-                                    .populate('posts.postId')
                                     .populate('following.userFollowed')
                                     .populate('followers.userFollower')
                                     .populate('chatList.receiverId')

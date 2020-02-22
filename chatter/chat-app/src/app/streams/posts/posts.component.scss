@@ -24,6 +24,13 @@
   }
 }
 
+.load-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
 .count {
   padding-left: 8px;
   cursor: auto;

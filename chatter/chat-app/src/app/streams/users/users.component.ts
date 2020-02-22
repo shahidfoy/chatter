@@ -9,6 +9,7 @@ import { User } from '../../shared/interfaces/user.interface';
 import { ImageService } from '../../shared/services/image.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserFollowing } from '../interfaces/user-following.interface';
+import { Contacts } from '../enums/contacts.enum';
 
 @Component({
   selector: 'app-users',
@@ -134,9 +135,9 @@ export class UsersComponent implements OnInit {
   private populateFollowersListByUsername() {
     const usernameParam = this.activatedRoute.snapshot.params.username;
     if (usernameParam) {
-      this.getUsersList(usernameParam, 'followers');
+      this.getUsersList(usernameParam, Contacts.FOLLOWERS);
     } else {
-      this.getUsersList(this.loggedInUserToken.username, 'followers');
+      this.getUsersList(this.loggedInUserToken.username, Contacts.FOLLOWERS);
     }
   }
 
@@ -146,9 +147,9 @@ export class UsersComponent implements OnInit {
   private populateFollowingListByUsername() {
     const usernameParam = this.activatedRoute.snapshot.params.username;
     if (usernameParam) {
-      this.getUsersList(usernameParam, 'following');
+      this.getUsersList(usernameParam, Contacts.FOLLOWING);
     } else {
-      this.getUsersList(this.loggedInUserToken.username, 'following');
+      this.getUsersList(this.loggedInUserToken.username, Contacts.FOLLOWING);
     }
   }
 

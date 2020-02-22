@@ -9,6 +9,8 @@ import { Tag } from './models/tag.model';
 @Injectable()
 export class PostsService {
 
+    private limit = 15;
+
     constructor(
         @InjectModel('User') private readonly userModel: Model<User>,
         @InjectModel('Post') private readonly postModel: Model<UserPost>,
@@ -18,11 +20,48 @@ export class PostsService {
     /**
      * gets all user posts
      */
-    async getPosts(): Promise<UserPost[]> {
+    async getPosts(page: number = 0): Promise<UserPost[]> {
+        const skip = page * this.limit;
         try {
-            const posts = await this.postModel.find({})
+            const posts = await this.postModel.find({}, {},
+                { skip, limit: this.limit })
                 .populate('user')
                 .sort({ createdAt: -1 });
+            return posts;
+        } catch (err) {
+            throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
+        }
+    }
+
+    /**
+     * gets posts by user id
+     * @param userId user id
+     * @param page current page
+     */
+    async getPostsByUserId(userId: string, page: number = 0): Promise<UserPost[]> {
+        const skip = page * this.limit;
+        try {
+            const posts = await this.postModel.find({ user: userId }, {},
+                { skip, limit: this.limit })
+                .populate('user')
+                .sort({ createdAt: -1 });
+            return posts;
+        } catch (err) {
+            throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
+        }
+    }
+
+    /**
+     * gets all trending posts
+     * currently gets most likes
+     */
+    async getTrendingPosts(page: number = 0): Promise<UserPost[]> {
+        const skip = page * this.limit;
+        try {
+            const posts = await this.postModel.find({ totalLikes: { $gte: 3 } }, {},
+                { skip, limit: this.limit })
+                .populate('user')
+                .sort({ totalLikes: -1 });
             return posts;
         } catch (err) {
             throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
@@ -53,7 +92,7 @@ export class PostsService {
      */
     async addPost(user: User, post: string, tags: string[], picVersion: number, picId: string): Promise<Partial<UserPost>> {
         const schema = Joi.object().keys({
-            post: Joi.string().required(),
+            post: Joi.string().required().max(300),
         });
         const { error } = schema.validate({ post });
 
@@ -109,7 +148,7 @@ export class PostsService {
      */
     async editPost(postId: string, post: string, tags: string[], picVersion: number, picId: string): Promise<Partial<UserPost>> {
         const schema = Joi.object().keys({
-            post: Joi.string().required(),
+            post: Joi.string().required().max(300),
         });
         const { error } = schema.validate({ post });
 
@@ -159,21 +198,6 @@ export class PostsService {
             });
         } catch (err) {
             throw new InternalServerErrorException({ message: 'Unable to delete post. Please try again later' });
-        }
-    }
-
-    /**
-     * gets all trending posts
-     * currently gets most likes
-     */
-    async getTrendingPosts(): Promise<UserPost[]> {
-        try {
-            const posts = await this.postModel.find({ totalLikes: { $gte: 3 } })
-                .populate('user')
-                .sort({ totalLikes: -1 });
-            return posts;
-        } catch (err) {
-            throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
         }
     }
 
@@ -250,6 +274,15 @@ export class PostsService {
      * @param comment comment being added to post
      */
     async addComment(user: User, postId: string, comment: string): Promise<string> {
+        const schema = Joi.object().keys({
+            comment: Joi.string().required().max(300),
+        });
+        const { error } = schema.validate({ comment });
+
+        if (error && error.details) {
+            throw new BadRequestException({ message: error.details[0].message });
+        }
+
         return await this.postModel.updateOne({
             _id: postId,
         }, {

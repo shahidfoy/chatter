@@ -1,3 +1,4 @@
+
 <app-post-form *ngIf="isLoggedInUser && !isTrending" [isMobile]="isMobile"></app-post-form>
 
 <app-loading *ngIf="isLoading"></app-loading>
@@ -69,10 +70,19 @@
     </ngx-masonry>
 </nz-content>
 
+<div class="load-more" >
+  <button
+    *ngIf="paginateMorePosts"
+    nz-button
+    nzShape="round"
+    (click)="loadMorePosts()"><i nz-icon nzType="cloud-download"></i>Load More</button>
+</div>
+
+
 <!-- post edit modal -->
 <app-post-modal
   [isVisible]="isPostVisible"
   [editPostAction]="editUserPost"
   [post]="editPost"
-  (newPostOutput)="updatePost()">
+  (newPostOutput)="hidePost()">
 </app-post-modal>

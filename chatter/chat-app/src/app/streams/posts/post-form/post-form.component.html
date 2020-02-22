@@ -3,16 +3,24 @@
     <nz-comment>
       <nz-comment-content>
         <nz-form-item>
-          <textarea nz-input formControlName="post" rows="4" placeholder="What's on your mind.."></textarea>
+          <textarea
+            #postTextarea
+            nz-input
+            formControlName="post"
+            rows="4"
+            (keydown)="checkCharLength(postTextarea.value)"
+            placeholder="What's on your mind.."></textarea>
           <nz-select nzMode="tags" nzPlaceHolder="Tags" formControlName="tags">
           </nz-select>
+          <span class="float-right">Limit: {{ charCount }}</span>
         </nz-form-item>
         <nz-form-item>
           <button
             nz-button
             (click)="submitPost()"
             [nzType]="'primary'"
-            [nzLoading]="isLoading">
+            [nzLoading]="isLoading"
+            [disabled]="charCount < 0">
             Post
           </button>
           <nz-upload

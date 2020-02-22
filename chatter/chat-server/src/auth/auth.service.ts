@@ -26,7 +26,7 @@ export class AuthService {
         const schema = Joi.object().keys({
             username: Joi.string()
                 .min(5)
-                .max(30)
+                .max(28)
                 .required(),
             email: Joi.string()
                 .email()
@@ -43,18 +43,18 @@ export class AuthService {
         });
 
         const { error, value } = schema.validate({ username, email, password });
-
         if (error && error.details) {
             throw new BadRequestException({ message: error.details[0].message });
         }
 
+        username = username.toLowerCase();
+        email = email.toLowerCase();
         const userEmail = await this.userModel.findOne({
-            email: email.toLowerCase(),
+            email,
         });
         if (userEmail) {
             throw new ConflictException({ message: 'Email already exists' });
         }
-
         const userName = await this.userModel.findOne({ username });
         if (userName) {
             throw new ConflictException({ message: 'Username already exists' });
@@ -68,14 +68,13 @@ export class AuthService {
 
                 const body: Partial<User> = {
                     username,
-                    email: email.toLowerCase(),
+                    email,
                     password: hash,
                     onlineStatus: 'ONLINE',
                 };
 
                 this.userModel.create(body).then((user) => {
                     const token: string = jwt.sign({data: user}, dbConfig.secret, {});
-                    // cookieParser.cookie({ 'auth': token });
                     resolve({ token });
                 }).catch(tokenError => {
                     throw new InternalServerErrorException({ message: `Error occured ${tokenError.message.message}` });
@@ -90,6 +89,7 @@ export class AuthService {
      * @param password
      */
     async loginUser(email: string, password: string): Promise<Token> {
+        email = email.toLowerCase();
         return await this.userModel.findOne({ email }).then(async (user: User) => {
             if (!user) {
                 throw new NotFoundException({ message: 'Email not found' });
@@ -112,7 +112,6 @@ export class AuthService {
                             picVersion: user.picVersion,
                             picId: user.picId,
                         };
-                        // const token: string = jwt.sign({ data: user }, dbConfig.secret, {});
                         const token: string = jwt.sign({ data: tokenData }, dbConfig.secret, {});
                         resolve({ token });
                     }).catch(tokenError => {

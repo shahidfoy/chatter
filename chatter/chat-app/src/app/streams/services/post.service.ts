@@ -25,8 +25,23 @@ export class PostService {
   /**
    * gets all posts
    */
-  getPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${environment.BASEURL}/api/posts`);
+  getPosts(page: number = 0): Observable<Post[]> {
+    return this.http.get<Post[]>(`${environment.BASEURL}/api/posts/all/${page}`);
+  }
+
+  /**
+   * gets posts by user id
+   * @param userId user id
+   */
+  getPostsByUserId(userId: string, page: number = 0): Observable<Post[]> {
+    return this.http.get<Post[]>(`${environment.BASEURL}/api/posts/userId/${userId}/${page}`);
+  }
+
+  /**
+   * gets trending posts
+   */
+  getTrendingPosts(page: number = 0): Observable<Post[]> {
+    return this.http.get<Post[]>(`${environment.BASEURL}/api/posts/trending/${page}`);
   }
 
   /**
@@ -59,13 +74,6 @@ export class PostService {
    */
   deletePost(postId: string): Observable<void> {
     return this.http.delete<void>(`${environment.BASEURL}/api/posts/delete-post/${postId}`);
-  }
-
-  /**
-   * gets trending posts
-   */
-  getTrendingPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${environment.BASEURL}/api/posts/trending`);
   }
 
   /**

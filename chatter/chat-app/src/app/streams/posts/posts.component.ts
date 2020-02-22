@@ -8,8 +8,8 @@ import { TokenService } from '../../shared/services/token.service';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { timeFromNow } from 'src/app/shared/shared.utils';
-import { User } from 'src/app/shared/interfaces/user.interface';
+import { timeFromNow } from '../../shared/shared.utils';
+import { User } from '../../shared/interfaces/user.interface';
 import { ImageService } from '../../shared/services/image.service';
 import { UserService } from '../services/user.service';
 
@@ -22,15 +22,18 @@ export class PostsComponent implements OnInit, AfterViewInit {
 
   private readonly PATH_PROFILE = 'profile';
   private readonly PATH_TRENDING = 'trending';
+  private readonly LIMIT = 15;
+  private PAGE = 0;
 
   isMobile: boolean;
   payload: PayloadData;
   username: string;
-  posts: Post[];
+  posts: Post[] = [];
   userData: User;
   editPost: Post;
 
   isLoading = true;
+  paginateMorePosts = true;
   updateMasonry = false;
   isLoggedInUser = false;
   editUserPost = false;
@@ -84,13 +87,20 @@ export class PostsComponent implements OnInit, AfterViewInit {
     return this.payload.username === username ? true : false;
   }
 
+  /**
+   * opens edit post modal
+   * @param post selected post
+   */
   openEditPostModal(post: Post) {
     this.editPost = post;
     this.isPostVisible = true;
     this.editUserPost = true;
   }
 
-  updatePost() {
+  /**
+   * hides post modal
+   */
+  hidePost() {
     this.isPostVisible = false;
     this.editUserPost = false;
   }
@@ -204,6 +214,54 @@ export class PostsComponent implements OnInit, AfterViewInit {
   }
 
   /**
+   * loads more posts using pagination
+   */
+  loadMorePosts() {
+    this.PAGE++;
+    this.updateMasonry = false;
+    if (this.paginateMorePosts) {
+      switch (this.activatedRoute.snapshot.url[0].path) {
+        case this.PATH_PROFILE:
+          const pathUsername = this.activatedRoute.snapshot.url[1];
+          if (pathUsername && pathUsername.path !== this.payload.username) {
+            this.isLoggedInUser = false;
+            this.getUser(pathUsername.path);
+          } else {
+            this.isLoggedInUser = true;
+            this.getUser(this.username);
+          }
+          break;
+        case this.PATH_TRENDING:
+          this.postService.getTrendingPosts(this.PAGE).subscribe(posts => {
+            if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
+            this.posts = this.posts.concat(posts);
+            this.isLoading = false;
+            this.updateLayout();
+          });
+          break;
+        default:
+          this.isLoggedInUser = true;
+          this.postService.getPosts(this.PAGE).subscribe(posts => {
+            if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
+            this.posts = this.posts.concat(posts);
+            this.isLoading = false;
+            this.updateLayout();
+          });
+          break;
+      }
+    }
+  }
+
+  /**
+   * updates masonry layout
+   */
+  private updateLayout() {
+    setTimeout(() => {
+      this.updateMasonry = true;
+    }, 1000);
+  }
+
+  /**
    * sets up which posts will be displayed
    * gets all posts or gets a users posts
    */
@@ -233,9 +291,11 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * gets all posts
    */
   private getAllPosts() {
-    this.postService.getPosts().subscribe(posts => {
+    this.postService.getPosts(this.PAGE).subscribe(posts => {
+      if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
       this.posts = posts;
       this.isLoading = false;
+      this.updateLayout();
     });
   }
 
@@ -244,21 +304,24 @@ export class PostsComponent implements OnInit, AfterViewInit {
    */
   private getUser(username: string) {
     this.userService.getUserByUsername(username).subscribe((user: User) => {
-      this.posts = [];
       this.userData = user;
-      this.posts = user.posts.map(post => post.postId as Post);
-      this.posts.sort((current, next) => {
-        return +new Date(next.createdAt) - +new Date(current.createdAt);
+
+      this.postService.getPostsByUserId(user._id, this.PAGE).subscribe((posts: Post[]) => {
+        if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
+        this.posts = this.posts.length < 1 ?  posts : this.posts.concat(posts);
+        this.isLoading = false;
+        this.updateLayout();
       });
-      this.isLoading = false;
     });
   }
 
   private getTrendingPosts() {
     this.isTrending = true;
-    this.postService.getTrendingPosts().subscribe(posts => {
+    this.postService.getTrendingPosts(this.PAGE).subscribe(posts => {
+      if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
       this.posts = posts;
       this.isLoading = false;
+      this.updateLayout();
     });
   }
 
