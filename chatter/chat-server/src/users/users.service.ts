@@ -28,8 +28,6 @@ export class UsersService {
      */
     async getUserById(userId: string): Promise<User> {
         return await this.userModel.findOne({ _id: userId })
-                                    .populate('following.userFollowed')
-                                    .populate('followers.userFollower')
                                     .populate('chatList.receiverId')
                                     .populate('chatList.messageId')
                                     .populate('notifications.senderId')
@@ -47,8 +45,6 @@ export class UsersService {
      */
     async getUserByUsername(username: string): Promise<User> {
         return await this.userModel.findOne({ username })
-                                    .populate('following.userFollowed')
-                                    .populate('followers.userFollower')
                                     .populate('chatList.receiverId')
                                     .populate('chatList.messageId')
                                     .populate('notifications.senderId')
@@ -58,90 +54,6 @@ export class UsersService {
                                     .catch((err) => {
                                         throw new InternalServerErrorException({ message: `Error getting user by username ${err}` });
                                     });
-    }
-
-    /**
-     * follows another user and updates both user's arrays for following and followers
-     * @param user logged in user
-     * @param requestToFollowUserId follow request for another user
-     */
-    async followUser(user: User, requestToFollowUserId: string): Promise<string> {
-        const followUser = async () => {
-            await this.userModel.updateOne({
-                '_id': user._id,
-                'following.userFollowed': { $ne: requestToFollowUserId },
-            }, {
-                $push: {
-                    following: {
-                        userFollowed: requestToFollowUserId,
-                    },
-                },
-            });
-
-            await this.userModel.updateOne({
-                '_id': requestToFollowUserId,
-                'followers.userFollower': { $ne: user._id },
-            }, {
-                $push: {
-                    followers: {
-                        userFollower: user._id,
-                    },
-                    notifications: {
-                        senderId: user._id,
-                        senderUsername: user.username,
-                        message: `${user.username} is now following you.`,
-                        createdAt: new Date(),
-                    },
-                },
-            });
-        };
-
-        return followUser()
-            .then(() => {
-                return JSON.stringify(requestToFollowUserId);
-            })
-            .catch((err) => {
-                throw new InternalServerErrorException({ message: `Following user Error Occured ${err}` });
-            });
-    }
-
-    /**
-     * unfollows another user and updates both user's arrays for following and followers
-     * @param user logged in user
-     * @param requestToUnfollowUserId unfollow request for another user
-     */
-    async unfollowUser(user: User, requestToUnfollowUserId: string): Promise<string> {
-        const unfollowUser = async () => {
-            await this.userModel.updateOne({
-                '_id': user._id,
-                'following.userFollowed': { $eq: requestToUnfollowUserId },
-            }, {
-                $pull: {
-                    following: {
-                        userFollowed: requestToUnfollowUserId,
-                    },
-                },
-            });
-
-            await this.userModel.updateOne({
-                '_id': requestToUnfollowUserId,
-                'followers.userFollower': { $eq: user._id },
-            }, {
-                $pull: {
-                    followers: {
-                        userFollower: user._id,
-                    },
-                },
-            });
-        };
-
-        return unfollowUser()
-            .then(() => {
-                return JSON.stringify(requestToUnfollowUserId);
-            })
-            .catch((err) => {
-                throw new InternalServerErrorException({ message: `Following user Error Occured ${err}` });
-            });
     }
 
     /**

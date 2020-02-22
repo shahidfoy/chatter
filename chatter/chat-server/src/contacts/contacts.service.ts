@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Follower } from './models/follower.model';
@@ -71,6 +71,15 @@ export class ContactsService {
      * @param requestToFollowUserId follow request for another user
      */
     async followUser(user: User, requestToFollowUserId: string): Promise<string> {
+        const alreadyFollowing = await this.followingModel.findOne({
+                                            userId: user._id,
+                                            userFollowed: requestToFollowUserId,
+                                        });
+
+        if (alreadyFollowing) {
+            throw new BadRequestException({ message: `Already following user` });
+        }
+
         const followUser = async () => {
             await this.followingModel.create({
                 userId: user._id,
@@ -109,6 +118,15 @@ export class ContactsService {
      */
     async unfollowUser(user: User, requestToUnfollowUserId: string): Promise<string> {
         const unfollowUser = async () => {
+            const alreadyFollowing = await this.followingModel.findOne({
+                userId: user._id,
+                userFollowed: requestToUnfollowUserId,
+            });
+
+            if (!alreadyFollowing) {
+                throw new BadRequestException({ message: `not following user` });
+            }
+
             await this.followingModel.deleteOne({
                 userId: user._id,
                 userFollowed: requestToUnfollowUserId,

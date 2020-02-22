@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
-import { User } from 'src/users/models/user.model';
-import { UsernameObj } from 'src/interfaces/username-obj.interface';
+import { User } from '../../users/models/user.model';
+import { UsernameObj } from '../../interfaces/username-obj.interface';
 
 export const PostSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types. ObjectId, ref: 'User' },

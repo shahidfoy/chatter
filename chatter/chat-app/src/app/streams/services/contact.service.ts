@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Contact } from '../interfaces/contact.interface';
+import { UserFollower } from '../interfaces/user-follower.interface';
+import { UserFollowing } from '../interfaces/user-following.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,8 @@ export class ContactService {
    * TODO:: ADD PAGINATION
    * @param userId user id
    */
-  getUserFollowers(userId: string): Observable<Contact[]> {
-    return this.http.get<Contact[]>(`${environment.BASEURL}/api/contacts/followers/${userId}`);
+  getUserFollowers(userId: string): Observable<UserFollower[]> {
+    return this.http.get<UserFollower[]>(`${environment.BASEURL}/api/contacts/followers/${userId}`);
   }
 
   /**
@@ -25,8 +26,8 @@ export class ContactService {
    * TODO:: ADD PAGINATION
    * @param userId user id
    */
-  getUserFollowing(userId: string): Observable<Contact[]> {
-    return this.http.get<Contact[]>(`${environment.BASEURL}/api/contacts/following/${userId}`);
+  getUserFollowing(userId: string): Observable<UserFollowing[]> {
+    return this.http.get<UserFollowing[]>(`${environment.BASEURL}/api/contacts/following/${userId}`);
   }
 
   /**

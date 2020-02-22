@@ -41,32 +41,6 @@ export class UsersController {
     }
 
     /**
-     * lets logged in user follow another user
-     * @param req custom request
-     * @param requestToFollowUserId id of requested user to follow
-     */
-    @Post('follow-user')
-    async followUser(
-        @Req() req: CustomRequest,
-        @Body('followUserId') requestToFollowUserId: string,
-    ): Promise<string> {
-        return await this.usersService.followUser(req.user, requestToFollowUserId);
-    }
-
-    /**
-     * lets logged in user unfollow another user
-     * @param req custom request
-     * @param requestToUnfollowUserId id of requested user to unfollow
-     */
-    @Post('unfollow-user')
-    async unfollowUser(
-        @Req() req: CustomRequest,
-        @Body('unfollowUserId') requestToUnFollowUserId: string,
-    ): Promise<string> {
-        return await this.usersService.unfollowUser(req.user, requestToUnFollowUserId);
-    }
-
-    /**
      * marks notification as read
      * @param req custom request
      * @param notification notification to be marked

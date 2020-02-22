@@ -3,13 +3,14 @@ import { UserService } from '../services/user.service';
 import * as _ from 'lodash';
 import { TokenService } from '../../shared/services/token.service';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
-import { UserFollowed } from '../interfaces/user-followed.interface';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { User } from '../../shared/interfaces/user.interface';
 import { ImageService } from '../../shared/services/image.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserFollowing } from '../interfaces/user-following.interface';
 import { Contacts } from '../enums/contacts.enum';
+import { ContactService } from '../services/contact.service';
+import { UserFollower } from '../interfaces/user-follower.interface';
 
 @Component({
   selector: 'app-users',
@@ -22,9 +23,12 @@ export class UsersComponent implements OnInit {
   users: User[];
   loggedInUserToken: PayloadData;
   loggedInUser: User;
+  loggedInUserFollowers: UserFollower[];
+  loggedInUserFollowing: UserFollowing[];
 
   constructor(
     private userService: UserService,
+    private contactService: ContactService,
     private imageService: ImageService,
     private tokenService: TokenService,
     private notification: NzNotificationService,
@@ -54,18 +58,19 @@ export class UsersComponent implements OnInit {
    * @param userId follow request user id
    */
   followUser(userId: string) {
-    const userInFollowedArray = this.checkUserInFollowedArray(this.loggedInUser.following, userId);
+    // TODO:: create endpoint to check if user is following on the backend
+    const userInFollowingArray = this.checkUserInFollowingArray(this.loggedInUserFollowing, userId);
 
-    if (!userInFollowedArray) {
-      this.userService.followUser(userId).subscribe((followingUserId: string) => {
-        this.loggedInUser.following.push({ _id: '', userFollowed: { _id: followingUserId } });
+    if (!userInFollowingArray) {
+      this.contactService.followUser(userId).subscribe((followingUserId: string) => {
+        this.loggedInUserFollowing.push({ _id: '', userId: this.loggedInUser._id, userFollowed: { _id: followingUserId } });
         this.displayNotification('success', 'following user');
       }, err => {
         this.displayNotification('error', err.error.message);
       });
     } else {
-      this.userService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
-        this.loggedInUser.following = this.loggedInUser.following.filter((follow) => follow.userFollowed._id !== unFollowedUserId);
+      this.contactService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
+        this.loggedInUserFollowing = this.loggedInUserFollowing.filter((follow) => follow.userFollowed._id !== unFollowedUserId);
         this.displayNotification('warning', 'unfollowing user');
       }, err => {
         this.displayNotification('error', err.error.message);
@@ -83,11 +88,12 @@ export class UsersComponent implements OnInit {
   }
 
   /**
-   * uses lodash to check if the user id is in the logged in users following array
+   * uses lodash to check if the user is in the username array
+   * TODO:: replace with endpoint service
    * @param array array of followed users
    * @param userId users id
    */
-  checkUserInFollowedArray(array: UserFollowed[], userId: string) {
+  checkUserInFollowingArray(array: UserFollowing[], userId: string) {
     return _.some(array, [ 'userFollowed._id', userId ]);
   }
 
@@ -99,6 +105,14 @@ export class UsersComponent implements OnInit {
     this.userService.getUserById(userId).subscribe((user: User) => {
       this.loggedInUser = user;
     });
+
+    this.contactService.getUserFollowers(userId).subscribe((followers: UserFollower[]) => {
+      this.loggedInUserFollowers = followers;
+    });
+
+    this.contactService.getUserFollowing(userId).subscribe((following: UserFollowing[]) => {
+      this.loggedInUserFollowing = following;
+    });
   }
 
   /**
@@ -106,10 +120,10 @@ export class UsersComponent implements OnInit {
    */
   private populateUsers() {
     switch (this.activatedRoute.snapshot.url[0].path) {
-      case 'followers':
+      case Contacts.FOLLOWERS:
         this.populateFollowersListByUsername();
         break;
-      case 'following':
+      case Contacts.FOLLOWING:
         this.populateFollowingListByUsername();
         break;
       default:
@@ -161,12 +175,16 @@ export class UsersComponent implements OnInit {
    */
   private getUsersList(username: string, type: string) {
     this.userService.getUserByUsername(username).subscribe((user: User) => {
-      if (type === 'followers') {
-        this.users = user.followers
-                      .map((userFollowing: UserFollowing) => userFollowing.userFollower);
-      } else if (type === 'following') {
-        this.users = user.following
-                      .map((userFollow: UserFollowed) => userFollow.userFollowed);
+      if (type === Contacts.FOLLOWERS) {
+        this.contactService.getUserFollowers(user._id).subscribe((followers: UserFollower[]) => {
+          this.users = [];
+          followers.forEach(userData => this.users.push(userData.userFollower));
+        });
+      } else if (type === Contacts.FOLLOWING) {
+        this.contactService.getUserFollowing(user._id).subscribe((following: UserFollowing[]) => {
+          this.users = [];
+          following.forEach(userData => this.users.push(userData.userFollowed));
+        });
       }
       this.isLoading = false;
     });

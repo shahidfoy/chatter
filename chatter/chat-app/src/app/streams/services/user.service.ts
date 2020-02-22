@@ -41,26 +41,6 @@ export class UserService {
   }
 
   /**
-   * follows selected user
-   * @param followUserId requested user id to follow
-   */
-  followUser(followUserId: string): Observable<string> {
-    return this.http.post<string>(`${environment.BASEURL}/api/users/follow-user`, {
-      followUserId
-    });
-  }
-
-  /**
-   * unfollows selected user
-   * @param unfollowUserId requested user id to unfollow
-   */
-  unFollowUser(unfollowUserId: string): Observable<string> {
-    return this.http.post<string>(`${environment.BASEURL}/api/users/unfollow-user`, {
-      unfollowUserId
-    });
-  }
-
-  /**
    * marks notification as read
    * @param notification notifiaction to be marked
    */

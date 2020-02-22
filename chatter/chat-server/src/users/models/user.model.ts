@@ -1,17 +1,10 @@
 import * as mongoose from 'mongoose';
-import { UsernameObj } from '../../interfaces/username-obj.interface';
 
 export const UserSchema =  new mongoose.Schema({
     username: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
     onlineStatus: { type: String },
-    following: [
-        { userFollowed: { type: mongoose.Schema.Types.ObjectId, ref: 'User'} },
-    ],
-    followers: [
-        { userFollower: { type: mongoose.Schema.Types.ObjectId, ref: 'User'} },
-    ],
     notifications: [
         {
             senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -39,8 +32,6 @@ export interface User extends mongoose.Document {
     email: string;
     password: string;
     onlineStatus: string;
-    following: UsernameObj[];
-    followers: UsernameObj[];
     notifications: NotificationsObj[];
     chatList: ChatList[];
     picVersion: string;
