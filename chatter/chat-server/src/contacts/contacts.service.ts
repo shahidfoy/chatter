@@ -21,7 +21,10 @@ export class ContactsService {
     async getUserFollowers(userId: string): Promise<Follower[]> {
         return await this.followerModel
                             .find({userId})
-                            .populate('userFollower')
+                            .populate({ path: 'userFollower', options: { sort: { username: 1 }}})
+                            .then(result => {
+                                return result.sort((user1, user2) => (user1.userFollower.username > user2.userFollower.username ? 1 : -1));
+                            })
                             .catch((err) => {
                                 throw new InternalServerErrorException({ message: `Unable to get user followers ${err}` });
                             });
@@ -35,7 +38,10 @@ export class ContactsService {
     async getUserFollowing(userId: string): Promise<Following[]> {
         return await this.followingModel
                             .find({userId})
-                            .populate('userFollowed')
+                            .populate({ path: 'userFollowed'})
+                            .then(result => {
+                                return result.sort((user1, user2) => (user1.userFollowed.username > user2.userFollowed.username ? 1 : -1));
+                            })
                             .catch((err) => {
                                 throw new InternalServerErrorException({ message: `Unable to get user following ${err}` });
                             });

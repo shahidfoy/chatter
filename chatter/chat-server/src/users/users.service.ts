@@ -14,6 +14,7 @@ export class UsersService {
      */
     async getUsers(): Promise<User[]> {
         return await this.userModel.find()
+                                    .sort({ username: 1 })
                                     .then((users: User[]) => {
                                         return users;
                                     })

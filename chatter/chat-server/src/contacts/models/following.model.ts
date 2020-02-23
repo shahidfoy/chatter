@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { User } from 'src/users/models/user.model';
 
 export const FollowingSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -8,5 +9,5 @@ export const FollowingSchema = new mongoose.Schema({
 export interface Following extends mongoose.Document {
     _id: string;
     userId: string;
-    userFollowed: string;
+    userFollowed: User;
 }
