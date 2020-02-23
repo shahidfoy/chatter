@@ -56,6 +56,19 @@ export class ContactsController {
     }
 
     /**
+     * checks to see if user is following requested user followed
+     * @param userId user id
+     * @param userFollowed user followed id
+     */
+    @Get('following/check/:userId/:userFollowed')
+    async checkUserFollowing(
+        @Param('userId') userId: string,
+        @Param('userFollowed') userFollowed: string,
+    ): Promise<boolean> {
+        return this.contactsService.checkUserFollowing(userId, userFollowed);
+    }
+
+    /**
      * lets logged in user follow another user
      * @param req custom request
      * @param requestToFollowUserId id of requested user to follow

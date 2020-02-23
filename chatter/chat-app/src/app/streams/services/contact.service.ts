@@ -46,6 +46,10 @@ export class ContactService {
     return this.http.get<number>(`${environment.BASEURL}/api/contacts/following/count/${userId}`);
   }
 
+  checkUserFollowing(userId: string, userFollowingId: string): Observable<boolean> {
+    return this.http.get<boolean>(`${environment.BASEURL}/api/contacts/following/check/${userId}/${userFollowingId}`);
+  }
+
   /**
    * follows selected user
    * @param followUserId requested user id to follow

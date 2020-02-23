@@ -47,7 +47,7 @@ export class ContactsService {
      */
     async getUserFollowersCount(userId: string): Promise<number> {
         return await this.followerModel
-                            .count({userId})
+                            .countDocuments({userId})
                             .catch((err) => {
                                 throw new InternalServerErrorException({ message: `Unable to get user followers count ${err}` });
                             });
@@ -59,10 +59,20 @@ export class ContactsService {
      */
     async getUserFollowingCount(userId: string): Promise<number> {
         return await this.followingModel
-                            .count({userId})
+                            .countDocuments({userId})
                             .catch((err) => {
                                 throw new InternalServerErrorException({ message: `Unable to get user following count ${err}` });
                             });
+    }
+
+    /**
+     * checks to see if user is following requested user followed
+     * @param userId user id
+     * @param userFollowed user followed id
+     */
+    async checkUserFollowing(userId: string, userFollowed: string): Promise<boolean> {
+        const following = await this.findOneFollowing(userId, userFollowed);
+        return following ? true : false;
     }
 
     /**
@@ -71,11 +81,7 @@ export class ContactsService {
      * @param requestToFollowUserId follow request for another user
      */
     async followUser(user: User, requestToFollowUserId: string): Promise<string> {
-        const alreadyFollowing = await this.followingModel.findOne({
-                                            userId: user._id,
-                                            userFollowed: requestToFollowUserId,
-                                        });
-
+        const alreadyFollowing = await this.findOneFollowing(user._id, requestToFollowUserId);
         if (alreadyFollowing) {
             throw new BadRequestException({ message: `Already following user` });
         }
@@ -118,11 +124,7 @@ export class ContactsService {
      */
     async unfollowUser(user: User, requestToUnfollowUserId: string): Promise<string> {
         const unfollowUser = async () => {
-            const alreadyFollowing = await this.followingModel.findOne({
-                userId: user._id,
-                userFollowed: requestToUnfollowUserId,
-            });
-
+            const alreadyFollowing = await this.findOneFollowing(user._id, requestToUnfollowUserId);
             if (!alreadyFollowing) {
                 throw new BadRequestException({ message: `not following user` });
             }
@@ -145,5 +147,14 @@ export class ContactsService {
             .catch((err) => {
                 throw new InternalServerErrorException({ message: `Following user Error Occured ${err}` });
             });
+    }
+
+    /**
+     * finds if user id and user followed id exists
+     * @param userId user id
+     * @param userFollowed user being followed
+     */
+    private async findOneFollowing(userId: string, userFollowed: string): Promise<Following> {
+        return await this.followingModel.findOne({ userId, userFollowed });
     }
 }

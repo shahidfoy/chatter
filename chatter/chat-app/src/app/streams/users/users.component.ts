@@ -23,12 +23,11 @@ export class UsersComponent implements OnInit {
   users: User[];
   loggedInUserToken: PayloadData;
   loggedInUser: User;
-  loggedInUserFollowers: UserFollower[];
-  loggedInUserFollowing: UserFollowing[];
+  isFollowingObj: any = {};
 
   constructor(
     private userService: UserService,
-    private contactService: ContactService,
+    public contactService: ContactService,
     private imageService: ImageService,
     private tokenService: TokenService,
     private notification: NzNotificationService,
@@ -58,24 +57,23 @@ export class UsersComponent implements OnInit {
    * @param userId follow request user id
    */
   followUser(userId: string) {
-    // TODO:: create endpoint to check if user is following on the backend
-    const userInFollowingArray = this.checkUserInFollowingArray(this.loggedInUserFollowing, userId);
-
-    if (!userInFollowingArray) {
-      this.contactService.followUser(userId).subscribe((followingUserId: string) => {
-        this.loggedInUserFollowing.push({ _id: '', userId: this.loggedInUser._id, userFollowed: { _id: followingUserId } });
-        this.displayNotification('success', 'following user');
-      }, err => {
-        this.displayNotification('error', err.error.message);
-      });
-    } else {
-      this.contactService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
-        this.loggedInUserFollowing = this.loggedInUserFollowing.filter((follow) => follow.userFollowed._id !== unFollowedUserId);
-        this.displayNotification('warning', 'unfollowing user');
-      }, err => {
-        this.displayNotification('error', err.error.message);
-      });
-    }
+    this.contactService.checkUserFollowing(this.loggedInUser._id, userId).subscribe((result: boolean) => {
+      if (!result) {
+        this.contactService.followUser(userId).subscribe((followingUserId: string) => {
+          this.isFollowingObj[followingUserId] = true;
+          this.displayNotification('success', 'following user');
+        }, err => {
+          this.displayNotification('error', err.error.message);
+        });
+      } else {
+        this.contactService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
+          this.isFollowingObj[unFollowedUserId] = false;
+          this.displayNotification('warning', 'unfollowing user');
+        }, err => {
+          this.displayNotification('error', err.error.message);
+        });
+      }
+    });
   }
 
   /**
@@ -88,30 +86,12 @@ export class UsersComponent implements OnInit {
   }
 
   /**
-   * uses lodash to check if the user is in the username array
-   * TODO:: replace with endpoint service
-   * @param array array of followed users
-   * @param userId users id
-   */
-  checkUserInFollowingArray(array: UserFollowing[], userId: string) {
-    return _.some(array, [ 'userFollowed._id', userId ]);
-  }
-
-  /**
    * gets logged in user
    * @param userId logged in user id
    */
   private getLoggedInUser(userId: string) {
     this.userService.getUserById(userId).subscribe((user: User) => {
       this.loggedInUser = user;
-    });
-
-    this.contactService.getUserFollowers(userId).subscribe((followers: UserFollower[]) => {
-      this.loggedInUserFollowers = followers;
-    });
-
-    this.contactService.getUserFollowing(userId).subscribe((following: UserFollowing[]) => {
-      this.loggedInUserFollowing = following;
     });
   }
 
@@ -139,6 +119,9 @@ export class UsersComponent implements OnInit {
   private getUsers() {
     this.userService.getUsers().subscribe((users: User[]) => {
       this.users = users;
+      users.forEach((user: User) => {
+        this.checkUserFollowing(this.loggedInUserToken._id, user);
+      });
       this.isLoading = false;
     });
   }
@@ -170,6 +153,7 @@ export class UsersComponent implements OnInit {
   /**
    * gets the list of people who follow the user or
    * people the user is following based on type received
+   * TODO:: add pagination
    * @param username user's username
    * @param type type of list to populate
    */
@@ -178,15 +162,33 @@ export class UsersComponent implements OnInit {
       if (type === Contacts.FOLLOWERS) {
         this.contactService.getUserFollowers(user._id).subscribe((followers: UserFollower[]) => {
           this.users = [];
-          followers.forEach(userData => this.users.push(userData.userFollower));
+          followers.forEach(userData => {
+            this.users.push(userData.userFollower);
+            this.checkUserFollowing(this.loggedInUserToken._id, userData.userFollower);
+          });
         });
       } else if (type === Contacts.FOLLOWING) {
         this.contactService.getUserFollowing(user._id).subscribe((following: UserFollowing[]) => {
           this.users = [];
-          following.forEach(userData => this.users.push(userData.userFollowed));
+          following.forEach(userData => {
+            this.users.push(userData.userFollowed);
+            this.checkUserFollowing(this.loggedInUserToken._id, userData.userFollowed);
+          });
         });
       }
       this.isLoading = false;
+    });
+  }
+
+  /**
+   * checks to see if logged in user is following another user
+   * and stores it in the isFollowingObj
+   * @param loggedInUserId logged in user id
+   * @param user user to check
+   */
+  private checkUserFollowing(loggedInUserId: string, user: User) {
+    this.contactService.checkUserFollowing(loggedInUserId, user._id).subscribe((result: boolean) => {
+      this.isFollowingObj[user._id] = result;
     });
   }
 }

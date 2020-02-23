@@ -19,6 +19,7 @@ export class UserService {
 
   /**
    * gets all users
+   * TODO:: ADD PAGINATION
    */
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${environment.BASEURL}/api/users`);

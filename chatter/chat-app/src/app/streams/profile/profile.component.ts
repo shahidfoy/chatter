@@ -96,8 +96,7 @@ export class ProfileComponent implements OnInit {
    * @param userId follow request user id
    */
   followUser() {
-    const userInFollowingArray = this.checkUserInFollowingArray(this.following, this.user._id);
-    if (!userInFollowingArray) {
+    if (!this.followingUser) {
       this.contactService.followUser(this.user._id).subscribe((followingUserId: string) => {
         this.followingUser = true;
         this.displayNotification('success', 'following user');
@@ -112,15 +111,6 @@ export class ProfileComponent implements OnInit {
         this.displayNotification('error', err.error.message);
       });
     }
-  }
-
-  /**
-   * uses lodash to check if the user id is in the following array
-   * @param array array of followed users
-   * @param userId users id
-   */
-  checkUserInFollowingArray(array: UserFollowing[], userId: string) {
-    return _.some(array, [ 'userFollowed._id', userId ]);
   }
 
   /**
@@ -148,7 +138,6 @@ export class ProfileComponent implements OnInit {
   private getUser() {
     this.userService.getUserByUsername(this.username).subscribe((user: User) => {
       this.user = user;
-
       if (!this.user.picId) {
         this.avatarUrl = this.imageService.getDefaultProfileImage();
       } else {
@@ -157,15 +146,8 @@ export class ProfileComponent implements OnInit {
 
       this.contactService.getUserFollowersCount(user._id).subscribe((followersCount: number) => this.followersCount = followersCount);
       this.contactService.getUserFollowingCount(user._id).subscribe((followingCount: number) => this.followingCount = followingCount);
-
-      // TODO:: create endpoint to check if user is following on the backend
-      this.contactService.getUserFollowing(this.payload._id).subscribe((following: UserFollowing[]) => {
-        this.following = following;
-        if (this.checkUserInFollowingArray(following, this.user._id)) {
-          this.followingUser = true;
-        } else {
-          this.followingUser = false;
-        }
+      this.contactService.checkUserFollowing(this.payload._id, user._id).subscribe((result: boolean) => {
+        this.followingUser = result;
       });
     });
   }
