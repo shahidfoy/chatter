@@ -9,6 +9,7 @@ import { User } from 'src/users/models/user.model';
 export class ContactsService {
 
     constructor(
+        @InjectModel('User') private readonly userModel: Model<User>,
         @InjectModel('Follower') private readonly followerModel: Model<Follower>,
         @InjectModel('Following') private readonly followingModel: Model<Following>,
     ) {}
@@ -101,9 +102,13 @@ export class ContactsService {
             await this.followerModel.create({
                 userId: requestToFollowUserId,
                 userFollower: user._id ,
+            });
+
+            // TODO:: refactor notifications into notifications service
+            await this.userModel.updateOne({
+                _id: requestToFollowUserId,
             }, {
                 $push: {
-                    // refactor notifications into notifications service
                     notifications: {
                         senderId: user._id,
                         senderUsername: user.username,

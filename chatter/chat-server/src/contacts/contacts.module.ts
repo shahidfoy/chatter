@@ -4,10 +4,12 @@ import { ContactsController } from './contacts.controller';
 import { FollowerSchema } from './models/follower.model';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FollowingSchema } from './models/following.model';
+import { UserSchema } from 'src/users/models/user.model';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
+      { name: 'User', schema: UserSchema },
       { name: 'Follower', schema: FollowerSchema },
       { name: 'Following', schema: FollowingSchema },
     ]),
