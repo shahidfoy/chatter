@@ -258,7 +258,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
   private updateLayout() {
     setTimeout(() => {
       this.updateMasonry = true;
-    }, 500);
+    }, 1000);
   }
 
   /**

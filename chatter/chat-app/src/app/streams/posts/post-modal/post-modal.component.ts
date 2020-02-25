@@ -177,10 +177,8 @@ export class PostModalComponent implements OnInit, OnChanges {
     this.imageCount = info.fileList.length;
     switch (info.file.status) {
       case 'uploading':
-        console.log('UPLOADING');
         break;
       case 'done':
-        console.log('DONE');
         this.imageService.beforeUpload(info.file.originFileObj).subscribe((uploadResult) => {
           if (uploadResult) {
             this.imageService.getBase64(info.file.originFileObj, (img: string) => {
@@ -210,8 +208,6 @@ export class PostModalComponent implements OnInit, OnChanges {
   private getPost() {
     this.postService.getPost(this.post._id).subscribe((post: Post) => {
       this.post = post;
-      console.log('post', this.post.post.length);
-      console.log('char', this.charCount);
       this.charCount = this.MAX_CHARS;
       this.charCount -= this.post.post.length;
     });
