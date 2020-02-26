@@ -38,7 +38,7 @@ export class NotificationsComponent implements OnInit {
     this.loggedInUser = this.tokenService.getPayload();
     this.getLoggedInUsersNotifications();
 
-    this.userService.receiveNewNotificationActionSocket().subscribe(() => {
+    this.notificationsService.receiveNewNotificationActionSocket().subscribe(() => {
       this.getLoggedInUsersNotifications();
     });
   }
@@ -82,7 +82,7 @@ export class NotificationsComponent implements OnInit {
    */
   deleteNotification(notification: Notification) {
     this.notificationsService.deleteNotification(notification._id).subscribe(() => {
-      this.userService.emitNewNotificationActionSocket();
+      this.notificationsService.emitNewNotificationActionSocket();
     });
   }
 

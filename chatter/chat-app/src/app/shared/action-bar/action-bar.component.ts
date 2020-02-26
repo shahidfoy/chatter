@@ -33,7 +33,7 @@ export class ActionBarComponent implements OnInit {
     this.loggedInUser = this.tokenService.getPayload();
     this.getLoggedInUser();
 
-    this.userService.receiveNewNotificationActionSocket().subscribe(() => {
+    this.notificationsService.receiveNewNotificationActionSocket().subscribe(() => {
       this.getLoggedInUser();
     });
 

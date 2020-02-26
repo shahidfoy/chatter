@@ -3,13 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Notification } from '../interfaces/notification.interface';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationsService {
 
-  constructor(private http: HttpClient) { }
+  private readonly WEBSOCKET_NOTIFICATION: string = 'notification';
+
+  constructor(
+    private http: HttpClient,
+    private socket: Socket,
+  ) { }
 
   /**
    * gets user notifications
@@ -33,5 +39,23 @@ export class NotificationsService {
    */
   deleteNotification(notificationId: string): Observable<string> {
     return this.http.delete<string>(`${environment.BASEURL}/api/notifications/delete/${notificationId}`);
+  }
+
+  ///////////////////////////////////////////
+  /// *** WEBSOCKETS
+  ///////////////////////////////////////////
+
+  /**
+   * emits on notification action
+   */
+  emitNewNotificationActionSocket() {
+    this.socket.emit(this.WEBSOCKET_NOTIFICATION);
+  }
+
+  /**
+   * receives new notification action
+   */
+  receiveNewNotificationActionSocket(): Observable<{}> {
+    return this.socket.fromEvent(this.WEBSOCKET_NOTIFICATION);
   }
 }
