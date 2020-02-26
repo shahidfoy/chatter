@@ -3,7 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Follower } from './models/follower.model';
 import { Following } from './models/following.model';
-import { User } from 'src/users/models/user.model';
+import { User } from '../users/models/user.model';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class ContactsService {
@@ -12,6 +13,7 @@ export class ContactsService {
         @InjectModel('User') private readonly userModel: Model<User>,
         @InjectModel('Follower') private readonly followerModel: Model<Follower>,
         @InjectModel('Following') private readonly followingModel: Model<Following>,
+        private notificationsService: NotificationsService,
     ) {}
 
     /**
@@ -105,18 +107,19 @@ export class ContactsService {
             });
 
             // TODO:: refactor notifications into notifications service
-            await this.userModel.updateOne({
-                _id: requestToFollowUserId,
-            }, {
-                $push: {
-                    notifications: {
-                        senderId: user._id,
-                        senderUsername: user.username,
-                        message: `${user.username} is now following you.`,
-                        createdAt: new Date(),
-                    },
-                },
-            });
+            await this.notificationsService.createFollowNotification(user, requestToFollowUserId);
+            // await this.userModel.updateOne({
+            //     _id: requestToFollowUserId,
+            // }, {
+            //     $push: {
+            //         notifications: {
+            //             senderId: user._id,
+            //             senderUsername: user.username,
+            //             message: `${user.username} is now following you.`,
+            //             createdAt: new Date(),
+            //         },
+            //     },
+            // });
         };
 
         return followUser()
