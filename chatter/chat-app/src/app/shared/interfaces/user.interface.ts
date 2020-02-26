@@ -4,21 +4,9 @@ export interface User {
   email?: string;
   password?: string;
   onlineStatus?: string;
-  notifications?: NotificationsObj[];
   chatList?: ChatList[];
   picVersion?: string;
   picId?: string;
-}
-
-export interface NotificationsObj {
-  _id: string;
-  senderId: string;
-  senderUsername: string;
-  message: string;
-  viewProfile: boolean;
-  createdAt: Date;
-  read: boolean;
-  date: string;
 }
 
 export interface ChatList {

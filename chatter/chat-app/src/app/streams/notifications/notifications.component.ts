@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
-import { NotificationsObj, User } from '../../shared/interfaces/user.interface';
+import { User } from '../../shared/interfaces/user.interface';
 import { UserService } from '../services/user.service';
 import { TokenService } from '../../shared/services/token.service';
 import { timeFromNow } from '../../shared/shared.utils';
@@ -19,7 +19,7 @@ export class NotificationsComponent implements OnInit {
   initLoading: boolean;
   loadingMore: boolean;
   data: any[] = [];
-  list: Array<{ loading: boolean; notification: NotificationsObj }> = [];
+  list: Array<{ loading: boolean; notification: Notification }> = [];
 
   loggedInUser: PayloadData;
   loggedInUserData: User;
@@ -63,15 +63,18 @@ export class NotificationsComponent implements OnInit {
     return timeFromNow(time);
   }
 
-  /**
-   * marks notification as read
-   * @param notification notification to be marked as read
-   */
-  markNotification(notification: NotificationsObj) {
-    this.userService.markNotification(notification).subscribe((user: User) => {
-      this.userService.emitNewNotificationActionSocket();
-    });
-  }
+  // /**
+  //  * marks notification as read
+  //  * @param notification notification to be marked as read
+  //  */
+  // markNotification(notification: NotificationsObj) {
+  //   this.userService.markNotification(notification).subscribe((user: User) => {
+  //     this.userService.emitNewNotificationActionSocket();
+  //   });
+  // }
+
+  // TODO:: delete all notifications
+  deleteAllNotifications() {}
 
   /**
    * deletes notification
@@ -81,19 +84,16 @@ export class NotificationsComponent implements OnInit {
     this.notificationsService.deleteNotification(notification._id).subscribe(() => {
       this.userService.emitNewNotificationActionSocket();
     });
-    // this.userService.deleteNotification(notification).subscribe((user: User) => {
-    //   this.userService.emitNewNotificationActionSocket();
-    // });
   }
 
-  /**
-   * marks all notifications as read
-   */
-  markAllNotifications() {
-    this.userService.markAllNotifications().subscribe((user: User) => {
-      this.userService.emitNewNotificationActionSocket();
-    });
-  }
+  // /**
+  //  * marks all notifications as read
+  //  */
+  // markAllNotifications() {
+  //   this.userService.markAllNotifications().subscribe((user: User) => {
+  //     this.userService.emitNewNotificationActionSocket();
+  //   });
+  // }
 
   // IMPLEMENT THIS LATER TO LOAD NOTIFICATIONS
   // onLoadMore(): void {

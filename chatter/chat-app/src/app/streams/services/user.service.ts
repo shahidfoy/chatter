@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User, NotificationsObj } from '../../shared/interfaces/user.interface';
+import { User } from '../../shared/interfaces/user.interface';
 import { environment } from '../../../environments/environment';
 import { Socket } from 'ngx-socket-io';
 
@@ -41,32 +41,32 @@ export class UserService {
     return this.http.get<User>(`${environment.BASEURL}/api/users/username/${username}`);
   }
 
-  /**
-   * marks notification as read
-   * @param notification notifiaction to be marked
-   */
-  markNotification(notification: NotificationsObj): Observable<User> {
-    return this.http.post<User>(`${environment.BASEURL}/api/users/mark-notification`, {
-      notification
-    });
-  }
+  // /**
+  //  * marks notification as read
+  //  * @param notification notifiaction to be marked
+  //  */
+  // markNotification(notification: NotificationsObj): Observable<User> {
+  //   return this.http.post<User>(`${environment.BASEURL}/api/users/mark-notification`, {
+  //     notification
+  //   });
+  // }
 
-  /**
-   * deletes notification
-   * @param notification notification to be deleted
-   */
-  deleteNotification(notification: NotificationsObj): Observable<User> {
-    return this.http.post<User>(`${environment.BASEURL}/api/users/delete-notification`, {
-      notification
-    });
-  }
+  // /**
+  //  * deletes notification
+  //  * @param notification notification to be deleted
+  //  */
+  // deleteNotification(notification: NotificationsObj): Observable<User> {
+  //   return this.http.post<User>(`${environment.BASEURL}/api/users/delete-notification`, {
+  //     notification
+  //   });
+  // }
 
-  /**
-   * marks all notifications as read
-   */
-  markAllNotifications(): Observable<User> {
-    return this.http.post<User>(`${environment.BASEURL}/api/users/mark-all`, {});
-  }
+  // /**
+  //  * marks all notifications as read
+  //  */
+  // markAllNotifications(): Observable<User> {
+  //   return this.http.post<User>(`${environment.BASEURL}/api/users/mark-all`, {});
+  // }
 
   ///////////////////////////////////////////
   /// *** WEBSOCKETS
