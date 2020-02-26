@@ -5,9 +5,11 @@ import { FollowerSchema } from './models/follower.model';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FollowingSchema } from './models/following.model';
 import { UserSchema } from 'src/users/models/user.model';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 @Module({
   imports: [
+    NotificationsModule,
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
       { name: 'Follower', schema: FollowerSchema },
