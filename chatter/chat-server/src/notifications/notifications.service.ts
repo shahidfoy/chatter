@@ -17,11 +17,12 @@ export class NotificationsService {
      * @param userId user id
      */
     async getNotificaitons(userId: string): Promise<Notification> {
-        return await this.notificationModel.find({
-            _id: userId,
-        }).catch((err) => {
-            throw new InternalServerErrorException({ message: 'Unable to get user notifications' });
-        });
+        return await this.notificationModel
+                        .find({userId})
+                        .sort({createdAt: -1})
+                        .catch((err) => {
+                            throw new InternalServerErrorException({ message: 'Unable to get user notifications' });
+                        });
     }
 
     /**
@@ -29,11 +30,10 @@ export class NotificationsService {
      * @param userId user id
      */
     async getNotificationsCount(userId: string): Promise<number> {
-        return await this.notificationModel.countDocuments({
-            _id: userId,
-        }).catch((err) => {
-            throw new InternalServerErrorException({ message: 'Unable to get user notifications count' });
-        });
+        return await this.notificationModel.countDocuments({userId})
+                        .catch((err) => {
+                            throw new InternalServerErrorException({ message: 'Unable to get user notifications count' });
+                        });
     }
 
     /**
@@ -47,6 +47,8 @@ export class NotificationsService {
                 userId: receiverId,
                 senderId: user._id,
                 senderUsername: user.username,
+                picVersion: user.picVersion,
+                picId: user.picId,
                 message: `${user.username} is now following you.`,
                 createdAt: new Date(),
             });

@@ -5,6 +5,8 @@ import { UserService } from '../services/user.service';
 import { TokenService } from '../../shared/services/token.service';
 import { timeFromNow } from '../../shared/shared.utils';
 import { ImageService } from '../../shared/services/image.service';
+import { NotificationsService } from '../../shared/services/notifications.service';
+import { Notification } from '../../shared/interfaces/notification.interface';
 
 @Component({
   selector: 'app-notifications',
@@ -21,7 +23,7 @@ export class NotificationsComponent implements OnInit {
 
   loggedInUser: PayloadData;
   loggedInUserData: User;
-  notifications: NotificationsObj[];
+  notifications: Notification[];
 
   avatarUrl: string;
 
@@ -29,6 +31,7 @@ export class NotificationsComponent implements OnInit {
     private userService: UserService,
     private imageService: ImageService,
     private tokenService: TokenService,
+    private notificationsService: NotificationsService,
   ) {}
 
   ngOnInit() {
@@ -44,9 +47,9 @@ export class NotificationsComponent implements OnInit {
    * gets users profile image url
    * @param user user of post
    */
-  getAvatarUrl(userId: User): string {
-    if (userId.picId) {
-      return this.imageService.getImage(userId.picVersion, userId.picId);
+  getAvatarUrl(notification: Notification): string {
+    if (notification.picId) {
+      return this.imageService.getImage(notification.picVersion, notification.picId);
     } else {
       return this.imageService.getDefaultProfileImage();
     }
@@ -106,13 +109,20 @@ export class NotificationsComponent implements OnInit {
   private getLoggedInUsersNotifications() {
     this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
       this.loggedInUserData = user;
-      this.notifications = user.notifications
-                                .sort((current, next) => {
-                                  return +new Date(next.createdAt) - +new Date(current.createdAt);
-                                });
-      this.list = this.notifications.map(notification => ({ loading: false, notification }));
+      this.getNotifications(this.loggedInUserData._id);
       this.initLoading = false;
       this.isLoading = false;
+    });
+  }
+
+  /**
+   * gets notifications
+   * @param userId user id
+   */
+  private getNotifications(userId: string) {
+    this.notificationsService.getNotificaitons(userId).subscribe((notifications: Notification[]) => {
+      this.notifications = notifications;
+      this.list = this.notifications.map(notification => ({ loading: false, notification }));
     });
   }
 }

@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MessageService } from 'src/app/chat/services/message.service';
+import { NotificationsService } from '../services/notifications.service';
 
 @Component({
   selector: 'app-action-bar',
@@ -23,6 +24,7 @@ export class ActionBarComponent implements OnInit {
   constructor(
     private tokenService: TokenService,
     private userService: UserService,
+    private notificationsService: NotificationsService,
     private router: Router,
     private messageService: MessageService,
   ) { }
@@ -48,7 +50,8 @@ export class ActionBarComponent implements OnInit {
     this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
       this.loggedInUserData = user;
       if (this.loggedInUserData) {
-        this.notificationsLength = _.filter(this.loggedInUserData.notifications, ['read', false]).length;
+        // this.notificationsLength = _.filter(this.loggedInUserData.notifications, ['read', false]).length;
+        this.getNotificationCount(this.loggedInUserData._id);
         this.checkIfMessagesRead();
       }
     }, (err: HttpErrorResponse) => {
@@ -74,5 +77,15 @@ export class ActionBarComponent implements OnInit {
         }
       });
     }
+  }
+
+  /**
+   * gets user notification count
+   * @param userId user id
+   */
+  private getNotificationCount(userId: string) {
+    this.notificationsService.getNotificationsCount(userId).subscribe((count: number) => {
+      this.notificationsLength = count;
+    });
   }
 }

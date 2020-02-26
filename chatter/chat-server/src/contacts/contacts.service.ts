@@ -106,20 +106,7 @@ export class ContactsService {
                 userFollower: user._id ,
             });
 
-            // TODO:: refactor notifications into notifications service
             await this.notificationsService.createFollowNotification(user, requestToFollowUserId);
-            // await this.userModel.updateOne({
-            //     _id: requestToFollowUserId,
-            // }, {
-            //     $push: {
-            //         notifications: {
-            //             senderId: user._id,
-            //             senderUsername: user.username,
-            //             message: `${user.username} is now following you.`,
-            //             createdAt: new Date(),
-            //         },
-            //     },
-            // });
         };
 
         return followUser()

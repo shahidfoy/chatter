@@ -4,6 +4,8 @@ export const NotificationSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     senderUsername: { type: String },
+    picVersion: { type: String },
+    picId: { type: String },
     message: { type: String },
     viewProfile: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now() },
@@ -16,6 +18,8 @@ export interface Notification extends mongoose.Document {
     userId: string;
     senderId: string;
     senderUsername: string;
+    picVersion: string;
+    picId: string;
     message: string;
     viewProfile: boolean;
     createdAt: Date;
