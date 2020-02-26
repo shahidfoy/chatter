@@ -4,7 +4,6 @@
 
   <app-loading *ngIf="isLoading"></app-loading>
   <div class="users">
-
     <div *ngFor="let user of users">
       <nz-card *ngIf="user.username !== loggedInUser.username" [nzActions]="[actionFollow, actionProfile, actionChat]">
         <nz-card-meta
@@ -24,8 +23,6 @@
             nzType="plus-circle"
             [theme]="isFollowingObj[user._id] ? 'twotone' : 'outline'"
             (click)="followUser(user._id)"
-            nz-popover
-            nzPopoverContent="follow"
             nzPopoverPlacement="top"></i>
         </ng-template>
         <ng-template #actionProfile>
@@ -48,7 +45,6 @@
         </ng-template>
       </nz-card>
     </div>
-
   </div>
 
 </nz-content>
