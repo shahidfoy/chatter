@@ -77,10 +77,13 @@ export class NotificationsComponent implements OnInit {
    * deletes notification
    * @param notification notification to be deleted
    */
-  deleteNotification(notification: NotificationsObj) {
-    this.userService.deleteNotification(notification).subscribe((user: User) => {
+  deleteNotification(notification: Notification) {
+    this.notificationsService.deleteNotification(notification._id).subscribe(() => {
       this.userService.emitNewNotificationActionSocket();
     });
+    // this.userService.deleteNotification(notification).subscribe((user: User) => {
+    //   this.userService.emitNewNotificationActionSocket();
+    // });
   }
 
   /**

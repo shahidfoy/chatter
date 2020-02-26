@@ -32,6 +32,6 @@ export class NotificationsService {
    * @param notificationId notification id
    */
   deleteNotification(notificationId: string): Observable<string> {
-    return this.http.delete<string>(`${environment.BASEURL}/api/delete/${notificationId}`);
+    return this.http.delete<string>(`${environment.BASEURL}/api/notifications/delete/${notificationId}`);
   }
 }
