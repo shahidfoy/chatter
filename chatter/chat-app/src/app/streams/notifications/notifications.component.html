@@ -3,7 +3,7 @@
     <button
       class="float-right"
       nz-button
-      (click)="markAllNotifications()">Mark all as read</button>
+      (click)="markAllNotifications()">Clear all notifications</button>
   </div>
 
   <app-loading *ngIf="isLoading"></app-loading>
@@ -27,12 +27,12 @@
             </a>
           </ng-template>
           <ng-template #notificationActions>
-            <i
+            <!-- <i
               class="anticon margin-right-8"
               nz-icon
               [nzType]="'mail'"
               [theme]="item.notification.read ? 'outline' : 'twotone'"
-              (click)="markNotification(item.notification)"></i>
+              (click)="markNotification(item.notification)"></i> -->
             <i
               class="anticon margin-right-8"
               nz-icon

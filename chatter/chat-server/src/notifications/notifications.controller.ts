@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Delete } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { Notification } from './models/notification.model';
 
@@ -29,5 +29,16 @@ export class NotificationsController {
         @Param('userId') userId: string,
     ): Promise<number> {
         return this.notificationsService.getNotificationsCount(userId);
+    }
+
+    /**
+     * deletes notification by id
+     * @param notificationId notification id
+     */
+    @Delete('delete/:notificationId')
+    async deleteNotification(
+        @Param('notificationId') notificationId: string,
+    ): Promise<string> {
+        return this.notificationsService.deleteNotification(notificationId);
     }
 }

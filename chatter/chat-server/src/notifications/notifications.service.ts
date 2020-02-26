@@ -63,4 +63,24 @@ export class NotificationsService {
             });
     }
 
+    // TODO:: clean up read notifications
+    /**
+     * deletes notification by id
+     * @param notificationId notification id
+     */
+    async deleteNotification(notificationId: string): Promise<string> {
+      const deleteNotification = async () => {
+        await this.notificationModel.deleteOne({_id: notificationId});
+      };
+
+      return deleteNotification()
+        .then(() => {
+          return JSON.stringify(notificationId);
+        })
+        .catch((err) => {
+          throw new InternalServerErrorException({ message: `Unable to delete notification` });
+        });
+    }
+
+    // delete all notifications
 }

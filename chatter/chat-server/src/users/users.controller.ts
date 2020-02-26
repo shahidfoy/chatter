@@ -42,6 +42,7 @@ export class UsersController {
 
     /**
      * marks notification as read
+     * TODO:: refactor into notifications module
      * @param req custom request
      * @param notification notification to be marked
      */
@@ -55,6 +56,7 @@ export class UsersController {
 
     /**
      * removes notification from users notification array
+     * TODO:: refactor into notifications module
      * @param req custom request
      * @param notification notification to be deleted
      */
@@ -68,6 +70,7 @@ export class UsersController {
 
     /**
      * marks all notifications as read
+     * TODO:: refactor into notifications module
      */
     @Post('mark-all')
     async markAll(

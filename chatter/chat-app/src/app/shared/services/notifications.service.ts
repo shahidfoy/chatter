@@ -26,4 +26,12 @@ export class NotificationsService {
   getNotificationsCount(userId: string): Observable<number> {
     return this.http.get<number>(`${environment.BASEURL}/api/notifications/count/${userId}`);
   }
+
+  /**
+   * deletes notification by id
+   * @param notificationId notification id
+   */
+  deleteNotification(notificationId: string): Observable<string> {
+    return this.http.delete<string>(`${environment.BASEURL}/api/delete/${notificationId}`);
+  }
 }

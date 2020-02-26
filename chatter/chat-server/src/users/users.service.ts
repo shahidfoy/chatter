@@ -59,6 +59,7 @@ export class UsersService {
 
     /**
      * marks notification as read
+     * TODO:: refactor into notifications module
      * @param user logged in user
      * @param notification notification to be marked as read
      */
@@ -77,6 +78,7 @@ export class UsersService {
 
     /**
      * removes notification from users notification array
+     * TODO:: refactor into notifications module
      * @param user logged in user
      * @param notification notification to be removed
      */
@@ -97,6 +99,7 @@ export class UsersService {
 
     /**
      * marks all of logged in users notifications as read
+     * TODO:: refactor into notifications module
      */
     async markAll(user: User): Promise<User> {
         return await this.userModel.updateOne({
