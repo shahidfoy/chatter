@@ -41,6 +41,14 @@ export class NotificationsService {
     return this.http.delete<string>(`${environment.BASEURL}/api/notifications/delete/${notificationId}`);
   }
 
+  /**
+   * deletes all notifications by user id
+   * @param userId user id
+   */
+  deleteAllNotifications(userId: string): Observable<string> {
+    return this.http.delete<string>(`${environment.BASEURL}/api/notifications/delete-all/${userId}`);
+  }
+
   ///////////////////////////////////////////
   /// *** WEBSOCKETS
   ///////////////////////////////////////////

@@ -63,7 +63,6 @@ export class NotificationsService {
             });
     }
 
-    // TODO:: clean up read notifications
     /**
      * deletes notification by id
      * @param notificationId notification id
@@ -82,5 +81,21 @@ export class NotificationsService {
         });
     }
 
-    // delete all notifications
+    /**
+     * deletes all notifications by user id
+     * @param userId user id
+     */
+    async deleteAllNotifications(userId: string): Promise<string> {
+      const deleteAllNotifications = async () => {
+        await this.notificationModel.deleteMany({userId});
+      };
+
+      return deleteAllNotifications()
+        .then(() => {
+          return JSON.stringify(userId);
+        })
+        .catch(() => {
+          throw new InternalServerErrorException({ message: `Unable to delete all notifications`});
+        });
+  }
 }

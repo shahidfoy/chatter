@@ -63,18 +63,14 @@ export class NotificationsComponent implements OnInit {
     return timeFromNow(time);
   }
 
-  // /**
-  //  * marks notification as read
-  //  * @param notification notification to be marked as read
-  //  */
-  // markNotification(notification: NotificationsObj) {
-  //   this.userService.markNotification(notification).subscribe((user: User) => {
-  //     this.userService.emitNewNotificationActionSocket();
-  //   });
-  // }
-
-  // TODO:: delete all notifications
-  deleteAllNotifications() {}
+  /**
+   * deletes all notifications by user id
+   */
+  deleteAllNotifications() {
+    this.notificationsService.deleteAllNotifications(this.loggedInUserData._id).subscribe(() => {
+      this.notificationsService.emitNewNotificationActionSocket();
+    });
+  }
 
   /**
    * deletes notification
@@ -85,15 +81,6 @@ export class NotificationsComponent implements OnInit {
       this.notificationsService.emitNewNotificationActionSocket();
     });
   }
-
-  // /**
-  //  * marks all notifications as read
-  //  */
-  // markAllNotifications() {
-  //   this.userService.markAllNotifications().subscribe((user: User) => {
-  //     this.userService.emitNewNotificationActionSocket();
-  //   });
-  // }
 
   // IMPLEMENT THIS LATER TO LOAD NOTIFICATIONS
   // onLoadMore(): void {

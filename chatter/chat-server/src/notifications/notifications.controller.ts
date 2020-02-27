@@ -5,9 +5,7 @@ import { Notification } from './models/notification.model';
 @Controller('notifications')
 export class NotificationsController {
 
-    constructor(private notificationsService: NotificationsService) {
-
-    }
+    constructor(private notificationsService: NotificationsService) {}
 
     /**
      * gets user notifications
@@ -40,5 +38,16 @@ export class NotificationsController {
         @Param('notificationId') notificationId: string,
     ): Promise<string> {
         return this.notificationsService.deleteNotification(notificationId);
+    }
+
+    /**
+     * deletes all notifications by user id
+     * @param userId user id
+     */
+    @Delete('delete-all/:userId')
+    async deleteAllNotifications(
+        @Param('userId') userId: string,
+    ): Promise<string> {
+        return this.notificationsService.deleteAllNotifications(userId);
     }
 }
