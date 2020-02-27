@@ -137,8 +137,9 @@ export class PostsController {
     async addComment(
         @Req() req: CustomRequest,
         @Body('postId') postId: string,
+        @Body('receiverId') receiverId: string,
         @Body('comment') comment: string,
     ): Promise<string> {
-        return this.postsService.addComment(req.user, postId, comment);
+        return this.postsService.addComment(req.user, postId, receiverId, comment);
     }
 }

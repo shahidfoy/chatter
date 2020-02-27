@@ -64,7 +64,7 @@ export class CommentsComponent implements OnInit {
    * adds a new comment to post
    */
   addNewComment() {
-    this.postService.addComment(this.postId, this.commentForm.value.comment).subscribe(() => {
+    this.postService.addComment(this.postId, this.post.user._id, this.commentForm.value.comment).subscribe(() => {
       this.commentForm.reset();
       this.postService.emitNewCommentSocket();
     });

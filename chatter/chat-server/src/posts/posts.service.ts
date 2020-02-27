@@ -5,6 +5,7 @@ import { UserPost } from './models/post.model';
 import { User } from '../users/models/user.model';
 import * as Joi from '@hapi/joi';
 import { Tag } from './models/tag.model';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class PostsService {
@@ -15,6 +16,7 @@ export class PostsService {
         @InjectModel('User') private readonly userModel: Model<User>,
         @InjectModel('Post') private readonly postModel: Model<UserPost>,
         @InjectModel('Tag') private readonly tagModel: Model<Tag>,
+        private notificationsService: NotificationsService,
     ) {}
 
     /**
@@ -273,7 +275,7 @@ export class PostsService {
      * @param postId id of post where comment is being added
      * @param comment comment being added to post
      */
-    async addComment(user: User, postId: string, comment: string): Promise<string> {
+    async addComment(user: User, postId: string, receiverId: string, comment: string): Promise<string> {
         const schema = Joi.object().keys({
             comment: Joi.string().required().max(300),
         });
@@ -295,6 +297,7 @@ export class PostsService {
                 },
             },
         }).then(() => {
+            this.notificationsService.createCommentNotification(user, receiverId);
             return JSON.stringify(postId);
         }).catch(err => {
             throw new InternalServerErrorException({ message: `Add comment Error Occured ${err}`});
