@@ -208,7 +208,7 @@ export class PostsService {
      * @param user user who liked post
      * @param postId post id
      */
-    async addLike(user: User, postId: string): Promise<string> {
+    async addLike(user: User, postId: string, receiver: User): Promise<string> {
         const userDisliked = await this.postModel.find({ 'dislikes.username': user.username });
 
         if (userDisliked) {
@@ -230,6 +230,7 @@ export class PostsService {
             $push: { likes: { username: user.username } },
             $inc: { totalLikes: 1 },
         }).then(() => {
+            this.notificationsService.createLikeNotification(user, receiver._id);
             return JSON.stringify(postId);
         }).catch(err => {
             throw new InternalServerErrorException({ message: `Like Error Occured ${err}` });

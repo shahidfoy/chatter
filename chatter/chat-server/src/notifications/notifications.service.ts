@@ -126,5 +126,30 @@ export class NotificationsService {
         });
   }
 
-  // create notification for post like
+  /**
+   * creates new like notification
+   * @param user logged in user
+   * @param receiverId receiver id
+   */
+  async createLikeNotification(user: User, receiverId: string): Promise<any> {
+    const LikeNotification = async () => {
+      await this.notificationModel.create({
+        userId: receiverId,
+        senderId: user._id,
+        senderUsername: user.username,
+        picVersion: user.picVersion,
+        picId: user.picId,
+        message: `${user.username} liked your post`,
+        createdAt: new Date(),
+      });
+    };
+
+    return LikeNotification()
+        .then(() => {
+          return JSON.stringify(receiverId);
+        })
+        .catch((err) => {
+          throw new InternalServerErrorException({ message: 'Unable to send like notification' });
+        });
+  }
 }

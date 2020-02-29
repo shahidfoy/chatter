@@ -80,8 +80,8 @@ export class PostService {
    * adds like to post
    * @param body post
    */
-  addLike(body: Post): Observable<string> {
-    return this.http.post<string>(`${environment.BASEURL}/api/posts/like`, body);
+  addLike(post: Post): Observable<string> {
+    return this.http.post<string>(`${environment.BASEURL}/api/posts/like`, post);
   }
 
   /**
