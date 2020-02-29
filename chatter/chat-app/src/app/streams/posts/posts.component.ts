@@ -12,6 +12,7 @@ import { timeFromNow } from '../../shared/shared.utils';
 import { User } from '../../shared/interfaces/user.interface';
 import { ImageService } from '../../shared/services/image.service';
 import { UserService } from '../services/user.service';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
 @Component({
   selector: 'app-posts',
@@ -43,6 +44,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
   constructor(
     private tokenService: TokenService,
     private applicationStateService: ApplicationStateService,
+    private notificationsService: NotificationsService,
     private postService: PostService,
     private imageService: ImageService,
     private userService: UserService,
@@ -153,6 +155,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
           post.totalDislikes -= 1;
         }
       }
+      this.notificationsService.emitNewNotificationActionSocket();
     }, (err: HttpErrorResponse) => {
       this.displayError(err.error.message);
     });

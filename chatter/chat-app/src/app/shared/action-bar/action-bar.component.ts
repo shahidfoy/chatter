@@ -8,6 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MessageService } from 'src/app/chat/services/message.service';
 import { NotificationsService } from '../services/notifications.service';
+import { PostService } from 'src/app/streams/services/post.service';
 
 @Component({
   selector: 'app-action-bar',
@@ -22,11 +23,12 @@ export class ActionBarComponent implements OnInit {
   chatListLength: number;
 
   constructor(
+    private notificationsService: NotificationsService,
+    private messageService: MessageService,
+    private postService: PostService,
+    private router: Router,
     private tokenService: TokenService,
     private userService: UserService,
-    private notificationsService: NotificationsService,
-    private router: Router,
-    private messageService: MessageService,
   ) { }
 
   ngOnInit() {
@@ -34,6 +36,10 @@ export class ActionBarComponent implements OnInit {
     this.getLoggedInUser();
 
     this.notificationsService.receiveNewNotificationActionSocket().subscribe(() => {
+      this.getLoggedInUser();
+    });
+
+    this.postService.receiveNewCommentSocket().subscribe(() => {
       this.getLoggedInUser();
     });
 
