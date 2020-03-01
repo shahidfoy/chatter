@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { TokenService } from '../../shared/services/token.service';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { timeFromNow } from '../../shared/shared.utils';
 import { User } from '../../shared/interfaces/user.interface';
 import { ImageService } from '../../shared/services/image.service';
@@ -37,7 +37,6 @@ export class PostsComponent implements OnInit, AfterViewInit {
   paginateMorePosts = true;
   updateMasonry = false;
   isLoggedInUser = false;
-  editUserPost = false;
   isPostVisible = false;
   isTrending = false;
 
@@ -50,6 +49,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
     private userService: UserService,
     private notification: NzNotificationService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -96,7 +96,6 @@ export class PostsComponent implements OnInit, AfterViewInit {
   openEditPostModal(post: Post) {
     this.editPost = post;
     this.isPostVisible = true;
-    this.editUserPost = true;
   }
 
   /**
@@ -104,7 +103,6 @@ export class PostsComponent implements OnInit, AfterViewInit {
    */
   hidePost() {
     this.isPostVisible = false;
-    this.editUserPost = false;
   }
 
   /**
@@ -112,9 +110,9 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * @param post post comments
    */
   openComments(post: Post) {
-    // this.router.navigate(['streams/post', post._id]);
-    this.editPost = post;
-    this.isPostVisible = true;
+    this.router.navigate(['streams/post/comments', post._id]);
+    // this.editPost = post;
+    // this.isPostVisible = true;
   }
 
   /**

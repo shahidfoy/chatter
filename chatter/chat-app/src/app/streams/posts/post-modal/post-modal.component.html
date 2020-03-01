@@ -12,7 +12,7 @@
 
 <ng-template #modalContent>
   <!-- edit post -->
-  <form class="post" [formGroup]="postForm" *ngIf="editPostAction; else viewPost">
+  <form class="post" [formGroup]="postForm">
     <span class="float-right">Limit: {{ charCount }}</span>
     <textarea
       #postInput
@@ -50,20 +50,20 @@
   </form>
 
   <!-- view post -->
-  <ng-template class="post" #viewPost>
+  <!-- <ng-template class="post" #viewPost>
     <p>{{ post.post }}</p>
     <img [src]="postImage"/>
     <br>
-    <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag>
+    <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag> -->
     <!-- post comments -->
-    <app-comments [postId]="post._id"></app-comments>
-  </ng-template>
+    <!-- <app-comments [postId]="post._id"></app-comments>
+  </ng-template> -->
 
 </ng-template>
 
 <ng-template #modalFooter>
-  <button nz-button nzType="danger" *ngIf="editPostAction" (click)="handleDeletePost()">Delete</button>
-  <button nz-button nzType="primary" *ngIf="editPostAction" (click)="handleModalOk()">Update</button>
+  <button nz-button nzType="danger" (click)="handleDeletePost()">Delete</button>
+  <button nz-button nzType="primary" (click)="handleModalOk()">Update</button>
 </ng-template>
 
 

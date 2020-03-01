@@ -19,7 +19,6 @@ export class PostModalComponent implements OnInit, OnChanges {
   FILE_UPLOAD_URL = `${environment.BASEURL}/api/images/upload-post-image`;
 
   @Input() isVisible: boolean;
-  @Input() editPostAction: boolean;
   @Input() post: Post;
   @Output() newPostOutput = new EventEmitter<void>();
 

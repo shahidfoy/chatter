@@ -6,6 +6,7 @@ import { timeFromNow } from 'src/app/shared/shared.utils';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { ImageService } from '../../../shared/services/image.service';
 import { ApplicationStateService } from 'src/app/shared/services/application-state.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-comments',
@@ -21,6 +22,7 @@ export class CommentsComponent implements OnInit {
   isMobile: boolean;
   commentForm: FormGroup;
   post: Post;
+  postImage = '';
   commentsArray: UserComment[];
   charCount = this.MAX_CHARS;
   isLoading = false;
@@ -30,6 +32,7 @@ export class CommentsComponent implements OnInit {
     private postService: PostService,
     private imageService: ImageService,
     private applicationStateService: ApplicationStateService,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -37,7 +40,7 @@ export class CommentsComponent implements OnInit {
       this.isMobile = isMobile;
     });
 
-    // this.postId = this.activatedRoute.snapshot.paramMap.get('id');
+    this.postId = this.activatedRoute.snapshot.paramMap.get('id');
     this.commentForm = this.formBuilder.group({
       comment: ['', Validators.required]
     });
@@ -46,6 +49,8 @@ export class CommentsComponent implements OnInit {
     this.postService.receiveNewCommentSocket().subscribe(() => {
       this.getPost();
     });
+
+
   }
 
   /**
@@ -92,7 +97,13 @@ export class CommentsComponent implements OnInit {
    */
   private getPost() {
     this.postService.getPost(this.postId).subscribe((post: Post) => {
+      console.log('post', post);
       this.post = post;
+      if (this.post.picId) {
+        this.postImage = this.imageService.getImage(this.post.picVersion, this.post.picId);
+      } else {
+        this.postImage = '';
+      }
       this.commentsArray = post.comments.reverse();
     });
   }

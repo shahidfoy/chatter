@@ -1,5 +1,21 @@
 <nz-content>
   <div>
+    <div class="post">
+      <div class="post-user">
+        <nz-avatar
+          [routerLink]="['/streams/profile/', post.username]"
+          nz-comment-avatar
+          nzIcon="user"
+          [nzSrc]="getUserAvatar(post.user)">
+        </nz-avatar>
+        <span style="padding-left: 8px;">{{ post.username }}</span>
+      </div>
+
+      <p>{{ post.post }}</p>
+      <img class="img-width" [src]="postImage"/>
+    </div>
+    <br>
+    <nz-tag class="post-tags" *ngFor="let tag of post.tags">{{tag}}</nz-tag>
     <!-- TODO:: add total likes and dislikes -->
     <hr>
     <div class="container">
