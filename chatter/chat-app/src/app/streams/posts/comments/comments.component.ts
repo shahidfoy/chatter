@@ -49,8 +49,6 @@ export class CommentsComponent implements OnInit {
     this.postService.receiveNewCommentSocket().subscribe(() => {
       this.getPost();
     });
-
-
   }
 
   /**
@@ -97,7 +95,6 @@ export class CommentsComponent implements OnInit {
    */
   private getPost() {
     this.postService.getPost(this.postId).subscribe((post: Post) => {
-      console.log('post', post);
       this.post = post;
       if (this.post.picId) {
         this.postImage = this.imageService.getImage(this.post.picVersion, this.post.picId);

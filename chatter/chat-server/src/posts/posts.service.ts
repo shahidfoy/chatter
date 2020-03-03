@@ -230,7 +230,7 @@ export class PostsService {
             $push: { likes: { username: user.username } },
             $inc: { totalLikes: 1 },
         }).then(() => {
-            this.notificationsService.createLikeNotification(user, receiver._id);
+            this.notificationsService.createLikeNotification(user, receiver._id, postId);
             return JSON.stringify(postId);
         }).catch(err => {
             throw new InternalServerErrorException({ message: `Like Error Occured ${err}` });
@@ -298,7 +298,7 @@ export class PostsService {
                 },
             },
         }).then(() => {
-            this.notificationsService.createCommentNotification(user, receiverId);
+            this.notificationsService.createCommentNotification(user, receiverId, postId);
             return JSON.stringify(postId);
         }).catch(err => {
             throw new InternalServerErrorException({ message: `Add comment Error Occured ${err}`});

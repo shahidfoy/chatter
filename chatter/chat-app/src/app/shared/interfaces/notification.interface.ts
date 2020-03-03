@@ -5,6 +5,7 @@ export interface Notification {
   senderUsername: string;
   picVersion: string;
   picId: string;
+  postId: string;
   message: string;
   viewProfile: boolean;
   createdAt: Date;

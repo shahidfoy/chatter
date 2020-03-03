@@ -104,7 +104,7 @@ export class NotificationsService {
    * @param user logged in user
    * @param receiverId receiver id
    */
-  async createCommentNotification(user: User, receiverId: string): Promise<any> {
+  async createCommentNotification(user: User, receiverId: string, postId: string): Promise<string> {
     const commentNotification = async () => {
       await this.notificationModel.create({
         userId: receiverId,
@@ -112,6 +112,7 @@ export class NotificationsService {
         senderUsername: user.username,
         picVersion: user.picVersion,
         picId: user.picId,
+        postId,
         message: `${user.username} commented on your post`,
         createdAt: new Date(),
       });
@@ -131,7 +132,7 @@ export class NotificationsService {
    * @param user logged in user
    * @param receiverId receiver id
    */
-  async createLikeNotification(user: User, receiverId: string): Promise<any> {
+  async createLikeNotification(user: User, receiverId: string, postId: string): Promise<string> {
     const LikeNotification = async () => {
       await this.notificationModel.create({
         userId: receiverId,
@@ -139,6 +140,7 @@ export class NotificationsService {
         senderUsername: user.username,
         picVersion: user.picVersion,
         picId: user.picId,
+        postId,
         message: `${user.username} liked your post`,
         createdAt: new Date(),
       });
