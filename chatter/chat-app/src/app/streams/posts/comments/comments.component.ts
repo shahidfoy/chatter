@@ -7,6 +7,11 @@ import { User } from 'src/app/shared/interfaces/user.interface';
 import { ImageService } from '../../../shared/services/image.service';
 import { ApplicationStateService } from 'src/app/shared/services/application-state.service';
 import { ActivatedRoute } from '@angular/router';
+import * as _ from 'lodash';
+import { HttpErrorResponse } from '@angular/common/http';
+import { PayloadData } from 'src/app/shared/interfaces/jwt-payload.interface';
+import { NzNotificationService } from 'ng-zorro-antd';
+import { TokenService } from 'src/app/shared/services/token.service';
 
 @Component({
   selector: 'app-comments',
@@ -20,6 +25,7 @@ export class CommentsComponent implements OnInit {
   @Input() postId: string;
 
   isMobile: boolean;
+  payload: PayloadData;
   commentForm: FormGroup;
   post: Post;
   postImage = '';
@@ -33,9 +39,12 @@ export class CommentsComponent implements OnInit {
     private imageService: ImageService,
     private applicationStateService: ApplicationStateService,
     private activatedRoute: ActivatedRoute,
+    private notification: NzNotificationService,
+    private tokenService: TokenService,
   ) { }
 
   ngOnInit() {
+    this.payload = this.tokenService.getPayload();
     this.applicationStateService.isMobile.subscribe(isMobile => {
       this.isMobile = isMobile;
     });
@@ -91,6 +100,46 @@ export class CommentsComponent implements OnInit {
   }
 
   /**
+   * uses lodash to check if the user is in the username array
+   * @param array array of usernames
+   * @param username user
+   */
+  checkUserInArray(array: any[], username: string) {
+    return _.some(array, { username });
+  }
+
+  /**
+   * add like to a post
+   * @param post post being liked
+   */
+  like(post: Post) {
+    const isInLikeArray = this.checkUserInArray(post.likes, this.payload.username);
+    if (!isInLikeArray) {
+      this.postService.addLike(post).subscribe((postId: string) => {
+        this.postService.emitNewCommentSocket();
+      }, (err: HttpErrorResponse) => {
+        this.displayError(err.error.message);
+      });
+    }
+  }
+
+  /**
+   * add dislike to a post
+   * @param post post being disliked
+   */
+  dislike(post: Post) {
+    const isInDislikeArray = this.checkUserInArray(post.dislikes, this.payload.username);
+    if (!isInDislikeArray) {
+      this.postService.addDislike(post).subscribe((postId: string) => {
+        this.postService.emitNewCommentSocket();
+      }, (err: HttpErrorResponse) => {
+        this.displayError(err.error.message);
+      });
+    }
+  }
+
+
+  /**
    * gets post by post id
    */
   private getPost() {
@@ -103,5 +152,13 @@ export class CommentsComponent implements OnInit {
       }
       this.commentsArray = post.comments.reverse();
     });
+  }
+
+  /**
+   * displays error
+   * @param message error message
+   */
+  private displayError(message: string) {
+    this.notification.create('warning', 'unable to like post', message);
   }
 }

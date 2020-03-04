@@ -128,6 +128,8 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * @param post post being liked
    */
   like(post: Post) {
+    const isInLikedArray = this.checkUserInArray(post.likes, this.username);
+    if (isInLikedArray) { return; }
     this.postService.addLike(post).subscribe((postId: string) => {
       let userLiked = false;
       post.likes.forEach(like => {
@@ -164,6 +166,8 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * @param post post being disliked
    */
   dislike(post: Post) {
+    const isInDislikedArray = this.checkUserInArray(post.dislikes, this.username);
+    if (isInDislikedArray) { return; }
     this.postService.addDislike(post).subscribe((postId: string) => {
       let userLiked = false;
       post.likes.forEach(like => {

@@ -8,16 +8,35 @@
           nzIcon="user"
           [nzSrc]="getUserAvatar(post.user)">
         </nz-avatar>
-        <span style="padding-left: 8px;">{{ post.username }}</span>
-        <!-- TODO:: add post created at time -->
+        <div class="container-userinfo">
+          <span>{{ post.username }}</span>
+          <span class="post-time">{{ timeFromNow(post.createdAt) }}</span>
+        </div>
       </div>
 
       <p>{{ post.post }}</p>
       <img class="img-width" [src]="postImage"/>
     </div>
     <br>
-    <nz-tag class="post-tags" *ngFor="let tag of post.tags">{{tag}}</nz-tag>
-    <!-- TODO:: add total likes and dislikes -->
+    <nz-tag class="post-tags float-right" *ngFor="let tag of post.tags">{{tag}}</nz-tag>
+
+    <div class="container-actions">
+      <div>
+        <i nz-icon
+           nzType="like"
+           [theme]="checkUserInArray(post.likes, payload.username) ? 'twotone' : 'outline'"
+           (click)="like(post)"></i>
+        <span class="count like">{{ post.totalLikes }}</span>
+      </div>
+      <div>
+        <i nz-icon
+           nzType="dislike"
+           [theme]="checkUserInArray(post.dislikes, payload.username) ? 'twotone' : 'outline'"
+           (click)="dislike(post)"></i>
+        <span class="count dislike">{{ post.totalDislikes }}</span>
+      </div>
+    </div>
+
     <hr>
     <div class="container">
       <form class="full-width" [formGroup]="commentForm" (ngSubmit)="addNewComment()">
