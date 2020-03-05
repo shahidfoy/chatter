@@ -7,8 +7,8 @@ export const UserSchema =  new mongoose.Schema({
     onlineStatus: { type: String },
     chatList: [
         {
-            receiverId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-            messageId: { type: mongoose.Schema.Types.ObjectId, ref: 'Message'},
+            receiverId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+            messageId: { type: mongoose.Schema.Types.ObjectId, ref: 'Message' },
         },
     ],
     picVersion: { type: String, default: '' },

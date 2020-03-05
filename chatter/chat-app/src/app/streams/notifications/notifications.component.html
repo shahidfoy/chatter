@@ -45,9 +45,15 @@
             [nzAvatar]="getAvatarUrl(item.notification)"
             [nzDescription]="timeFromNow(item.notification.createdAt)">
             <ng-template #nzTitle>
-              <a *ngIf="item.notification.postId; else profileLink" [routerLink]="['/streams/post/comments', item.notification.postId]">{{ item.notification.message }}</a>
+              <a *ngIf="item.notification.postId; else profileLink"
+                [routerLink]="['/streams/post/comments', item.notification.postId]"
+                (click)="deleteNotification(item.notification)">
+                {{ item.notification.message }}
+              </a>
               <ng-template #profileLink>
-                <a [routerLink]="['/streams/profile', item.notification.senderUsername]">{{ item.notification.message }}</a>
+                <a [routerLink]="['/streams/profile', item.notification.senderUsername]"
+                  (click)="deleteNotification(item.notification)">{{ item.notification.message }}
+                </a>
               </ng-template>
             </ng-template>
           </nz-list-item-meta>
