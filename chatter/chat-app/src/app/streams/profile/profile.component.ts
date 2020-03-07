@@ -10,6 +10,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
 import { UserFollowing } from '../interfaces/user-following.interface';
 import { UploadImageModalState } from '../interfaces/upload-image-modal-state';
 import { ImageService } from '../../shared/services/image.service';
+import { ContactService } from '../services/contact.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +24,9 @@ export class ProfileComponent implements OnInit {
   payload: PayloadData;
   username: string;
   user: User;
+  following: UserFollowing[];
+  followersCount: number;
+  followingCount: number;
   isLoggedInUser: boolean;
   followingUser: boolean;
 
@@ -30,6 +34,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private contactService: ContactService,
     private tokenService: TokenService,
     private imageService: ImageService,
     private activatedRoute: ActivatedRoute,
@@ -90,32 +95,22 @@ export class ProfileComponent implements OnInit {
    * follows selected user
    * @param userId follow request user id
    */
-  followUser(userId: string) {
-    const userInFollowingArray = this.checkUserInFollowingArray(this.user.followers, userId);
-    if (!userInFollowingArray) {
-      this.userService.followUser(this.user._id).subscribe((followingUserId: string) => {
+  followUser() {
+    if (!this.followingUser) {
+      this.contactService.followUser(this.user._id).subscribe((followingUserId: string) => {
         this.followingUser = true;
         this.displayNotification('success', 'following user');
       }, err => {
         this.displayNotification('error', err.error.message);
       });
     } else {
-      this.userService.unFollowUser(this.user._id).subscribe((unFollowedUserId: string) => {
+      this.contactService.unFollowUser(this.user._id).subscribe((unFollowedUserId: string) => {
         this.followingUser = false;
         this.displayNotification('warning', 'unfollowing user');
       }, err => {
         this.displayNotification('error', err.error.message);
       });
     }
-  }
-
-  /**
-   * uses lodash to check if the user id is in the logged in users following array
-   * @param array array of followed users
-   * @param userId users id
-   */
-  checkUserInFollowingArray(array: UserFollowing[], userId: string) {
-    return _.some(array, [ 'userFollower._id', userId ]);
   }
 
   /**
@@ -129,6 +124,7 @@ export class ProfileComponent implements OnInit {
 
   /**
    * uses lodash to check if the user is in the username array
+   * TODO:: replace with endpoint service
    * @param array array of usernames
    * @param username user
    */
@@ -142,18 +138,17 @@ export class ProfileComponent implements OnInit {
   private getUser() {
     this.userService.getUserByUsername(this.username).subscribe((user: User) => {
       this.user = user;
-
       if (!this.user.picId) {
         this.avatarUrl = this.imageService.getDefaultProfileImage();
       } else {
         this.avatarUrl = this.imageService.getImage(this.user.picVersion, this.user.picId);
       }
 
-      if (this.checkUserInFollowingArray(this.user.followers, this.payload._id)) {
-        this.followingUser = true;
-      } else {
-        this.followingUser = false;
-      }
+      this.contactService.getUserFollowersCount(user._id).subscribe((followersCount: number) => this.followersCount = followersCount);
+      this.contactService.getUserFollowingCount(user._id).subscribe((followingCount: number) => this.followingCount = followingCount);
+      this.contactService.checkUserFollowing(this.payload._id, user._id).subscribe((result: boolean) => {
+        this.followingUser = result;
+      });
     });
   }
 }

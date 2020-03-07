@@ -7,11 +7,12 @@ import * as _ from 'lodash';
 import { TokenService } from '../../shared/services/token.service';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { timeFromNow } from '../../shared/shared.utils';
 import { User } from '../../shared/interfaces/user.interface';
 import { ImageService } from '../../shared/services/image.service';
 import { UserService } from '../services/user.service';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
 @Component({
   selector: 'app-posts',
@@ -36,18 +37,19 @@ export class PostsComponent implements OnInit, AfterViewInit {
   paginateMorePosts = true;
   updateMasonry = false;
   isLoggedInUser = false;
-  editUserPost = false;
   isPostVisible = false;
   isTrending = false;
 
   constructor(
     private tokenService: TokenService,
     private applicationStateService: ApplicationStateService,
+    private notificationsService: NotificationsService,
     private postService: PostService,
     private imageService: ImageService,
     private userService: UserService,
     private notification: NzNotificationService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -94,7 +96,6 @@ export class PostsComponent implements OnInit, AfterViewInit {
   openEditPostModal(post: Post) {
     this.editPost = post;
     this.isPostVisible = true;
-    this.editUserPost = true;
   }
 
   /**
@@ -102,7 +103,6 @@ export class PostsComponent implements OnInit, AfterViewInit {
    */
   hidePost() {
     this.isPostVisible = false;
-    this.editUserPost = false;
   }
 
   /**
@@ -110,9 +110,9 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * @param post post comments
    */
   openComments(post: Post) {
-    // this.router.navigate(['streams/post', post._id]);
-    this.editPost = post;
-    this.isPostVisible = true;
+    this.router.navigate(['streams/post/comments', post._id]);
+    // this.editPost = post;
+    // this.isPostVisible = true;
   }
 
   /**
@@ -128,6 +128,8 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * @param post post being liked
    */
   like(post: Post) {
+    const isInLikedArray = this.checkUserInArray(post.likes, this.username);
+    if (isInLikedArray) { return; }
     this.postService.addLike(post).subscribe((postId: string) => {
       let userLiked = false;
       post.likes.forEach(like => {
@@ -153,6 +155,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
           post.totalDislikes -= 1;
         }
       }
+      this.notificationsService.emitNewNotificationActionSocket();
     }, (err: HttpErrorResponse) => {
       this.displayError(err.error.message);
     });
@@ -163,6 +166,8 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * @param post post being disliked
    */
   dislike(post: Post) {
+    const isInDislikedArray = this.checkUserInArray(post.dislikes, this.username);
+    if (isInDislikedArray) { return; }
     this.postService.addDislike(post).subscribe((postId: string) => {
       let userLiked = false;
       post.likes.forEach(like => {

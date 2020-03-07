@@ -3,7 +3,7 @@
     <button
       class="float-right"
       nz-button
-      (click)="markAllNotifications()">Mark all as read</button>
+      (click)="deleteAllNotifications()">Clear all notifications</button>
   </div>
 
   <app-loading *ngIf="isLoading"></app-loading>
@@ -27,12 +27,12 @@
             </a>
           </ng-template>
           <ng-template #notificationActions>
-            <i
+            <!-- <i
               class="anticon margin-right-8"
               nz-icon
               [nzType]="'mail'"
               [theme]="item.notification.read ? 'outline' : 'twotone'"
-              (click)="markNotification(item.notification)"></i>
+              (click)="markNotification(item.notification)"></i> -->
             <i
               class="anticon margin-right-8"
               nz-icon
@@ -42,10 +42,19 @@
           <nz-list-item-meta
             [nzTitle]="nzTitle"
             nzIcon="user"
-            [nzAvatar]="getAvatarUrl(item.notification.senderId)"
+            [nzAvatar]="getAvatarUrl(item.notification)"
             [nzDescription]="timeFromNow(item.notification.createdAt)">
             <ng-template #nzTitle>
-              <a [routerLink]="['/streams/profile', item.notification.senderUsername]">{{ item.notification.message }}</a>
+              <a *ngIf="item.notification.postId; else profileLink"
+                [routerLink]="['/streams/post/comments', item.notification.postId]"
+                (click)="deleteNotification(item.notification)">
+                {{ item.notification.message }}
+              </a>
+              <ng-template #profileLink>
+                <a [routerLink]="['/streams/profile', item.notification.senderUsername]"
+                  (click)="deleteNotification(item.notification)">{{ item.notification.message }}
+                </a>
+              </ng-template>
             </ng-template>
           </nz-list-item-meta>
         </nz-skeleton>

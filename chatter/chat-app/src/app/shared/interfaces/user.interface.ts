@@ -1,30 +1,12 @@
-import { UserFollowed } from '../../streams/interfaces/user-followed.interface';
-import { UserFollowing } from '../../streams/interfaces/user-following.interface';
-import { Post } from '../../streams/interfaces/post.interface';
-
 export interface User {
   _id: string;
   username?: string;
   email?: string;
   password?: string;
   onlineStatus?: string;
-  following?: UserFollowed[];
-  followers?: UserFollowing[];
-  notifications?: NotificationsObj[];
   chatList?: ChatList[];
   picVersion?: string;
   picId?: string;
-}
-
-export interface NotificationsObj {
-  _id: string;
-  senderId: string;
-  senderUsername: string;
-  message: string;
-  viewProfile: boolean;
-  createdAt: Date;
-  read: boolean;
-  date: string;
 }
 
 export interface ChatList {

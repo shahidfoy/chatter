@@ -1,7 +1,7 @@
 import { User } from '../../shared/interfaces/user.interface';
 
-export interface UserFollowing {
+export interface UserFollower {
   _id?: string;
   userId: string;
-  userFollowed: User;
+  userFollower: User;
 }

@@ -16,6 +16,7 @@ import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ContactsModule } from './contacts/contacts.module';
+import { ContactsController } from './contacts/contacts.controller';
 
 @Module({
   imports: [
@@ -38,6 +39,12 @@ import { ContactsModule } from './contacts/contacts.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(GetUserMiddleware)
-      .forRoutes(AuthController, PostsController, UsersController, ChatController, ImagesController);
+      .forRoutes(
+        AuthController,
+        PostsController,
+        UsersController,
+        ContactsController,
+        ChatController,
+        ImagesController);
   }
 }

@@ -1,6 +1,42 @@
 <nz-content>
   <div>
-    <!-- TODO:: add total likes and dislikes -->
+    <div class="post">
+      <div class="post-user">
+        <nz-avatar
+          [routerLink]="['/streams/profile/', post.username]"
+          nz-comment-avatar
+          nzIcon="user"
+          [nzSrc]="getUserAvatar(post.user)">
+        </nz-avatar>
+        <div class="container-userinfo">
+          <span>{{ post.username }}</span>
+          <span class="post-time">{{ timeFromNow(post.createdAt) }}</span>
+        </div>
+      </div>
+
+      <p>{{ post.post }}</p>
+      <img class="img-width" [src]="postImage"/>
+    </div>
+    <br>
+    <nz-tag class="post-tags float-right" *ngFor="let tag of post.tags">{{tag}}</nz-tag>
+
+    <div class="container-actions">
+      <div>
+        <i nz-icon
+           nzType="like"
+           [theme]="checkUserInArray(post.likes, payload.username) ? 'twotone' : 'outline'"
+           (click)="like(post)"></i>
+        <span class="count like">{{ post.totalLikes }}</span>
+      </div>
+      <div>
+        <i nz-icon
+           nzType="dislike"
+           [theme]="checkUserInArray(post.dislikes, payload.username) ? 'twotone' : 'outline'"
+           (click)="dislike(post)"></i>
+        <span class="count dislike">{{ post.totalDislikes }}</span>
+      </div>
+    </div>
+
     <hr>
     <div class="container">
       <form class="full-width" [formGroup]="commentForm" (ngSubmit)="addNewComment()">

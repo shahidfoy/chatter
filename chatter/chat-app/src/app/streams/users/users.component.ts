@@ -3,13 +3,14 @@ import { UserService } from '../services/user.service';
 import * as _ from 'lodash';
 import { TokenService } from '../../shared/services/token.service';
 import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
-import { UserFollowed } from '../interfaces/user-followed.interface';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { User } from '../../shared/interfaces/user.interface';
 import { ImageService } from '../../shared/services/image.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserFollowing } from '../interfaces/user-following.interface';
 import { Contacts } from '../enums/contacts.enum';
+import { ContactService } from '../services/contact.service';
+import { UserFollower } from '../interfaces/user-follower.interface';
 
 @Component({
   selector: 'app-users',
@@ -22,9 +23,11 @@ export class UsersComponent implements OnInit {
   users: User[];
   loggedInUserToken: PayloadData;
   loggedInUser: User;
+  isFollowingObj: any = {};
 
   constructor(
     private userService: UserService,
+    public contactService: ContactService,
     private imageService: ImageService,
     private tokenService: TokenService,
     private notification: NzNotificationService,
@@ -54,23 +57,23 @@ export class UsersComponent implements OnInit {
    * @param userId follow request user id
    */
   followUser(userId: string) {
-    const userInFollowedArray = this.checkUserInFollowedArray(this.loggedInUser.following, userId);
-
-    if (!userInFollowedArray) {
-      this.userService.followUser(userId).subscribe((followingUserId: string) => {
-        this.loggedInUser.following.push({ _id: '', userFollowed: { _id: followingUserId } });
-        this.displayNotification('success', 'following user');
-      }, err => {
-        this.displayNotification('error', err.error.message);
-      });
-    } else {
-      this.userService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
-        this.loggedInUser.following = this.loggedInUser.following.filter((follow) => follow.userFollowed._id !== unFollowedUserId);
-        this.displayNotification('warning', 'unfollowing user');
-      }, err => {
-        this.displayNotification('error', err.error.message);
-      });
-    }
+    this.contactService.checkUserFollowing(this.loggedInUser._id, userId).subscribe((result: boolean) => {
+      if (!result) {
+        this.contactService.followUser(userId).subscribe((followingUserId: string) => {
+          this.isFollowingObj[followingUserId] = true;
+          this.displayNotification('success', 'following user');
+        }, err => {
+          this.displayNotification('error', err.error.message);
+        });
+      } else {
+        this.contactService.unFollowUser(userId).subscribe((unFollowedUserId: string) => {
+          this.isFollowingObj[unFollowedUserId] = false;
+          this.displayNotification('warning', 'unfollowing user');
+        }, err => {
+          this.displayNotification('error', err.error.message);
+        });
+      }
+    });
   }
 
   /**
@@ -80,15 +83,6 @@ export class UsersComponent implements OnInit {
    */
   displayNotification(type: string, message: string) {
     this.notification.create(type, message, '');
-  }
-
-  /**
-   * uses lodash to check if the user id is in the logged in users following array
-   * @param array array of followed users
-   * @param userId users id
-   */
-  checkUserInFollowedArray(array: UserFollowed[], userId: string) {
-    return _.some(array, [ 'userFollowed._id', userId ]);
   }
 
   /**
@@ -106,10 +100,10 @@ export class UsersComponent implements OnInit {
    */
   private populateUsers() {
     switch (this.activatedRoute.snapshot.url[0].path) {
-      case 'followers':
+      case Contacts.FOLLOWERS:
         this.populateFollowersListByUsername();
         break;
-      case 'following':
+      case Contacts.FOLLOWING:
         this.populateFollowingListByUsername();
         break;
       default:
@@ -125,6 +119,9 @@ export class UsersComponent implements OnInit {
   private getUsers() {
     this.userService.getUsers().subscribe((users: User[]) => {
       this.users = users;
+      users.forEach((user: User) => {
+        this.checkUserFollowing(this.loggedInUserToken._id, user);
+      });
       this.isLoading = false;
     });
   }
@@ -156,19 +153,42 @@ export class UsersComponent implements OnInit {
   /**
    * gets the list of people who follow the user or
    * people the user is following based on type received
+   * TODO:: add pagination
    * @param username user's username
    * @param type type of list to populate
    */
   private getUsersList(username: string, type: string) {
     this.userService.getUserByUsername(username).subscribe((user: User) => {
-      if (type === 'followers') {
-        this.users = user.followers
-                      .map((userFollowing: UserFollowing) => userFollowing.userFollower);
-      } else if (type === 'following') {
-        this.users = user.following
-                      .map((userFollow: UserFollowed) => userFollow.userFollowed);
+      if (type === Contacts.FOLLOWERS) {
+        this.contactService.getUserFollowers(user._id).subscribe((followers: UserFollower[]) => {
+          this.users = [];
+          followers.forEach(userData => {
+            this.users.push(userData.userFollower);
+            this.checkUserFollowing(this.loggedInUserToken._id, userData.userFollower);
+          });
+        });
+      } else if (type === Contacts.FOLLOWING) {
+        this.contactService.getUserFollowing(user._id).subscribe((following: UserFollowing[]) => {
+          this.users = [];
+          following.forEach(userData => {
+            this.users.push(userData.userFollowed);
+            this.checkUserFollowing(this.loggedInUserToken._id, userData.userFollowed);
+          });
+        });
       }
       this.isLoading = false;
+    });
+  }
+
+  /**
+   * checks to see if logged in user is following another user
+   * and stores it in the isFollowingObj
+   * @param loggedInUserId logged in user id
+   * @param user user to check
+   */
+  private checkUserFollowing(loggedInUserId: string, user: User) {
+    this.contactService.checkUserFollowing(loggedInUserId, user._id).subscribe((result: boolean) => {
+      this.isFollowingObj[user._id] = result;
     });
   }
 }

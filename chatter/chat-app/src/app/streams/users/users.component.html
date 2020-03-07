@@ -4,7 +4,6 @@
 
   <app-loading *ngIf="isLoading"></app-loading>
   <div class="users">
-
     <div *ngFor="let user of users">
       <nz-card *ngIf="user.username !== loggedInUser.username" [nzActions]="[actionFollow, actionProfile, actionChat]">
         <nz-card-meta
@@ -14,7 +13,6 @@
         </nz-card-meta>
 
         <ng-template #avatarTemplate>
-          <!-- TODO:: replace image with user profile image -->
           <a [routerLink]="['/streams/profile/', user.username]">
             <nz-avatar [nzSrc]="getAvatarUrl(user)"></nz-avatar>
           </a>
@@ -23,10 +21,8 @@
         <ng-template #actionFollow>
           <i nz-icon
             nzType="plus-circle"
-            [theme]="checkUserInFollowedArray(loggedInUser?.following, user._id) ? 'twotone' : 'outline'"
+            [theme]="isFollowingObj[user._id] ? 'twotone' : 'outline'"
             (click)="followUser(user._id)"
-            nz-popover
-            nzPopoverContent="follow"
             nzPopoverPlacement="top"></i>
         </ng-template>
         <ng-template #actionProfile>
@@ -49,7 +45,6 @@
         </ng-template>
       </nz-card>
     </div>
-
   </div>
 
 </nz-content>

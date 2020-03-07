@@ -10,9 +10,9 @@ import { ChatGateway } from './gateways/chat.gateway';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: 'User', schema: UserSchema },
       { name: 'Conversation', schema: ConversationSchema },
       { name: 'Message', schema: MessageSchema },
+      { name: 'User', schema: UserSchema },
     ]),
   ],
   controllers: [ChatController],

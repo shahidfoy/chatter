@@ -80,8 +80,8 @@ export class PostService {
    * adds like to post
    * @param body post
    */
-  addLike(body: Post): Observable<string> {
-    return this.http.post<string>(`${environment.BASEURL}/api/posts/like`, body);
+  addLike(post: Post): Observable<string> {
+    return this.http.post<string>(`${environment.BASEURL}/api/posts/like`, post);
   }
 
   /**
@@ -97,9 +97,10 @@ export class PostService {
    * @param postId post id
    * @param comment comment for post
    */
-  addComment(postId: string, comment: string): Observable<any> {
+  addComment(postId: string, receiverId: string, comment: string): Observable<any> {
     return this.http.post<any>(`${environment.BASEURL}/api/posts/add-comment`, {
       postId,
+      receiverId,
       comment
     });
   }

@@ -8,9 +8,38 @@
     width: 64px;
     height: 64px;
   }
-  button {
-    margin-left: 18px;
+}
+
+.container-userinfo {
+  display: flex;
+  flex-direction: column;
+  padding-left: 8px;
+  .post-time {
+    font-size: 10px;
   }
+}
+
+.container-actions {
+  span {
+    padding-left: 5px;
+  }
+}
+
+button {
+  margin-left: 18px;
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-user {
+  display: flex;
+  padding-left: 28px;
+  padding-bottom: 12px;
 }
 
 .post-content {

@@ -2,6 +2,7 @@ import { Controller, Post, Body, Req, Get, Param, Put, Delete } from '@nestjs/co
 import { PostsService } from './posts.service';
 import { CustomRequest } from '../interfaces/custom-request.interface';
 import { UserPost } from './models/post.model';
+import { User } from 'src/users/models/user.model';
 
 @Controller('posts')
 export class PostsController {
@@ -110,8 +111,9 @@ export class PostsController {
     async addLike(
         @Req() req: CustomRequest,
         @Body('_id') postId: string,
+        @Body('user') receiver: User,
     ): Promise<string> {
-        return this.postsService.addLike(req.user, postId);
+        return this.postsService.addLike(req.user, postId, receiver);
     }
 
     /**
@@ -137,8 +139,9 @@ export class PostsController {
     async addComment(
         @Req() req: CustomRequest,
         @Body('postId') postId: string,
+        @Body('receiverId') receiverId: string,
         @Body('comment') comment: string,
     ): Promise<string> {
-        return this.postsService.addComment(req.user, postId, comment);
+        return this.postsService.addComment(req.user, postId, receiverId, comment);
     }
 }

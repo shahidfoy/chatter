@@ -7,6 +7,8 @@ import * as _ from 'lodash';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MessageService } from 'src/app/chat/services/message.service';
+import { NotificationsService } from '../services/notifications.service';
+import { PostService } from 'src/app/streams/services/post.service';
 
 @Component({
   selector: 'app-action-bar',
@@ -21,17 +23,23 @@ export class ActionBarComponent implements OnInit {
   chatListLength: number;
 
   constructor(
+    private notificationsService: NotificationsService,
+    private messageService: MessageService,
+    private postService: PostService,
+    private router: Router,
     private tokenService: TokenService,
     private userService: UserService,
-    private router: Router,
-    private messageService: MessageService,
   ) { }
 
   ngOnInit() {
     this.loggedInUser = this.tokenService.getPayload();
     this.getLoggedInUser();
 
-    this.userService.receiveNewNotificationActionSocket().subscribe(() => {
+    this.notificationsService.receiveNewNotificationActionSocket().subscribe(() => {
+      this.getLoggedInUser();
+    });
+
+    this.postService.receiveNewCommentSocket().subscribe(() => {
       this.getLoggedInUser();
     });
 
@@ -48,7 +56,8 @@ export class ActionBarComponent implements OnInit {
     this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
       this.loggedInUserData = user;
       if (this.loggedInUserData) {
-        this.notificationsLength = _.filter(this.loggedInUserData.notifications, ['read', false]).length;
+        // this.notificationsLength = _.filter(this.loggedInUserData.notifications, ['read', false]).length;
+        this.getNotificationCount(this.loggedInUserData._id);
         this.checkIfMessagesRead();
       }
     }, (err: HttpErrorResponse) => {
@@ -74,5 +83,15 @@ export class ActionBarComponent implements OnInit {
         }
       });
     }
+  }
+
+  /**
+   * gets user notification count
+   * @param userId user id
+   */
+  private getNotificationCount(userId: string) {
+    this.notificationsService.getNotificationsCount(userId).subscribe((count: number) => {
+      this.notificationsLength = count;
+    });
   }
 }
