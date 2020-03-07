@@ -38,43 +38,4 @@ export class UsersController {
     ): Promise<User> {
         return await this.usersService.getUserByUsername(username);
     }
-
-    // /**
-    //  * marks notification as read
-    //  * TODO:: refactor into notifications module
-    //  * @param req custom request
-    //  * @param notification notification to be marked
-    //  */
-    // @Post('mark-notification')
-    // async markNotification(
-    //     @Req() req: CustomRequest,
-    //     @Body('notification') notification: Notification,
-    // ): Promise<User> {
-    //     return await this.usersService.markNotification(req.user, notification);
-    // }
-
-    // /**
-    //  * removes notification from users notification array
-    //  * TODO:: refactor into notifications module
-    //  * @param req custom request
-    //  * @param notification notification to be deleted
-    //  */
-    // @Post('delete-notification')
-    // async deleteNotification(
-    //     @Req() req: CustomRequest,
-    //     @Body('notification') notification: Notification,
-    // ): Promise<User> {
-    //     return await this.usersService.deleteNotification(req.user, notification);
-    // }
-
-    // /**
-    //  * marks all notifications as read
-    //  * TODO:: refactor into notifications module
-    //  */
-    // @Post('mark-all')
-    // async markAll(
-    //     @Req() req: CustomRequest,
-    // ): Promise<User> {
-    //     return await this.usersService.markAll(req.user);
-    // }
 }
