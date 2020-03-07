@@ -4,17 +4,11 @@ export interface User {
   email?: string;
   password?: string;
   onlineStatus?: string;
-  chatList?: ChatList[];
   picVersion?: string;
   picId?: string;
 }
 
-export interface ChatList {
-  _id: string;
-  receiverId: User;
-  messageId: MessageId;
-}
-
+// TODO:: REFACTOR INTO OWN INTERFACE
 export interface MessageId extends User {
   _id: string;
   conversationId: string;

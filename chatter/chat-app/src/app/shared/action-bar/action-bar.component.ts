@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PayloadData } from '../interfaces/jwt-payload.interface';
-import { User, ChatList, MessageBody } from '../interfaces/user.interface';
+import { User, MessageBody } from '../interfaces/user.interface';
 import { TokenService } from '../services/token.service';
 import { UserService } from '../../streams/services/user.service';
 import * as _ from 'lodash';
@@ -73,15 +73,39 @@ export class ActionBarComponent implements OnInit {
    */
   private checkIfMessagesRead() {
     this.chatListLength = 0;
-    if (this.loggedInUserData.chatList) {
-      this.loggedInUserData.chatList.forEach((chatList: ChatList) => {
-        const lastMessage: MessageBody = chatList.messageId.message[chatList.messageId.message.length - 1];
-        if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
-          if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
-            this.chatListLength++;
-          }
-        }
+    // if (this.loggedInUserData.chatList) {
+    //   this.loggedInUserData.chatList.forEach((chatList: ChatList) => {
+    //     const lastMessage: MessageBody = chatList.messageId.message[chatList.messageId.message.length - 1];
+    //     if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
+    //       if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
+    //         this.chatListLength++;
+    //       }
+    //     }
+    //   });
+    // }
+
+    if (this.loggedInUserData) {
+      // this.loggedInUserData.chatList.forEach((chatList: ChatList) => {
+
+      this.messageService.getConversationsList().subscribe((conversations: any) => {
+        console.log('conversations', conversations);
+        this.chatListLength = conversations.length;
+
+        // const lastMessage: MessageBody = chatList.messageId.message[chatList.messageId.message.length - 1];
+        // if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
+        //   if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
+        //     this.chatListLength++;
+        //   }
+        // }
       });
+
+        // const lastMessage: MessageBody = chatList.messageId.message[chatList.messageId.message.length - 1];
+        // if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
+        //   if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
+        //     this.chatListLength++;
+        //   }
+        // }
+      // });
     }
   }
 

@@ -9,40 +9,67 @@ import { Conversation } from './models/conversation.model';
 export class ChatService {
 
     constructor(
-        @InjectModel('User') private readonly userModel: Model<User>,
         @InjectModel('Message') private readonly messageModel: Model<Message>,
         @InjectModel('Conversation') private readonly conversationModel: Model<Conversation>,
     ) {}
+
+    // TODO:: refactor service to use the new message model
+    // remove conversations model
+
+    /**
+     * gets conversations list for selected user id
+     * @param userId user id
+     */
+    async getConversationsList(userId: string): Promise<Conversation[]> {
+        const conversationsList = await this.conversationModel.find({
+            $or: [
+                { senderId: userId },
+                { receiverId: userId },
+            ],
+        }).populate('messageId');
+        // console.log('conversations', conversationsList);
+
+        return conversationsList;
+    }
+
+    // TODO:: GET CHAT LIST
 
     /**
      * gets messages between two users
      * @param senderId senders id
      * @param receiverId receivers id
      */
-    async getMessages(senderId: string, receiverId: string): Promise<Message> {
-        const conversation = await this.conversationModel.findOne({
+    async getMessages(senderId: string, receiverId: string): Promise<Conversation> {
+        const conversations = await this.conversationModel.findOne({
             $or: [
                 {
                     $and: [
-                        { 'participants.senderId': senderId },
-                        { 'participants.receiverId': receiverId },
+                        { senderId },
+                        { receiverId },
                     ],
                 },
                 {
                     $and: [
-                        { 'participants.senderId': receiverId },
-                        { 'participants.receiverId': senderId },
+                        { senderId: receiverId },
+                        { receiverId: senderId },
                     ],
                 },
             ],
-        }).select('_id');
+        // }).select('_id');
+        })
+        .populate('messageId')
+        .populate('senderId')
+        .populate('receiverId');
+        // .populate('messageId.message.senderId');
+        console.log('CONVERSATIONS', conversations);
+        return conversations;
+        // TODO:: ADD CATCH ERROR MESSAGE
 
-        if (conversation) {
-            const messages = await this.messageModel.findOne({ conversationId: conversation._id }).populate('message.senderId');
-            return messages;
-        }
-        // might create new conversation if none located
-        return null;
+        // if (conversation) {
+        //     const messages = await this.messageModel.findOne({ conversationId: conversation._id }).populate('message.senderId');
+        //     return messages;
+        // }
+        // return null;
     }
 
     /**
@@ -87,16 +114,19 @@ export class ChatService {
     async sendMessage(user: User, senderId: string, receiverId: string, receiverName: string, message: string): Promise<Message> {
         const conversations = await this.conversationModel.find({
             $or: [
-                { participants: { $elemMatch: { senderId, receiverId } } },
-                { participants: { $elemMatch: { senderId: receiverId, receiverId: senderId } } },
+                { senderId, receiverId },
+                { senderId: receiverId, receiverId: senderId },
             ],
         });
+        // console.log('conversations - sendMessage', conversations);
 
         if (conversations.length > 0) {
-            const messageContent = await this.messageModel.findOne({ conversationId: conversations[0]._id });
-            this.updateChatList(user, receiverId, messageContent);
+            // const messageContent = await this.messageModel.findOne({ conversationId: conversations[0]._id });
+            // this.updateChatList(user, receiverId, messageContent);
+            // MIGHT ERROR HERE
             return await this.messageModel.updateOne({
-                conversationId: conversations[0]._id,
+                // conversationId: conversations[0]._id,
+                _id: conversations[0].messageId,
             }, {
                 $push: {
                     message: {
@@ -110,19 +140,15 @@ export class ChatService {
                     },
                 },
             }).then(async () => {
-                return await this.messageModel.findOne({ conversationId: conversations[0]._id });
+                // return await this.messageModel.findOne({ conversationId: conversations[0]._id });
+                await this.conversationModel.updateOne({ _id: conversations[0]._id }, { createdAt: new Date() });
+                return await this.messageModel.findOne({ _id: conversations[0].messageId });
             }).catch(error => {
                 throw new InternalServerErrorException({ message: `Error message occured ${error}`});
             });
         } else {
-            const body: Partial<Conversation> = {
-                participants: [],
-            };
-            body.participants.push({ senderId, receiverId });
-            const newConversation = await this.conversationModel.create(body);
-
             const messageBody: Partial<Message> = {
-                conversationId: newConversation._id,
+                // conversationId: newConversation._id,
                 sender: user.username,
                 receiver: receiverName,
                 message: [],
@@ -139,87 +165,18 @@ export class ChatService {
             messageBody.message.push(messageContents);
             return await this.messageModel.create(messageBody)
                             .then(async (messageRes: Message) => {
-                                await this.userModel.updateOne({ _id: user._id }, {
-                                    $push: {
-                                        chatList: {
-                                            $each: [{
-                                                receiverId,
-                                                messageId: messageRes._id,
-                                            }],
-                                            $position: 0,
-                                        },
-                                    },
-                                });
-
-                                await this.userModel.updateOne({ _id: receiverId }, {
-                                    $push: {
-                                        chatList: {
-                                            $each: [{
-                                                receiverId: user._id,
-                                                messageId: messageRes._id,
-                                            }],
-                                            $position: 0,
-                                        },
-                                    },
-                                });
+                                // console.log('MESSAGE', messageRes);
+                                const body: Partial<Conversation> = {
+                                    senderId,
+                                    receiverId,
+                                    messageId: messageRes._id,
+                                    createdAt: new Date(),
+                                };
+                                await this.conversationModel.create(body);
                                 return messageRes;
                             }).catch(error => {
                                 throw new InternalServerErrorException({ message: `Error message occured ${error}`});
                             });
         }
-    }
-
-    /**
-     * updates logged in users and receivers chat list
-     * removes chat contents with matching receiver id and adds new chat contents to the first
-     * position of chat list
-     * @param user logged in user
-     * @param receiverId receiver id
-     * @param message message contents
-     */
-    private async updateChatList(user: User, receiverId: string, message: Message) {
-        await this.userModel.updateOne({
-            _id: user._id,
-        }, {
-            $pull: {
-                chatList: {
-                    receiverId,
-                },
-            },
-        });
-
-        await this.userModel.updateOne({
-            _id: receiverId,
-        }, {
-            $pull: {
-                chatList: {
-                    receiverId: user._id,
-                },
-            },
-        });
-
-        await this.userModel.updateOne({ _id: user._id }, {
-            $push: {
-                chatList: {
-                    $each: [{
-                        receiverId,
-                        messageId: message._id,
-                    }],
-                    $position: 0,
-                },
-            },
-        });
-
-        await this.userModel.updateOne({ _id: receiverId }, {
-            $push: {
-                chatList: {
-                    $each: [{
-                        receiverId: user._id,
-                        messageId: message._id,
-                    }],
-                    $position: 0,
-                },
-            },
-        });
     }
 }

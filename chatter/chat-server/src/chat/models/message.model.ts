@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export const MessageSchema = new mongoose.Schema({
-    conversationId: { type: mongoose.Schema.Types.ObjectId, ref: 'Conversation' },
+    // conversationId: { type: mongoose.Schema.Types.ObjectId, ref: 'Conversation' },
     sender: { type: String },
     receiver: { type: String },
     message: [
@@ -19,7 +19,7 @@ export const MessageSchema = new mongoose.Schema({
 
 export interface Message extends mongoose.Document {
     _id: string;
-    conversationId: string;
+    // conversationId: string;
     sender: string;
     receiver: string;
     message: MessageContents[];

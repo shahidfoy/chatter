@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User, ChatList, MessageBody } from '../../shared/interfaces/user.interface';
+import { User, MessageBody } from '../../shared/interfaces/user.interface';
 import { timeFromNow } from '../../shared/shared.utils';
 import { TokenService } from '../../shared/services/token.service';
 import { UserService } from '../../streams/services/user.service';
@@ -7,6 +7,7 @@ import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { MessageService } from '../services/message.service';
 import { Router } from '@angular/router';
 import { ImageService } from 'src/app/shared/services/image.service';
+import { Conversation } from '../interfaces/conversation.interface';
 
 @Component({
   selector: 'app-notifications',
@@ -19,7 +20,7 @@ export class NotificationsComponent implements OnInit {
   initLoading: boolean;
   loadingMore: boolean;
   data: any[] = [];
-  chatList: ChatList[];
+  chatList: Conversation[];
 
   loggedInUser: PayloadData;
   loggedInUserData: User;
@@ -104,9 +105,12 @@ export class NotificationsComponent implements OnInit {
   private getLoggedInUsersChatNotifications() {
     this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
       this.loggedInUserData = user;
-      this.chatList = user.chatList;
-      this.initLoading = false;
-      this.isLoading = false;
+      this.messageService.getConversationsList().subscribe((conversations: any) => {
+        console.log('CONVERSATIONS', conversations);
+        this.chatList = conversations;
+        this.initLoading = false;
+        this.isLoading = false;
+      });
     });
   }
 }
