@@ -13,9 +13,6 @@ export class ChatService {
         @InjectModel('Conversation') private readonly conversationModel: Model<Conversation>,
     ) {}
 
-    // TODO:: refactor service to use the new message model
-    // remove conversations model
-
     /**
      * gets conversations list for selected user id
      * @param userId user id
@@ -26,13 +23,13 @@ export class ChatService {
                 { senderId: userId },
                 { receiverId: userId },
             ],
-        }).populate('messageId');
-        // console.log('conversations', conversationsList);
-
+        })
+        .populate('messageId')
+        .populate('senderId')
+        .populate('receiverId')
+        .sort({ createdAt: -1 });
         return conversationsList;
     }
-
-    // TODO:: GET CHAT LIST
 
     /**
      * gets messages between two users
@@ -55,21 +52,11 @@ export class ChatService {
                     ],
                 },
             ],
-        // }).select('_id');
         })
         .populate('messageId')
         .populate('senderId')
         .populate('receiverId');
-        // .populate('messageId.message.senderId');
-        console.log('CONVERSATIONS', conversations);
         return conversations;
-        // TODO:: ADD CATCH ERROR MESSAGE
-
-        // if (conversation) {
-        //     const messages = await this.messageModel.findOne({ conversationId: conversation._id }).populate('message.senderId');
-        //     return messages;
-        // }
-        // return null;
     }
 
     /**
@@ -118,14 +105,9 @@ export class ChatService {
                 { senderId: receiverId, receiverId: senderId },
             ],
         });
-        // console.log('conversations - sendMessage', conversations);
 
         if (conversations.length > 0) {
-            // const messageContent = await this.messageModel.findOne({ conversationId: conversations[0]._id });
-            // this.updateChatList(user, receiverId, messageContent);
-            // MIGHT ERROR HERE
             return await this.messageModel.updateOne({
-                // conversationId: conversations[0]._id,
                 _id: conversations[0].messageId,
             }, {
                 $push: {
@@ -140,7 +122,6 @@ export class ChatService {
                     },
                 },
             }).then(async () => {
-                // return await this.messageModel.findOne({ conversationId: conversations[0]._id });
                 await this.conversationModel.updateOne({ _id: conversations[0]._id }, { createdAt: new Date() });
                 return await this.messageModel.findOne({ _id: conversations[0].messageId });
             }).catch(error => {
@@ -148,7 +129,6 @@ export class ChatService {
             });
         } else {
             const messageBody: Partial<Message> = {
-                // conversationId: newConversation._id,
                 sender: user.username,
                 receiver: receiverName,
                 message: [],
@@ -165,7 +145,6 @@ export class ChatService {
             messageBody.message.push(messageContents);
             return await this.messageModel.create(messageBody)
                             .then(async (messageRes: Message) => {
-                                // console.log('MESSAGE', messageRes);
                                 const body: Partial<Conversation> = {
                                     senderId,
                                     receiverId,

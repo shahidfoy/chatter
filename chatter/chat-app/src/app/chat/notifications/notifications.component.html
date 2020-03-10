@@ -13,8 +13,7 @@
     <ng-template #item let-item>
       <nz-list-item [routerLink]="['/chat/message', item.messageId.receiver]"
         [nzContent]="item.loading ? [] : profileContent"
-        [nzActions]="item.loading ? [] : [notificationActions]"
-      >
+        [nzActions]="item.loading ? [] : [notificationActions]">
         <nz-skeleton [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="item.loading">
           <ng-template #profileContent>
             <a [routerLink]="['/streams/profile', item.messageId.receiver]">
@@ -22,23 +21,22 @@
             </a>
           </ng-template>
           <ng-template #notificationActions>
-            <!-- <i
+            <i
               class="anticon margin-right-8"
               nz-icon
               [nzType]="'mail'"
               [theme]="checkMessageIsRead(item.messageId.message[item.messageId.message.length - 1])"
-              (click)="markMessage(item.messageId.message)"></i> -->
+              (click)="markMessage(item.messageId.message)"></i>
           </ng-template>
-          <!-- <nz-list-item-meta
+          <nz-list-item-meta
             [nzTitle]="nzTitle"
             [nzDescription]="timeFromNow(item.messageId.message[item.messageId.message.length - 1])"
             nzIcon="user"
-            [nzAvatar]="getUserAvatar(item.receiverId)"
-          >
+            [nzAvatar]="getUserAvatar(item.receiverId)">
             <ng-template #nzTitle>
               <p>{{ item.messageId.message[item.messageId.message.length - 1].body }}</p>
             </ng-template>
-          </nz-list-item-meta> -->
+          </nz-list-item-meta>
         </nz-skeleton>
       </nz-list-item>
     </ng-template>

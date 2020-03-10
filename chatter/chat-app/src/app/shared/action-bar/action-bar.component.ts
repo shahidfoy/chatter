@@ -73,39 +73,16 @@ export class ActionBarComponent implements OnInit {
    */
   private checkIfMessagesRead() {
     this.chatListLength = 0;
-    // if (this.loggedInUserData.chatList) {
-    //   this.loggedInUserData.chatList.forEach((chatList: ChatList) => {
-    //     const lastMessage: MessageBody = chatList.messageId.message[chatList.messageId.message.length - 1];
-    //     if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
-    //       if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
-    //         this.chatListLength++;
-    //       }
-    //     }
-    //   });
-    // }
 
     if (this.loggedInUserData) {
-      // this.loggedInUserData.chatList.forEach((chatList: ChatList) => {
-
       this.messageService.getConversationsList().subscribe((conversations: any) => {
-        console.log('conversations', conversations);
-        this.chatListLength = conversations.length;
-
-        // const lastMessage: MessageBody = chatList.messageId.message[chatList.messageId.message.length - 1];
-        // if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
-        //   if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
-        //     this.chatListLength++;
-        //   }
-        // }
+        const lastMessage: MessageBody = conversations.messageId.message[conversations.messageId.message.length - 1];
+        if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
+          if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
+            this.chatListLength++;
+          }
+        }
       });
-
-        // const lastMessage: MessageBody = chatList.messageId.message[chatList.messageId.message.length - 1];
-        // if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
-        //   if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
-        //     this.chatListLength++;
-        //   }
-        // }
-      // });
     }
   }
 
