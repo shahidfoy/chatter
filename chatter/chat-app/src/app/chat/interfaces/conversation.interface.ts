@@ -8,9 +8,3 @@ export interface Conversation {
   messageId: Message;
   createdAt: Date;
 }
-
-// export interface Participants {
-//   _id: string;
-//   senderId: string;
-//   receiverId: string;
-// }

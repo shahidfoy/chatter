@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'src/app/chat/services/message.service';
 import { NotificationsService } from '../services/notifications.service';
 import { PostService } from 'src/app/streams/services/post.service';
+import { Conversation } from 'src/app/chat/interfaces/conversation.interface';
 
 @Component({
   selector: 'app-action-bar',
@@ -75,13 +76,15 @@ export class ActionBarComponent implements OnInit {
     this.chatListLength = 0;
 
     if (this.loggedInUserData) {
-      this.messageService.getConversationsList().subscribe((conversations: any) => {
-        const lastMessage: MessageBody = conversations.messageId.message[conversations.messageId.message.length - 1];
-        if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
-          if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
-            this.chatListLength++;
+      this.messageService.getConversationsList().subscribe((conversations: Conversation[]) => {
+        conversations.forEach((conversation: Conversation) => {
+          const lastMessage: MessageBody = conversation.messageId.message[conversation.messageId.message.length - 1];
+          if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
+            if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
+              this.chatListLength++;
+            }
           }
-        }
+        });
       });
     }
   }

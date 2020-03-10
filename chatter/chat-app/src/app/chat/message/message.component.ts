@@ -111,17 +111,6 @@ export class MessageComponent implements OnInit, AfterViewChecked {
    * @param username username
    */
   getUserAvatar(userId: any): string {
-    // console.log('USERID', userId);
-    // console.log('LOGGED IN USER', this.loggedInUser._id);
-    // this.userService.getUserById(userId).subscribe((userData: User) => {
-
-    // });
-
-    // if (user.picId) {
-    //   return this.imageService.getImage(user.picVersion, user.picId);
-    // } else {
-    //   return this.imageService.getDefaultProfileImage();
-    // }
     if (userId === this.loggedInUser._id) {
       return this.imageService.getImage(this.loggedInUser.picVersion, this.loggedInUser.picId);
     } else if (this.conversation.receiverId._id !== this.loggedInUser._id) {

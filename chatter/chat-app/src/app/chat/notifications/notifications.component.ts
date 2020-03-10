@@ -43,6 +43,14 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
+  chatReceiver(conversation: Conversation): string {
+    if (conversation.receiverId._id === this.loggedInUser._id) {
+      return conversation.senderId.username;
+    } else {
+      return conversation.receiverId.username;
+    }
+  }
+
   /**
    * uses moment to customize time output
    * @param lastMessage last chat message between two users
@@ -80,11 +88,11 @@ export class NotificationsComponent implements OnInit {
    * gets user's chat image
    * @param user user
    */
-  getUserAvatar(user: User): string {
-    if (user.picId) {
-      return this.imageService.getImage(user.picVersion, user.picId);
+  getUserAvatar(conversation: Conversation): string {
+    if (conversation.receiverId._id === this.loggedInUser._id) {
+      return this.imageService.getImage(conversation.senderId.picVersion, conversation.senderId.picId);
     } else {
-      return this.imageService.getDefaultProfileImage();
+      return this.imageService.getImage(conversation.receiverId.picVersion, conversation.receiverId.picId);
     }
   }
 
