@@ -73,10 +73,10 @@ export class ActionBarComponent implements OnInit {
    * checks for unread chat messages
    */
   private checkIfMessagesRead() {
-    this.chatListLength = 0;
 
     if (this.loggedInUserData) {
       this.messageService.getConversationsList().subscribe((conversations: Conversation[]) => {
+        this.chatListLength = 0;
         conversations.forEach((conversation: Conversation) => {
           const lastMessage: MessageBody = conversation.messageId.message[conversation.messageId.message.length - 1];
           if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {

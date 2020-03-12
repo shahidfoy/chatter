@@ -66,7 +66,6 @@ export class NotificationsComponent implements OnInit {
    */
   markMessage(message: any) {
     const lastMessage = message[message.length - 1];
-    console.log('last', lastMessage);
 
     if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
       if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
@@ -114,7 +113,6 @@ export class NotificationsComponent implements OnInit {
     this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
       this.loggedInUserData = user;
       this.messageService.getConversationsList().subscribe((conversations: any) => {
-        console.log('CONVERSATIONS', conversations);
         this.chatList = conversations;
         this.initLoading = false;
         this.isLoading = false;

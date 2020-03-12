@@ -24,6 +24,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   receiverUsername: string;
   receiverData: User;
   loggedInUser: PayloadData;
+  loggedInUserData: User;
   message: string;
   messages: MessageContents[];
   typing = false;
@@ -44,6 +45,9 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     });
 
     this.loggedInUser = this.tokenService.getPayload();
+    this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
+      this.loggedInUserData = user;
+    });
     this.receiverUsername = this.activatedRoute.snapshot.params.username;
     this.getUserByUsernameWithMessages(this.receiverUsername);
     this.markMessagesAsRead();
@@ -112,7 +116,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
    */
   getUserAvatar(userId: any): string {
     if (userId === this.loggedInUser._id) {
-      return this.imageService.getImage(this.loggedInUser.picVersion, this.loggedInUser.picId);
+      return this.imageService.getImage(this.loggedInUserData.picVersion, this.loggedInUserData.picId);
     } else if (this.conversation.receiverId._id !== this.loggedInUser._id) {
       return this.imageService.getImage(this.conversation.receiverId.picVersion, this.conversation.receiverId.picId);
     } else {
@@ -158,7 +162,6 @@ export class MessageComponent implements OnInit, AfterViewChecked {
    */
   private getMessages(senderId: string, receiverId: string) {
     this.messageService.getMessages(senderId, receiverId).subscribe((conversation: Conversation) => {
-      console.log('DATA', conversation);
       if (conversation !== null) {
         this.conversation = conversation;
         this.messages = conversation.messageId.message;
