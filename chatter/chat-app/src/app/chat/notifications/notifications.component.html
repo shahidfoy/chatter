@@ -34,7 +34,7 @@
             nzIcon="user"
             [nzAvatar]="getUserAvatar(item)">
             <ng-template #nzTitle>
-              <p>{{ item.messageId.message[item.messageId.message.length - 1].body }}</p>
+              <p>{{ item.messageId.message[item.messageId.message.length - 1].body | slice: 0: 40 }}...</p>
             </ng-template>
           </nz-list-item-meta>
         </nz-skeleton>
