@@ -48,6 +48,7 @@ export class NotificationsComponent implements OnInit {
    * @param user user of post
    */
   getAvatarUrl(notification: Notification): string {
+    console.log('notification', notification);
     if (notification.picId) {
       return this.imageService.getImage(notification.picVersion, notification.picId);
     } else {

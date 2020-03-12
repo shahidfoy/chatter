@@ -11,14 +11,13 @@
     [nzRenderItem]="item"
   >
     <ng-template #item let-item>
-      <nz-list-item [routerLink]="['/chat/message', item.receiverId.username]"
+      <nz-list-item [routerLink]="['/chat/message', chatReceiver(item)]"
         [nzContent]="item.loading ? [] : profileContent"
-        [nzActions]="item.loading ? [] : [notificationActions]"
-      >
+        [nzActions]="item.loading ? [] : [notificationActions]">
         <nz-skeleton [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="item.loading">
           <ng-template #profileContent>
-            <a [routerLink]="['/streams/profile', item.receiverId.username]">
-              {{ item.receiverId.username }}
+            <a [routerLink]="['/streams/profile', chatReceiver(item)]">
+              {{ chatReceiver(item) }}
             </a>
           </ng-template>
           <ng-template #notificationActions>
@@ -33,10 +32,9 @@
             [nzTitle]="nzTitle"
             [nzDescription]="timeFromNow(item.messageId.message[item.messageId.message.length - 1])"
             nzIcon="user"
-            [nzAvatar]="getUserAvatar(item.receiverId)"
-          >
+            [nzAvatar]="getUserAvatar(item)">
             <ng-template #nzTitle>
-              <p>{{ item.messageId.message[item.messageId.message.length - 1].body }}</p>
+              <p>{{ item.messageId.message[item.messageId.message.length - 1].body | slice: 0: 40 }}...</p>
             </ng-template>
           </nz-list-item-meta>
         </nz-skeleton>

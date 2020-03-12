@@ -29,9 +29,6 @@ export class UsersService {
      */
     async getUserById(userId: string): Promise<User> {
         return await this.userModel.findOne({ _id: userId })
-                                    .populate('chatList.receiverId')
-                                    .populate('chatList.messageId')
-                                    .populate('notifications.senderId')
                                     .then((user: User) => {
                                         return user;
                                     })
@@ -46,9 +43,6 @@ export class UsersService {
      */
     async getUserByUsername(username: string): Promise<User> {
         return await this.userModel.findOne({ username })
-                                    .populate('chatList.receiverId')
-                                    .populate('chatList.messageId')
-                                    .populate('notifications.senderId')
                                     .then((user: User) => {
                                         return user;
                                     })
@@ -56,63 +50,4 @@ export class UsersService {
                                         throw new InternalServerErrorException({ message: `Error getting user by username ${err}` });
                                     });
     }
-
-    // /**
-    //  * marks notification as read
-    //  * TODO:: refactor into notifications module
-    //  * @param user logged in user
-    //  * @param notification notification to be marked as read
-    //  */
-    // async markNotification(user: User, notification: NotificationsObj): Promise<User> {
-    //     return await this.userModel.updateOne({
-    //         '_id': user._id,
-    //         'notifications._id': notification._id,
-    //     }, {
-    //         $set: { 'notifications.$.read': true },
-    //     }).then(() => {
-    //         return user;
-    //     }).catch((err) => {
-    //         throw new InternalServerErrorException({ message: `Marking Notification Error Occured ${err}` });
-    //     });
-    // }
-
-    // /**
-    //  * removes notification from users notification array
-    //  * TODO:: refactor into notifications module
-    //  * @param user logged in user
-    //  * @param notification notification to be removed
-    //  */
-    // async deleteNotification(user: User, notification: NotificationsObj): Promise<User> {
-    //     return await this.userModel.updateOne({
-    //         '_id': user._id,
-    //         'notifications._id': notification._id,
-    //     }, {
-    //         $pull: {
-    //             notifications: { _id: notification._id },
-    //         },
-    //     }).then(() => {
-    //         return user;
-    //     }).catch((err) => {
-    //         throw new InternalServerErrorException({ message: `Deleting Notification Error Occured ${err}` });
-    //     });
-    // }
-
-    // /**
-    //  * marks all of logged in users notifications as read
-    //  * TODO:: refactor into notifications module
-    //  */
-    // async markAll(user: User): Promise<User> {
-    //     return await this.userModel.updateOne({
-    //         _id: user._id,
-    //     }, {
-    //         $set: { 'notifications.$[elem].read': true },
-    //     }, {
-    //         arrayFilters: [{ 'elem.read': false }],
-    //         multi: true,
-    //     }).then(() => {
-    //         return user;
-    //     }).catch((err) => {
-    //         throw new InternalServerErrorException({ message: `Marking All Error Occured ${err}` });
-    //     });
-    // }
 }

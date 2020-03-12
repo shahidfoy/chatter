@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User, ChatList, MessageBody } from '../../shared/interfaces/user.interface';
+import { User, MessageBody } from '../../shared/interfaces/user.interface';
 import { timeFromNow } from '../../shared/shared.utils';
 import { TokenService } from '../../shared/services/token.service';
 import { UserService } from '../../streams/services/user.service';
@@ -7,6 +7,7 @@ import { PayloadData } from '../../shared/interfaces/jwt-payload.interface';
 import { MessageService } from '../services/message.service';
 import { Router } from '@angular/router';
 import { ImageService } from 'src/app/shared/services/image.service';
+import { Conversation } from '../interfaces/conversation.interface';
 
 @Component({
   selector: 'app-notifications',
@@ -19,7 +20,7 @@ export class NotificationsComponent implements OnInit {
   initLoading: boolean;
   loadingMore: boolean;
   data: any[] = [];
-  chatList: ChatList[];
+  chatList: Conversation[];
 
   loggedInUser: PayloadData;
   loggedInUserData: User;
@@ -42,6 +43,14 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
+  chatReceiver(conversation: Conversation): string {
+    if (conversation.receiverId._id === this.loggedInUser._id) {
+      return conversation.senderId.username;
+    } else {
+      return conversation.receiverId.username;
+    }
+  }
+
   /**
    * uses moment to customize time output
    * @param lastMessage last chat message between two users
@@ -57,7 +66,6 @@ export class NotificationsComponent implements OnInit {
    */
   markMessage(message: any) {
     const lastMessage = message[message.length - 1];
-    console.log('last', lastMessage);
 
     if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
       if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
@@ -79,11 +87,11 @@ export class NotificationsComponent implements OnInit {
    * gets user's chat image
    * @param user user
    */
-  getUserAvatar(user: User): string {
-    if (user.picId) {
-      return this.imageService.getImage(user.picVersion, user.picId);
+  getUserAvatar(conversation: Conversation): string {
+    if (conversation.receiverId._id === this.loggedInUser._id) {
+      return this.imageService.getImage(conversation.senderId.picVersion, conversation.senderId.picId);
     } else {
-      return this.imageService.getDefaultProfileImage();
+      return this.imageService.getImage(conversation.receiverId.picVersion, conversation.receiverId.picId);
     }
   }
 
@@ -104,9 +112,11 @@ export class NotificationsComponent implements OnInit {
   private getLoggedInUsersChatNotifications() {
     this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
       this.loggedInUserData = user;
-      this.chatList = user.chatList;
-      this.initLoading = false;
-      this.isLoading = false;
+      this.messageService.getConversationsList().subscribe((conversations: any) => {
+        this.chatList = conversations;
+        this.initLoading = false;
+        this.isLoading = false;
+      });
     });
   }
 }

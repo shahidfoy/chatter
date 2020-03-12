@@ -1,8 +1,12 @@
+import { User } from '../../shared/interfaces/user.interface';
+
 export interface Message {
   _id: string;
-  conversationId: string;
+  senderId: User;
+  receiverId: User;
   sender: string;
   receiver: string;
+  cratedAt: Date;
   message: MessageContents[];
 }
 

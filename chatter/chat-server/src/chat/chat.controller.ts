@@ -2,11 +2,24 @@ import { Controller, Post, Param, Body, Req, Get } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { CustomRequest } from 'src/interfaces/custom-request.interface';
 import { Message } from './models/message.model';
+import { Conversation } from './models/conversation.model';
 
 @Controller('chat')
 export class ChatController {
 
     constructor(private readonly chatService: ChatService) {}
+
+    /**
+     * gets chat conversations list
+     * for logged in user
+     * @param req custom request
+     */
+    @Get('conversations-list')
+    async getConversationsList(
+        @Req() req: CustomRequest,
+    ): Promise<Conversation[]> {
+        return this.chatService.getConversationsList(req.user._id);
+    }
 
     /**
      * gets chat messages between two users
@@ -18,7 +31,7 @@ export class ChatController {
         @Req() req: CustomRequest,
         @Param('senderId') senderId: string,
         @Param('receiverId') receiverId: string,
-    ): Promise<Message> {
+    ): Promise<Conversation> {
         return this.chatService.getMessages(senderId, receiverId);
     }
 
