@@ -3,12 +3,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Notification } from './models/notification.model';
 import { User } from 'src/users/models/user.model';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class NotificationsService {
 
   constructor(
       @InjectModel('Notification') private readonly notificationModel: Model<Notification>,
+      private usersService: UsersService,
   ) {}
 
   /**
@@ -78,13 +80,14 @@ export class NotificationsService {
    * @param receiverId receiver of notification
    */
   async createFollowNotification(user: User, receiverId: string): Promise<string> {
+    const userData = await this.usersService.getUserById(user._id);
     const followNotification = async () => {
         await this.notificationModel.create({
             userId: receiverId,
             senderId: user._id,
             senderUsername: user.username,
-            picVersion: user.picVersion,
-            picId: user.picId,
+            picVersion: userData.picVersion,
+            picId: userData.picId,
             message: `${user.username} is now following you.`,
             createdAt: new Date(),
         });
@@ -105,13 +108,14 @@ export class NotificationsService {
    * @param receiverId receiver id
    */
   async createCommentNotification(user: User, receiverId: string, postId: string): Promise<string> {
+    const userData = await this.usersService.getUserById(user._id);
     const commentNotification = async () => {
       await this.notificationModel.create({
         userId: receiverId,
         senderId: user._id,
         senderUsername: user.username,
-        picVersion: user.picVersion,
-        picId: user.picId,
+        picVersion: userData.picVersion,
+        picId: userData.picId,
         postId,
         message: `${user.username} commented on your post`,
         createdAt: new Date(),
@@ -133,13 +137,14 @@ export class NotificationsService {
    * @param receiverId receiver id
    */
   async createLikeNotification(user: User, receiverId: string, postId: string): Promise<string> {
+    const userData = await this.usersService.getUserById(user._id);
     const LikeNotification = async () => {
       await this.notificationModel.create({
         userId: receiverId,
         senderId: user._id,
         senderUsername: user.username,
-        picVersion: user.picVersion,
-        picId: user.picId,
+        picVersion: userData.picVersion,
+        picId: userData.picId,
         postId,
         message: `${user.username} liked your post`,
         createdAt: new Date(),
