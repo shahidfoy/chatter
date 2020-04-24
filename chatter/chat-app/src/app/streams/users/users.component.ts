@@ -123,13 +123,10 @@ export class UsersComponent implements OnInit {
   }
 
   /**
-   * gets all users
-   * TODO:: add pagination
+   * gets all users by pagination page and limit
    */
   private getUsers() {
     this.userService.getUsers(this.PAGE).subscribe((users: User[]) => {
-      // this.users.concat(users);
-      // this.users = users;
       if (users.length < this.LIMIT) { this.paginateMoreUsers = false; }
       this.users = this.users.length < 1 ? users : this.users.concat(users);
       users.forEach((user: User) => {
@@ -192,25 +189,8 @@ export class UsersComponent implements OnInit {
           });
           break;
         default:
-          // set up message to let user know that the list is empty
+          // TODO:: set up message to let user know that the list is empty
       }
-      // if (type === Contacts.FOLLOWERS) {
-      //   this.contactService.getUserFollowers(user._id).subscribe((followers: UserFollower[]) => {
-      //     this.users = [];
-      //     followers.forEach(userData => {
-      //       this.users.push(userData.userFollower);
-      //       this.checkUserFollowing(this.loggedInUserToken._id, userData.userFollower);
-      //     });
-      //   });
-      // } else if (type === Contacts.FOLLOWING) {
-      //   this.contactService.getUserFollowing(user._id).subscribe((following: UserFollowing[]) => {
-      //     this.users = [];
-      //     following.forEach(userData => {
-      //       this.users.push(userData.userFollowed);
-      //       this.checkUserFollowing(this.loggedInUserToken._id, userData.userFollowed);
-      //     });
-      //   });
-      // }
       this.isLoading = false;
     });
   }
