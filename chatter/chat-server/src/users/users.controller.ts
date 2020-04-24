@@ -12,9 +12,11 @@ export class UsersController {
      * gets all users
      * TODO:: IMPLEMENT PAGAINATION
      */
-    @Get()
-    async getUsers(): Promise<User[]> {
-        return await this.usersService.getUsers();
+    @Get(':page')
+    async getUsers(
+        @Param('page') page: number = 0,
+    ): Promise<User[]> {
+        return await this.usersService.getUsers(page);
     }
 
     /**

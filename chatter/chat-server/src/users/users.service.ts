@@ -6,14 +6,18 @@ import { User } from './models/user.model';
 @Injectable()
 export class UsersService {
 
+    private readonly LIMIT = 9;
+
     constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
     /**
      * gets all users
      * TODO:: IMPLEMENT PAGAINATION
      */
-    async getUsers(): Promise<User[]> {
-        return await this.userModel.find()
+    async getUsers(page: number = 0): Promise<User[]> {
+        const skip = page * this.LIMIT;
+        return await this.userModel.find({}, {},
+                                    { skip, limit: this.LIMIT })
                                     .sort({ username: 1 })
                                     .then((users: User[]) => {
                                         return users;

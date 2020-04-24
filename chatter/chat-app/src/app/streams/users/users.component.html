@@ -47,4 +47,12 @@
     </div>
   </div>
 
+  <div class="load-more" >
+    <button
+      *ngIf="paginateMoreUsers"
+      nz-button
+      nzShape="round"
+      (click)="populateUsers()"><i nz-icon nzType="cloud-download"></i>Load More</button>
+  </div>
+
 </nz-content>
