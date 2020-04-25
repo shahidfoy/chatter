@@ -9,6 +9,8 @@ import { NotificationsService } from '../notifications/notifications.service';
 @Injectable()
 export class ContactsService {
 
+    private readonly LIMIT = 9;
+
     constructor(
         @InjectModel('User') private readonly userModel: Model<User>,
         @InjectModel('Follower') private readonly followerModel: Model<Follower>,
@@ -18,13 +20,15 @@ export class ContactsService {
 
     /**
      * gets a list of users that follow the selected user id
-     * TODO:: ADD PAGINATION
      * @param userId user id
+     * @param page current page number
      */
-    async getUserFollowers(userId: string): Promise<Follower[]> {
+    async getUserFollowers(userId: string, page: number = 0): Promise<Follower[]> {
+        const skip = page * this.LIMIT;
         return await this.followerModel
-                            .find({userId})
-                            .populate({ path: 'userFollower', options: { sort: { username: 1 }}})
+                            .find({userId}, {},
+                            { skip, limit: this.LIMIT })
+                            .populate({ path: 'userFollower' })
                             .then(result => {
                                 return result.sort((user1, user2) => (user1.userFollower.username > user2.userFollower.username ? 1 : -1));
                             })
@@ -35,12 +39,14 @@ export class ContactsService {
 
     /**
      * gets a list of users that the selected user id is following
-     * TODO:: ADD PAGINATION
      * @param userId user id
+     * @param page current page number
      */
-    async getUserFollowing(userId: string): Promise<Following[]> {
+    async getUserFollowing(userId: string, page: number = 0): Promise<Following[]> {
+        const skip = page * this.LIMIT;
         return await this.followingModel
-                            .find({userId})
+                            .find({userId}, {},
+                            { skip, limit: this.LIMIT })
                             .populate({ path: 'userFollowed'})
                             .then(result => {
                                 return result.sort((user1, user2) => (user1.userFollowed.username > user2.userFollowed.username ? 1 : -1));

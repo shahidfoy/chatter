@@ -10,7 +10,7 @@ export class UsersController {
 
     /**
      * gets all users
-     * TODO:: IMPLEMENT PAGAINATION
+     * @param page current page number
      */
     @Get(':page')
     async getUsers(

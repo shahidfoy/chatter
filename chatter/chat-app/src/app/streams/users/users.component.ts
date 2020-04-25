@@ -109,15 +109,12 @@ export class UsersComponent implements OnInit {
     switch (this.activatedRoute.snapshot.url[0].path) {
       case Contacts.FOLLOWERS:
         this.populateFollowersListByUsername();
-        this.PAGE++;
         break;
       case Contacts.FOLLOWING:
         this.populateFollowingListByUsername();
-        this.PAGE++;
         break;
       default:
         this.getUsers();
-        this.PAGE++;
         break;
     }
   }
@@ -133,6 +130,7 @@ export class UsersComponent implements OnInit {
         this.checkUserFollowing(this.loggedInUserToken._id, user);
       });
       this.isLoading = false;
+      this.PAGE++;
     });
   }
 
@@ -163,7 +161,6 @@ export class UsersComponent implements OnInit {
   /**
    * gets the list of people who follow the user or
    * people the user is following based on type received
-   * TODO:: add pagination
    * @param username user's username
    * @param type type of list to populate
    */
@@ -171,8 +168,9 @@ export class UsersComponent implements OnInit {
     this.userService.getUserByUsername(username).subscribe((user: User) => {
       switch (type) {
         case Contacts.FOLLOWERS:
-          this.contactService.getUserFollowers(user._id).subscribe((followers: UserFollower[]) => {
-            this.users = [];
+          this.contactService.getUserFollowers(user._id, this.PAGE).subscribe((followers: UserFollower[]) => {
+            console.log('FOLLOWERS', followers, this.PAGE);
+            if (followers.length < this.LIMIT) { this.paginateMoreUsers = false; }
             followers.forEach(userData => {
               this.users.push(userData.userFollower);
               this.checkUserFollowing(this.loggedInUserToken._id, userData.userFollower);
@@ -180,8 +178,8 @@ export class UsersComponent implements OnInit {
           });
           break;
         case Contacts.FOLLOWING:
-          this.contactService.getUserFollowing(user._id).subscribe((following: UserFollowing[]) => {
-            this.users = [];
+          this.contactService.getUserFollowing(user._id, this.PAGE).subscribe((following: UserFollowing[]) => {
+            if (following.length < this.LIMIT) { this.paginateMoreUsers = false; }
             following.forEach(userData => {
               this.users.push(userData.userFollowed);
               this.checkUserFollowing(this.loggedInUserToken._id, userData.userFollowed);
@@ -192,6 +190,7 @@ export class UsersComponent implements OnInit {
           // TODO:: set up message to let user know that the list is empty
       }
       this.isLoading = false;
+      this.PAGE++;
     });
   }
 

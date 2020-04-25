@@ -12,7 +12,7 @@ export class UsersService {
 
     /**
      * gets all users
-     * TODO:: IMPLEMENT PAGAINATION
+     * @param page current page number
      */
     async getUsers(page: number = 0): Promise<User[]> {
         const skip = page * this.LIMIT;
