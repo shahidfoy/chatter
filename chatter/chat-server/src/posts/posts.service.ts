@@ -26,7 +26,7 @@ export class PostsService {
         const skip = page * this.LIMIT;
         try {
             const posts = await this.postModel.find({}, {},
-                { skip, limit: this.LIMIT })
+                    { skip, limit: this.LIMIT })
                 .populate('user')
                 .sort({ createdAt: -1 });
             return posts;

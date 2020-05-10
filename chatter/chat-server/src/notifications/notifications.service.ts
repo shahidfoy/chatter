@@ -8,6 +8,8 @@ import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class NotificationsService {
 
+  private readonly LIMIT = 10;
+
   constructor(
       @InjectModel('Notification') private readonly notificationModel: Model<Notification>,
       private usersService: UsersService,
@@ -15,12 +17,13 @@ export class NotificationsService {
 
   /**
    * get notifications by user
-   * TODO:: ADD PAGINATION
    * @param userId user id
    */
-  async getNotificaitons(userId: string): Promise<Notification> {
+  async getNotificaitons(userId: string, page: number = 0): Promise<Notification> {
+      const skip = page * this.LIMIT;
       return await this.notificationModel
-                      .find({userId})
+                      .find({userId}, {},
+                        { skip, limit: this.LIMIT })
                       .sort({createdAt: -1})
                       .catch((err) => {
                           throw new InternalServerErrorException({ message: 'Unable to get user notifications' });

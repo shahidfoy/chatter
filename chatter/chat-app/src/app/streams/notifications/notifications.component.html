@@ -68,4 +68,12 @@
       </div>
     </ng-template> -->
   </nz-list>
+
+  <div class="load-more" >
+    <button
+      *ngIf="paginateMoreNotifications"
+      nz-button
+      nzShape="round"
+      (click)="loadMoreNotifications()"><i nz-icon nzType="cloud-download"></i>Load More</button>
+  </div>
 </div>

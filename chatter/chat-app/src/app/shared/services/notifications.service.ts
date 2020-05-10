@@ -21,8 +21,8 @@ export class NotificationsService {
    * gets user notifications
    * @param userId user id
    */
-  getNotificaitons(userId: string): Observable<Notification[]> {
-    return this.http.get<Notification[]>(`${environment.BASEURL}/api/notifications/${userId}`);
+  getNotificaitons(userId: string, page: number = 0): Observable<Notification[]> {
+    return this.http.get<Notification[]>(`${environment.BASEURL}/api/notifications/user/${userId}/${page}`);
   }
 
   /**

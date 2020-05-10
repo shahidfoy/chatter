@@ -169,7 +169,6 @@ export class UsersComponent implements OnInit {
       switch (type) {
         case Contacts.FOLLOWERS:
           this.contactService.getUserFollowers(user._id, this.PAGE).subscribe((followers: UserFollower[]) => {
-            console.log('FOLLOWERS', followers, this.PAGE);
             if (followers.length < this.LIMIT) { this.paginateMoreUsers = false; }
             followers.forEach(userData => {
               this.users.push(userData.userFollower);
