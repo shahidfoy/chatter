@@ -24,14 +24,14 @@
       <div>
         <i nz-icon
            nzType="like"
-           [theme]="checkUserInArray(post.likes, payload.username) ? 'twotone' : 'outline'"
+           [nzTheme]="checkUserInArray(post.likes, payload.username) ? 'twotone' : 'outline'"
            (click)="like(post)"></i>
         <span class="count like">{{ post.totalLikes }}</span>
       </div>
       <div>
         <i nz-icon
            nzType="dislike"
-           [theme]="checkUserInArray(post.dislikes, payload.username) ? 'twotone' : 'outline'"
+           [nzTheme]="checkUserInArray(post.dislikes, payload.username) ? 'twotone' : 'outline'"
            (click)="dislike(post)"></i>
         <span class="count dislike">{{ post.totalDislikes }}</span>
       </div>

@@ -21,7 +21,7 @@
         <ng-template #actionFollow>
           <i nz-icon
             nzType="plus-circle"
-            [theme]="isFollowingObj[user._id] ? 'twotone' : 'outline'"
+            [nzTheme]="isFollowingObj[user._id] ? 'twotone' : 'outline'"
             (click)="followUser(user._id)"
             nzPopoverPlacement="top"></i>
         </ng-template>
