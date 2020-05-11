@@ -15,6 +15,10 @@ import { Notification } from '../../shared/interfaces/notification.interface';
 })
 export class NotificationsComponent implements OnInit {
 
+  private readonly LIMIT = 10;
+  private PAGE = 0;
+
+  paginateMoreNotifications = true;
   isLoading = true;
   initLoading: boolean;
   loadingMore: boolean;
@@ -39,6 +43,7 @@ export class NotificationsComponent implements OnInit {
     this.getLoggedInUsersNotifications();
 
     this.notificationsService.receiveNewNotificationActionSocket().subscribe(() => {
+      this.PAGE = 0;
       this.getLoggedInUsersNotifications();
     });
   }
@@ -48,6 +53,7 @@ export class NotificationsComponent implements OnInit {
    * @param user user of post
    */
   getAvatarUrl(notification: Notification): string {
+    // console.log('notification', notification);
     if (notification.picId) {
       return this.imageService.getImage(notification.picVersion, notification.picId);
     } else {
@@ -82,6 +88,14 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
+  /**
+   * loads more notifications on button click
+   */
+  loadMoreNotifications() {
+    this.PAGE++;
+    this.getNotifications(this.loggedInUser._id);
+  }
+
   // IMPLEMENT THIS LATER TO LOAD NOTIFICATIONS
   // onLoadMore(): void {
   //   this.loadingMore = true;
@@ -97,6 +111,7 @@ export class NotificationsComponent implements OnInit {
    * gets logged in users notifications
    */
   private getLoggedInUsersNotifications() {
+    this.notifications = [];
     this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
       this.loggedInUserData = user;
       this.getNotifications(this.loggedInUserData._id);
@@ -110,8 +125,11 @@ export class NotificationsComponent implements OnInit {
    * @param userId user id
    */
   private getNotifications(userId: string) {
-    this.notificationsService.getNotificaitons(userId).subscribe((notifications: Notification[]) => {
-      this.notifications = notifications;
+    this.notificationsService.getNotificaitons(userId, this.PAGE).subscribe((notifications: Notification[]) => {
+      if (notifications.length < this.LIMIT) { this.paginateMoreNotifications = false; }
+      notifications.forEach(notification => {
+        this.notifications.push(notification);
+      });
       this.list = this.notifications.map(notification => ({ loading: false, notification }));
     });
   }

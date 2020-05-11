@@ -43,7 +43,6 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['streams']).catch(err => this.displayError(err));
       }, 3000);
     }, err => {
-      console.log('error');
       this.displayError(err.error.message);
     });
   }

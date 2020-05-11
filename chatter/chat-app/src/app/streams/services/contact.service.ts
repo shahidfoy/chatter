@@ -14,20 +14,20 @@ export class ContactService {
 
   /**
    * get user followers
-   * TODO:: ADD PAGINATION
    * @param userId user id
+   * @param page pagination by page
    */
-  getUserFollowers(userId: string): Observable<UserFollower[]> {
-    return this.http.get<UserFollower[]>(`${environment.BASEURL}/api/contacts/followers/${userId}`);
+  getUserFollowers(userId: string, page: number = 0): Observable<UserFollower[]> {
+    return this.http.get<UserFollower[]>(`${environment.BASEURL}/api/contacts/followers/${userId}/${page}`);
   }
 
   /**
    * get user following
-   * TODO:: ADD PAGINATION
    * @param userId user id
+   * @param page pagination by page
    */
-  getUserFollowing(userId: string): Observable<UserFollowing[]> {
-    return this.http.get<UserFollowing[]>(`${environment.BASEURL}/api/contacts/following/${userId}`);
+  getUserFollowing(userId: string, page: number = 0): Observable<UserFollowing[]> {
+    return this.http.get<UserFollowing[]>(`${environment.BASEURL}/api/contacts/following/${userId}/${page}`);
   }
 
   /**

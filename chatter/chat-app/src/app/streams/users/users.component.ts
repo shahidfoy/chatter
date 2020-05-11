@@ -11,6 +11,7 @@ import { UserFollowing } from '../interfaces/user-following.interface';
 import { Contacts } from '../enums/contacts.enum';
 import { ContactService } from '../services/contact.service';
 import { UserFollower } from '../interfaces/user-follower.interface';
+import { PostsComponent } from '../posts/posts.component';
 
 @Component({
   selector: 'app-users',
@@ -19,11 +20,16 @@ import { UserFollower } from '../interfaces/user-follower.interface';
 })
 export class UsersComponent implements OnInit {
 
-  isLoading = true;
+  private readonly LIMIT = 9;
+  private PAGE = 0;
+
   users: User[];
   loggedInUserToken: PayloadData;
   loggedInUser: User;
   isFollowingObj: any = {};
+
+  isLoading = true;
+  paginateMoreUsers = true;
 
   constructor(
     private userService: UserService,
@@ -35,6 +41,7 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.users = [];
     this.loggedInUserToken = this.tokenService.getPayload();
     this.getLoggedInUser(this.loggedInUserToken._id);
     this.populateUsers();
@@ -98,7 +105,7 @@ export class UsersComponent implements OnInit {
   /**
    * populates users based on route url path
    */
-  private populateUsers() {
+  populateUsers() {
     switch (this.activatedRoute.snapshot.url[0].path) {
       case Contacts.FOLLOWERS:
         this.populateFollowersListByUsername();
@@ -113,16 +120,17 @@ export class UsersComponent implements OnInit {
   }
 
   /**
-   * gets all users
-   * TODO:: add pagination
+   * gets all users by pagination page and limit
    */
   private getUsers() {
-    this.userService.getUsers().subscribe((users: User[]) => {
-      this.users = users;
+    this.userService.getUsers(this.PAGE).subscribe((users: User[]) => {
+      if (users.length < this.LIMIT) { this.paginateMoreUsers = false; }
+      this.users = this.users.length < 1 ? users : this.users.concat(users);
       users.forEach((user: User) => {
         this.checkUserFollowing(this.loggedInUserToken._id, user);
       });
       this.isLoading = false;
+      this.PAGE++;
     });
   }
 
@@ -153,30 +161,35 @@ export class UsersComponent implements OnInit {
   /**
    * gets the list of people who follow the user or
    * people the user is following based on type received
-   * TODO:: add pagination
    * @param username user's username
    * @param type type of list to populate
    */
   private getUsersList(username: string, type: string) {
     this.userService.getUserByUsername(username).subscribe((user: User) => {
-      if (type === Contacts.FOLLOWERS) {
-        this.contactService.getUserFollowers(user._id).subscribe((followers: UserFollower[]) => {
-          this.users = [];
-          followers.forEach(userData => {
-            this.users.push(userData.userFollower);
-            this.checkUserFollowing(this.loggedInUserToken._id, userData.userFollower);
+      switch (type) {
+        case Contacts.FOLLOWERS:
+          this.contactService.getUserFollowers(user._id, this.PAGE).subscribe((followers: UserFollower[]) => {
+            if (followers.length < this.LIMIT) { this.paginateMoreUsers = false; }
+            followers.forEach(userData => {
+              this.users.push(userData.userFollower);
+              this.checkUserFollowing(this.loggedInUserToken._id, userData.userFollower);
+            });
           });
-        });
-      } else if (type === Contacts.FOLLOWING) {
-        this.contactService.getUserFollowing(user._id).subscribe((following: UserFollowing[]) => {
-          this.users = [];
-          following.forEach(userData => {
-            this.users.push(userData.userFollowed);
-            this.checkUserFollowing(this.loggedInUserToken._id, userData.userFollowed);
+          break;
+        case Contacts.FOLLOWING:
+          this.contactService.getUserFollowing(user._id, this.PAGE).subscribe((following: UserFollowing[]) => {
+            if (following.length < this.LIMIT) { this.paginateMoreUsers = false; }
+            following.forEach(userData => {
+              this.users.push(userData.userFollowed);
+              this.checkUserFollowing(this.loggedInUserToken._id, userData.userFollowed);
+            });
           });
-        });
+          break;
+        default:
+          // TODO:: set up message to let user know that the list is empty
       }
       this.isLoading = false;
+      this.PAGE++;
     });
   }
 

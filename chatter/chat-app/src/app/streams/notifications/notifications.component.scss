@@ -2,9 +2,16 @@
   min-height: 350px;
 }
 
-.loadmore {
-  text-align: center;
-  margin-top: 12px;
-  height: 32px;
-  line-height: 32px;
+// .loadmore {
+//   text-align: center;
+//   margin-top: 12px;
+//   height: 32px;
+//   line-height: 32px;
+// }
+
+.load-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
 }

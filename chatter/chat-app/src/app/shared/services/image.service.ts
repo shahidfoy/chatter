@@ -15,7 +15,7 @@ import { Post } from '../../streams/interfaces/post.interface';
 })
 export class ImageService {
 
-  private readonly DEFAULT_PROFILE_IMAGE = environment.CLOUDINARY_BASE_URL + '/v1580522418/little-fox_dribbble_mdr97t.png';
+  private readonly DEFAULT_PROFILE_IMAGE = environment.CLOUDINARY_BASE_URL + '/v1584037334/FullColor_IconOnly_1280x1024_72dpi_repjh0.jpg';
   profileImageSubject = new Subject<string>();
 
   constructor(

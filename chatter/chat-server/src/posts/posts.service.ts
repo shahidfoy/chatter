@@ -10,7 +10,7 @@ import { NotificationsService } from 'src/notifications/notifications.service';
 @Injectable()
 export class PostsService {
 
-    private limit = 15;
+    private readonly LIMIT = 15;
 
     constructor(
         @InjectModel('User') private readonly userModel: Model<User>,
@@ -23,10 +23,10 @@ export class PostsService {
      * gets all user posts
      */
     async getPosts(page: number = 0): Promise<UserPost[]> {
-        const skip = page * this.limit;
+        const skip = page * this.LIMIT;
         try {
             const posts = await this.postModel.find({}, {},
-                { skip, limit: this.limit })
+                    { skip, limit: this.LIMIT })
                 .populate('user')
                 .sort({ createdAt: -1 });
             return posts;
@@ -41,10 +41,10 @@ export class PostsService {
      * @param page current page
      */
     async getPostsByUserId(userId: string, page: number = 0): Promise<UserPost[]> {
-        const skip = page * this.limit;
+        const skip = page * this.LIMIT;
         try {
             const posts = await this.postModel.find({ user: userId }, {},
-                { skip, limit: this.limit })
+                { skip, limit: this.LIMIT })
                 .populate('user')
                 .sort({ createdAt: -1 });
             return posts;
@@ -58,10 +58,10 @@ export class PostsService {
      * currently gets most likes
      */
     async getTrendingPosts(page: number = 0): Promise<UserPost[]> {
-        const skip = page * this.limit;
+        const skip = page * this.LIMIT;
         try {
             const posts = await this.postModel.find({ totalLikes: { $gte: 3 } }, {},
-                { skip, limit: this.limit })
+                { skip, limit: this.LIMIT })
                 .populate('user')
                 .sort({ totalLikes: -1 });
             return posts;

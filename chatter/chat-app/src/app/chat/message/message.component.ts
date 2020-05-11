@@ -9,6 +9,7 @@ import { Message, MessageContents } from '../interfaces/message.interface';
 import { ApplicationStateService } from 'src/app/shared/services/application-state.service';
 import { ChatParams } from '../interfaces/chat-params.interface';
 import { ImageService } from 'src/app/shared/services/image.service';
+import { Conversation } from '../interfaces/conversation.interface';
 
 @Component({
   selector: 'app-message',
@@ -19,9 +20,11 @@ export class MessageComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('autoScroll') private autoScrollContainer: ElementRef;
   isMobile: boolean;
+  conversation: Conversation;
   receiverUsername: string;
   receiverData: User;
   loggedInUser: PayloadData;
+  loggedInUserData: User;
   message: string;
   messages: MessageContents[];
   typing = false;
@@ -42,6 +45,9 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     });
 
     this.loggedInUser = this.tokenService.getPayload();
+    this.userService.getUserById(this.loggedInUser._id).subscribe((user: User) => {
+      this.loggedInUserData = user;
+    });
     this.receiverUsername = this.activatedRoute.snapshot.params.username;
     this.getUserByUsernameWithMessages(this.receiverUsername);
     this.markMessagesAsRead();
@@ -108,11 +114,13 @@ export class MessageComponent implements OnInit, AfterViewChecked {
    * gets user's chat image
    * @param username username
    */
-  getUserAvatar(user: any): string {
-    if (user.picId) {
-      return this.imageService.getImage(user.picVersion, user.picId);
+  getUserAvatar(userId: any): string {
+    if (userId === this.loggedInUser._id) {
+      return this.imageService.getImage(this.loggedInUserData.picVersion, this.loggedInUserData.picId);
+    } else if (this.conversation.receiverId._id !== this.loggedInUser._id) {
+      return this.imageService.getImage(this.conversation.receiverId.picVersion, this.conversation.receiverId.picId);
     } else {
-      return this.imageService.getDefaultProfileImage();
+      return this.imageService.getImage(this.conversation.senderId.picVersion, this.conversation.senderId.picId);
     }
   }
 
@@ -153,9 +161,10 @@ export class MessageComponent implements OnInit, AfterViewChecked {
    * @param receiverId receivers id
    */
   private getMessages(senderId: string, receiverId: string) {
-    this.messageService.getMessages(senderId, receiverId).subscribe((data: Message) => {
-      if (data !== null) {
-        this.messages = data.message;
+    this.messageService.getMessages(senderId, receiverId).subscribe((conversation: Conversation) => {
+      if (conversation !== null) {
+        this.conversation = conversation;
+        this.messages = conversation.messageId.message;
         this.isLoading = false;
       }
     });

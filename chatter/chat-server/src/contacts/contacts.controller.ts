@@ -11,26 +11,28 @@ export class ContactsController {
 
     /**
      * get user followers
-     * TODO:: ADD PAGINATION
      * @param userId user id
+     * @param page current page number
      */
-    @Get('followers/:userId')
+    @Get('followers/:userId/:page')
     async getUserFollowers(
         @Param('userId') userId: string,
+        @Param('page') page: number = 0,
     ): Promise<Follower[]> {
-        return this.contactsService.getUserFollowers(userId);
+        return this.contactsService.getUserFollowers(userId, page);
     }
 
     /**
      * get user following
-     * TODO:: ADD PAGINATION
      * @param userId user id
+     * @param page current page number
      */
-    @Get('following/:userId')
+    @Get('following/:userId/:page')
     async getUserFollowing(
         @Param('userId') userId: string,
+        @Param('page') page: number = 0,
     ): Promise<Following[]> {
-        return this.contactsService.getUserFollowing(userId);
+        return this.contactsService.getUserFollowing(userId, page);
     }
 
     /**

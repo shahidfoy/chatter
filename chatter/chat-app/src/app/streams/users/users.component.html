@@ -21,7 +21,7 @@
         <ng-template #actionFollow>
           <i nz-icon
             nzType="plus-circle"
-            [theme]="isFollowingObj[user._id] ? 'twotone' : 'outline'"
+            [nzTheme]="isFollowingObj[user._id] ? 'twotone' : 'outline'"
             (click)="followUser(user._id)"
             nzPopoverPlacement="top"></i>
         </ng-template>
@@ -45,6 +45,14 @@
         </ng-template>
       </nz-card>
     </div>
+  </div>
+
+  <div class="load-more" >
+    <button
+      *ngIf="paginateMoreUsers"
+      nz-button
+      nzShape="round"
+      (click)="populateUsers()"><i nz-icon nzType="cloud-download"></i>Load More</button>
   </div>
 
 </nz-content>

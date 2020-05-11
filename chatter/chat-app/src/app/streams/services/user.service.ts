@@ -15,10 +15,10 @@ export class UserService {
 
   /**
    * gets all users
-   * TODO:: ADD PAGINATION
+   * @param page pagination by page
    */
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${environment.BASEURL}/api/users`);
+  getUsers(page: number = 0): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.BASEURL}/api/users/${page}`);
   }
 
   /**
@@ -36,31 +36,4 @@ export class UserService {
   getUserByUsername(username: string): Observable<User> {
     return this.http.get<User>(`${environment.BASEURL}/api/users/username/${username}`);
   }
-
-  // /**
-  //  * marks notification as read
-  //  * @param notification notifiaction to be marked
-  //  */
-  // markNotification(notification: NotificationsObj): Observable<User> {
-  //   return this.http.post<User>(`${environment.BASEURL}/api/users/mark-notification`, {
-  //     notification
-  //   });
-  // }
-
-  // /**
-  //  * deletes notification
-  //  * @param notification notification to be deleted
-  //  */
-  // deleteNotification(notification: NotificationsObj): Observable<User> {
-  //   return this.http.post<User>(`${environment.BASEURL}/api/users/delete-notification`, {
-  //     notification
-  //   });
-  // }
-
-  // /**
-  //  * marks all notifications as read
-  //  */
-  // markAllNotifications(): Observable<User> {
-  //   return this.http.post<User>(`${environment.BASEURL}/api/users/mark-all`, {});
-  // }
 }

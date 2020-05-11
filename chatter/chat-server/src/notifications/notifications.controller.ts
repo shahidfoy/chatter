@@ -11,11 +11,12 @@ export class NotificationsController {
      * gets user notifications
      * @param userId user id
      */
-    @Get('/:userId')
+    @Get('user/:userId/:page')
     async getNotifications(
         @Param('userId') userId: string,
+        @Param('page') page: number = 0,
     ): Promise<Notification> {
-        return this.notificationsService.getNotificaitons(userId);
+        return this.notificationsService.getNotificaitons(userId, page);
     }
 
     /**

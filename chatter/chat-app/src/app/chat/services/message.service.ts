@@ -5,12 +5,14 @@ import { environment } from 'src/environments/environment';
 import { Message } from '../interfaces/message.interface';
 import { Socket } from 'ngx-socket-io';
 import { ChatParams } from '../interfaces/chat-params.interface';
+import { Conversation } from '../interfaces/conversation.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
 
+  private readonly URL_API_CHAT: string = `${environment.BASEURL}/api/chat`;
   private readonly WEBSOCKET_JOIN_CHAT: string = 'join_chat';
   private readonly WEBSOCKET_CHAT: string = 'chat';
   private readonly WEBSOCKET_TYPING: string = 'typing';
@@ -22,12 +24,19 @@ export class MessageService {
   ) { }
 
   /**
+   * gets logged in users conversations list
+   */
+  getConversationsList(): Observable<Conversation[]> {
+    return this.http.get<Conversation[]>(`${this.URL_API_CHAT}/conversations-list`);
+  }
+
+  /**
    * gets messages between two users
    * @param senderId senders id
    * @param receiverId receivers id
    */
-  getMessages(senderId: string, receiverId: string): Observable<Message> {
-    return this.http.get<Message>(`${environment.BASEURL}/api/chat/message/${senderId}/${receiverId}`);
+  getMessages(senderId: string, receiverId: string): Observable<Conversation> {
+    return this.http.get<Conversation>(`${this.URL_API_CHAT}/message/${senderId}/${receiverId}`);
   }
 
   /**
@@ -36,7 +45,7 @@ export class MessageService {
    * @param receiver receiver of logged in users messages
    */
   markReceiverMessages(sender: string, receiver: string): Observable<void> {
-    return this.http.get<any>(`${environment.BASEURL}/api/chat/mark-receiver-messages/${sender}/${receiver}`);
+    return this.http.get<void>(`${this.URL_API_CHAT}/mark-receiver-messages/${sender}/${receiver}`);
   }
 
   /**
@@ -47,7 +56,7 @@ export class MessageService {
    * @param message message being sent
    */
   sendMessage(senderId: string, receiverId: string, receiverName: string, message: string): Observable<Message> {
-    return this.http.post<Message>(`${environment.BASEURL}/api/chat/message/${senderId}/${receiverId}`, {
+    return this.http.post<Message>(`${this.URL_API_CHAT}/message/${senderId}/${receiverId}`, {
       receiverName,
       message
     });

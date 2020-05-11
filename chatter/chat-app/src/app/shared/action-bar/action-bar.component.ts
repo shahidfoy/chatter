@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PayloadData } from '../interfaces/jwt-payload.interface';
-import { User, ChatList, MessageBody } from '../interfaces/user.interface';
+import { User, MessageBody } from '../interfaces/user.interface';
 import { TokenService } from '../services/token.service';
 import { UserService } from '../../streams/services/user.service';
 import * as _ from 'lodash';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'src/app/chat/services/message.service';
 import { NotificationsService } from '../services/notifications.service';
 import { PostService } from 'src/app/streams/services/post.service';
+import { Conversation } from 'src/app/chat/interfaces/conversation.interface';
 
 @Component({
   selector: 'app-action-bar',
@@ -72,15 +73,18 @@ export class ActionBarComponent implements OnInit {
    * checks for unread chat messages
    */
   private checkIfMessagesRead() {
-    this.chatListLength = 0;
-    if (this.loggedInUserData.chatList) {
-      this.loggedInUserData.chatList.forEach((chatList: ChatList) => {
-        const lastMessage: MessageBody = chatList.messageId.message[chatList.messageId.message.length - 1];
-        if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
-          if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
-            this.chatListLength++;
+
+    if (this.loggedInUserData) {
+      this.messageService.getConversationsList().subscribe((conversations: Conversation[]) => {
+        this.chatListLength = 0;
+        conversations.forEach((conversation: Conversation) => {
+          const lastMessage: MessageBody = conversation.messageId.message[conversation.messageId.message.length - 1];
+          if (this.router.url !== `/chat/message/${lastMessage.receivername}`) {
+            if (lastMessage.isRead === false && lastMessage.receivername === this.loggedInUser.username) {
+              this.chatListLength++;
+            }
           }
-        }
+        });
       });
     }
   }

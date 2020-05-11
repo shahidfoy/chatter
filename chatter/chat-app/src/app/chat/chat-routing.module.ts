@@ -8,11 +8,11 @@ import { NotificationsComponent } from '../chat/notifications/notifications.comp
 
 const routes: Routes = [
   {
-    path: 'chat',
+    path: '',
     component: ChatComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', component: NotificationsComponent },
+      { path: '', redirectTo: 'notifications', pathMatch: 'full' },
       { path: 'notifications', component: NotificationsComponent},
       { path: 'message', component: MessageComponent },
       { path: 'message/:username', component: MessageComponent },
@@ -21,7 +21,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class ChatRoutingModule { }

@@ -11,7 +11,7 @@ import { CommentsComponent } from './posts/comments/comments.component';
 
 const routes: Routes = [
   {
-    path: 'streams',
+    path: '',
     component: StreamsComponent,
     canActivate: [AuthGuard],
     children: [
@@ -30,11 +30,10 @@ const routes: Routes = [
       { path: 'users', component: UsersComponent },
     ]
   },
-  { path: '**', redirectTo: '/404' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class StreamsRoutingModule { }
