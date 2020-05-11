@@ -6,6 +6,8 @@ import { MessageComponent } from './message/message.component';
 import { SharedModule } from '../shared/shared.module';
 import { MessageService } from './services/message.service';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from '../shared/services/interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,13 @@ import { NotificationsComponent } from './notifications/notifications.component'
     ChatRoutingModule,
   ],
   exports: [ChatComponent],
-  providers: [MessageService]
+  providers: [
+    MessageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    }
+  ]
 })
 export class ChatModule { }

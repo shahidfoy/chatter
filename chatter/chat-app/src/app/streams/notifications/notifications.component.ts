@@ -43,6 +43,7 @@ export class NotificationsComponent implements OnInit {
     this.getLoggedInUsersNotifications();
 
     this.notificationsService.receiveNewNotificationActionSocket().subscribe(() => {
+      this.PAGE = 0;
       this.getLoggedInUsersNotifications();
     });
   }
