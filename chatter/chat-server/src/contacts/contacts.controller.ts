@@ -39,7 +39,7 @@ export class ContactsController {
      * gets user followers count
      * @param userId user id
      */
-    @Get('followers/count/:userId')
+    @Get('total/followers/count/:userId')
     async getUserFollowersCount(
         @Param('userId') userId: string,
     ): Promise<number> {
@@ -50,7 +50,7 @@ export class ContactsController {
      * gets user following count
      * @param userId user id
      */
-    @Get('following/count/:userId')
+    @Get('total/following/count/:userId')
     async getUserFollowingCount(
         @Param('userId') userId: string,
     ): Promise<number> {
