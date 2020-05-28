@@ -24,7 +24,7 @@
     "imagesloaded": "^4.1.4",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "ng-zorro-antd": "^9.1.1",
+    "ng-zorro-antd": "^9.1.2",
     "ngx-cookie-service": "^2.3.0",
     "ngx-masonry": "^1.1.4",
     "ngx-socket-io": "^3.0.1",
