@@ -35,7 +35,7 @@ export class ContactService {
    * @param userId user id
    */
   getUserFollowersCount(userId: string): Observable<number> {
-    return this.http.get<number>(`${environment.BASEURL}/api/contacts/followers/count/${userId}`);
+    return this.http.get<number>(`${environment.BASEURL}/api/contacts/total/followers/count/${userId}`);
   }
 
   /**
@@ -43,7 +43,7 @@ export class ContactService {
    * @param userId user id
    */
   getUserFollowingCount(userId: string): Observable<number> {
-    return this.http.get<number>(`${environment.BASEURL}/api/contacts/following/count/${userId}`);
+    return this.http.get<number>(`${environment.BASEURL}/api/contacts/total/following/count/${userId}`);
   }
 
   checkUserFollowing(userId: string, userFollowingId: string): Observable<boolean> {

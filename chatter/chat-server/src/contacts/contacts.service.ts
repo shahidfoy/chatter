@@ -61,6 +61,7 @@ export class ContactsService {
      * @param userId user id
      */
     async getUserFollowersCount(userId: string): Promise<number> {
+        if (!userId) { throw new InternalServerErrorException({ message: `Missing user credentails`}); }
         return await this.followerModel
                             .countDocuments({userId})
                             .catch((err) => {
@@ -73,6 +74,7 @@ export class ContactsService {
      * @param userId user id
      */
     async getUserFollowingCount(userId: string): Promise<number> {
+        if (!userId) { throw new InternalServerErrorException({ message: `Missing user credentials`}); }
         return await this.followingModel
                             .countDocuments({userId})
                             .catch((err) => {
