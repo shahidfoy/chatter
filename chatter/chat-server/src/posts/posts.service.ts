@@ -123,6 +123,7 @@ export class PostsService {
         };
 
         return await this.postModel.create(body).then(async (newPost: UserPost) => {
+            // might need to remove this update
             await this.userModel.updateOne(
                 { _id: user._id },
                 { $push: {

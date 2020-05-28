@@ -2,9 +2,11 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { appConfig } from 'src/config/app.config';
+
 export const environment = {
   BASEURL: 'http://localhost:3000',
-  CLOUDINARY_BASE_URL: 'https://res.cloudinary.com/do0bqipp2/image/upload',
+  CLOUDINARY_BASE_URL: `https://res.cloudinary.com/${appConfig.CLOUDINARY_CLOUD_NAME}/image/upload`,
   production: false
 };
 
