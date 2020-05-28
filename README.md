@@ -9,6 +9,17 @@ Requires:
 
 ## Angular
 
+### Setup
+Inside of `chatter/chat-app`
+Add app config `app.config.ts` to the `src/config` folder. Requires cloudinary account
+
+`app.config.ts`
+```
+export const appConfig: any = {
+  CLOUDINARY_CLOUD_NAME: 'cloudinary cloud name',
+};
+```
+
 ### Run
 To start front-end open `chatter/chat-app` install packages `npm i` and run `ng serve`
 runs locally on localhost:4200
@@ -22,6 +33,7 @@ ng serve
 ## NestJS
 
 ### Setup
+Inside of `chatter/chat-server`
 Add cloudinary config `cloudinary.config.ts` to the `src/config` folder. Requires cloudinary account
 
 `cloudinary.config.ts`
