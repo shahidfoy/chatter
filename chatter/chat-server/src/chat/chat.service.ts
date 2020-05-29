@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  BadRequestException,
+} from '@nestjs/common';
 import { User } from 'src/users/models/user.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -7,7 +11,7 @@ import { Conversation } from './models/conversation.model';
 
 @Injectable()
 export class ChatService {
-  private readonly MESSAGE_LENGTH = 250;
+  private readonly MAX_MESSAGE_LENGTH = 10;
   constructor(
     @InjectModel('Message') private readonly messageModel: Model<Message>,
     @InjectModel('Conversation')
@@ -109,8 +113,11 @@ export class ChatService {
     receiverName: string,
     message: string,
   ): Promise<Message> {
-    if (message.length > this.MESSAGE_LENGTH)
-      message = message.substring(0, this.MESSAGE_LENGTH);
+    if (message.length > this.MAX_MESSAGE_LENGTH) {
+      throw new BadRequestException({
+        message: 'Error message occured ${error}',
+      });
+    }
     const conversations = await this.conversationModel.find({
       $or: [
         { senderId, receiverId },
