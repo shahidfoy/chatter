@@ -7,7 +7,7 @@ import { Conversation } from './models/conversation.model';
 
 @Injectable()
 export class ChatService {
-  private readonly MESSAGE_LENGTH = 10;
+  private readonly MESSAGE_LENGTH = 250;
   constructor(
     @InjectModel('Message') private readonly messageModel: Model<Message>,
     @InjectModel('Conversation')
