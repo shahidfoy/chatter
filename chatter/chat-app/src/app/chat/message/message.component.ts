@@ -10,6 +10,7 @@ import { ApplicationStateService } from 'src/app/shared/services/application-sta
 import { ChatParams } from '../interfaces/chat-params.interface';
 import { ImageService } from 'src/app/shared/services/image.service';
 import { Conversation } from '../interfaces/conversation.interface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-message',
@@ -27,6 +28,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   loggedInUserData: User;
   message: string;
   messages: MessageContents[];
+  chatErrorMessage: string;
   typing = false;
   isLoading = true;
 
@@ -92,11 +94,17 @@ export class MessageComponent implements OnInit, AfterViewChecked {
         this.receiverData._id,
         this.receiverUsername,
         this.message)
-      .subscribe((message: Message) => {
-        this.message = '';
-        this.messageService.emitNewChatSocket();
-      });
-    }
+      .subscribe(
+        (message: Message) => {
+          this.message = '';
+          this.messageService.emitNewChatSocket();
+          this.chatErrorMessage = undefined;
+        },
+        (err: HttpErrorResponse) => {
+          // console.log('ERROR', err);
+          this.chatErrorMessage = err.error.message;
+        });
+      }
   }
 
   /**

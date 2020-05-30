@@ -60,6 +60,9 @@
       <ng-template #suffixIconButton>
         <button nz-button nzType="primary"><i class="fas fa-paper-plane"></i></button>
       </ng-template>
+      <div *ngIf="chatErrorMessage" class="error-message">
+        {{ chatErrorMessage }}
+      </div>
     </form>
   </div>
 </div>
