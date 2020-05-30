@@ -101,7 +101,6 @@ export class MessageComponent implements OnInit, AfterViewChecked {
           this.chatErrorMessage = undefined;
         },
         (err: HttpErrorResponse) => {
-          // console.log('ERROR', err);
           this.chatErrorMessage = err.error.message;
         });
       }
