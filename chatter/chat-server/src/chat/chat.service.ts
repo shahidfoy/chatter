@@ -115,7 +115,8 @@ export class ChatService {
   ): Promise<Message> {
     if (message.length > this.MAX_MESSAGE_LENGTH) {
       throw new BadRequestException({
-        message: 'Error message occured ${error}',
+        message:
+          'Error, a message cannot have more than ${MAX_MESSAGE_LENGTH} characters.',
       });
     }
     const conversations = await this.conversationModel.find({
