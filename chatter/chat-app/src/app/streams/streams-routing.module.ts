@@ -8,6 +8,7 @@ import { UsersComponent } from './users/users.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ChangePasswordModalComponent } from '../shared/change-password/change-password-modal.component';
 import { CommentsComponent } from './posts/comments/comments.component';
+import { GroupsComponent } from './groups/groups.component';
 
 const routes: Routes = [
   {
@@ -26,7 +27,7 @@ const routes: Routes = [
       { path: 'posts', component: PostsComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'profile/:username', component: ProfileComponent },
-      
+      { path: 'groups', component: GroupsComponent },
       { path: 'trending', component: PostsComponent },
       { path: 'users', component: UsersComponent },
     ]

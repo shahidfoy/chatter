@@ -17,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ContactsModule } from './contacts/contacts.module';
 import { ContactsController } from './contacts/contacts.controller';
+import { GroupsModule } from './groups/groups.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ContactsController } from './contacts/contacts.controller';
     ImagesModule,
     NotificationsModule,
     ContactsModule,
+    GroupsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

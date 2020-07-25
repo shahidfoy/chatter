@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { UserPost } from './models/post.model';
 import { User } from '../users/models/user.model';
 import * as Joi from '@hapi/joi';
-import { Tag } from './models/tag.model';
+import { Tag } from '../groups/models/tag.model';
 import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
