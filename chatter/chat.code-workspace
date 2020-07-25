@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "chat-server"
+		},
+		{
+			"path": "chat-mobile"
 		}
 	],
 	"settings": {}
