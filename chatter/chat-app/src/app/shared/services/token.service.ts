@@ -16,24 +16,24 @@ export class TokenService {
    * sets jwt token
    */
   setToken(token: string) {
-    this.cookieService.set(this.CHAT_TOKEN, token);
-    // localStorage.setItem(this.CHAT_TOKEN, token);
+    // this.cookieService.set(this.CHAT_TOKEN, token);
+    localStorage.setItem(this.CHAT_TOKEN, token);
   }
 
   /**
    * gets jwt token
    */
   getToken(): string {
-    return this.cookieService.get(this.CHAT_TOKEN);
-    // return localStorage.getItem(this.CHAT_TOKEN);
+    // return this.cookieService.get(this.CHAT_TOKEN);
+    return localStorage.getItem(this.CHAT_TOKEN);
   }
 
   /**
    * deletes token
    */
   deleteToken() {
-    this.cookieService.delete(this.CHAT_TOKEN, '/');
-    // localStorage.removeItem(this.CHAT_TOKEN);
+    // this.cookieService.delete(this.CHAT_TOKEN, '/');
+    localStorage.removeItem(this.CHAT_TOKEN);
   }
 
   /**
