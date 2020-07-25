@@ -13,7 +13,7 @@ export class GroupsService {
      */
     async getGroupTags(): Promise<Tag[]> {
         try {
-            const tags = await this.tagModel.find();
+            const tags = await this.tagModel.find().sort({ tag: 1 });
             return tags;
         } catch (err) {
             throw new InternalServerErrorException({ message: `Retrieving tags Error Occured ${err}` });

@@ -1,1 +1,6 @@
-<p>groups works!</p>
+<div class="container">
+    <nz-card *ngFor="let tag of tags">
+        <img [src]="tag.img" />
+        <p>{{ tag.tag }}</p>
+    </nz-card>
+</div>

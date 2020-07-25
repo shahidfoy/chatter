@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+nz-card {
+    margin: 5px;
+}
+
+img {
+    height: 200px;
+    width: 200px;
+    border-radius: 8px;
+}
+
+p {
+    padding-top: 5px;
+}
