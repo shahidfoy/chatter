@@ -26,6 +26,7 @@ const routes: Routes = [
       { path: 'posts', component: PostsComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'profile/:username', component: ProfileComponent },
+      
       { path: 'trending', component: PostsComponent },
       { path: 'users', component: UsersComponent },
     ]

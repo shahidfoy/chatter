@@ -1,11 +1,12 @@
 <div class="app-header">
 
   <a (click)="closeSideNav()" [routerLink]="['/streams/profile']">
-    <nz-avatar
-    class="margin-left-24"
-    nzIcon="user"
-    [nzSrc]="avatarUrl"
-    [nzShape]="'square'"></nz-avatar>
+    <button nz-button nzShape="round">
+      <nz-avatar
+      nzIcon="user"
+      [nzSrc]="avatarUrl"
+      [nzShape]="'square'"></nz-avatar>
+    </button>
   </a>
 
   <span class="header-title">

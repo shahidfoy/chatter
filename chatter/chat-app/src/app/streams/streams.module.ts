@@ -15,6 +15,7 @@ import { UploadImageModalComponent } from './profile/upload-image-modal/upload-i
 import { PostModalComponent } from './posts/post-modal/post-modal.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '../shared/services/interceptors/jwt.interceptor';
+import { GroupsComponent } from './groups/groups.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { JwtInterceptor } from '../shared/services/interceptors/jwt.interceptor'
     UsersComponent,
     NotificationsComponent,
     UploadImageModalComponent,
-    PostModalComponent
+    PostModalComponent,
+    GroupsComponent
   ],
   imports: [
     CommonModule,
