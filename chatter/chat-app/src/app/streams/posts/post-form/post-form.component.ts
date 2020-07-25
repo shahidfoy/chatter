@@ -10,6 +10,8 @@ import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
 import { environment } from 'src/environments/environment';
 import { PayloadData } from 'src/app/shared/interfaces/jwt-payload.interface';
 import { TokenService } from 'src/app/shared/services/token.service';
+import { GroupsService } from '../../services/groups.service';
+import { Tag } from '../../interfaces/tag.interface';
 
 @Component({
   selector: 'app-post-form',
@@ -31,11 +33,13 @@ export class PostFormComponent implements OnInit {
   charCount = this.MAX_CHARS;
   submitting = false;
   isLoading = false;
+  allowedTags: string[];
 
   constructor(
     private fb: FormBuilder,
     private postService: PostService,
     private imageService: ImageService,
+    private groupsService: GroupsService,
     private notification: NzNotificationService,
     private tokenService: TokenService,
   ) { }
@@ -49,6 +53,11 @@ export class PostFormComponent implements OnInit {
     });
 
     this.loggedInUser = this.tokenService.getPayload();
+
+    this.groupsService.getTags().subscribe((tags: Tag[]) => {
+      this.allowedTags = tags.map((tag: Tag) => tag.tag);
+      this.postForm.controls.tags.setValue(this.allowedTags); 
+    });
   }
 
   // TODO:: add and retrieve tags for posts

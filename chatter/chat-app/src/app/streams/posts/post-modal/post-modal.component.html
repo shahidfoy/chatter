@@ -37,27 +37,8 @@
     </nz-upload>
 
     <br>
-    <nz-select
-      formControlName="tags"
-      [nzMaxTagCount]="3"
-      [nzMaxTagPlaceholder]="tagPlaceHolder"
-      nzMode="multiple"
-      nzPlaceHolder="Tags">
-      <nz-option *ngFor="let tag of post.tags" [nzLabel]="tag" [nzValue]="tag"></nz-option>
-    </nz-select>
-    <ng-template #tagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected </ng-template>
-    <!-- <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag> -->
+    Tags: <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag>
   </form>
-
-  <!-- view post -->
-  <!-- <ng-template class="post" #viewPost>
-    <p>{{ post.post }}</p>
-    <img [src]="postImage"/>
-    <br>
-    <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag> -->
-    <!-- post comments -->
-    <!-- <app-comments [postId]="post._id"></app-comments>
-  </ng-template> -->
 
 </ng-template>
 
