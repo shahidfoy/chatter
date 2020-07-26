@@ -16,7 +16,7 @@ const routes: Routes = [
     component: StreamsComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: 'posts', pathMatch: 'full' },
+      { path: '', redirectTo: 'groups', pathMatch: 'full' },
       { path: 'change-password', component: ChangePasswordModalComponent },
       { path: 'followers', component: UsersComponent },
       { path: 'followers/:username', component: UsersComponent },

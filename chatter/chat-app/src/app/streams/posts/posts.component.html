@@ -26,7 +26,7 @@
                 <p class="post">{{ post.post }}</p>
                 <img [src]="getPostImage(post)"/>
                 <br>
-                <nz-tag *ngFor="let tag of post.tags">{{tag}}</nz-tag>
+                <nz-tag *ngFor="let tag of post.tags"><a [routerLink]="['/streams/posts', tag]">{{tag}}</a></nz-tag>
               </nz-comment-content>
               <nz-comment-action>
                 <i

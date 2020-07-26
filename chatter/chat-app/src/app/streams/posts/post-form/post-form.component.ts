@@ -47,7 +47,6 @@ export class PostFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.allowedTags = [];
     this.postForm = this.fb.group({
       post: ['', Validators.required],
       tags: [],
@@ -56,6 +55,7 @@ export class PostFormComponent implements OnInit {
     });
 
     this.route.params.subscribe(params => { 
+      this.allowedTags = [];
       this.allowedTags.push(params.group);
       this.postForm.controls.tags.setValue(this.allowedTags);
     });
