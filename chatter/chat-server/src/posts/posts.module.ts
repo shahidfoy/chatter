@@ -3,7 +3,7 @@ import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
 import { PostSchema } from './models/post.model';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TagSchema } from './models/tag.model';
+import { TagSchema } from '../groups/models/tag.model';
 import { UserSchema } from '../users/models/user.model';
 import { PostsGateway } from './gateways/posts.gateway';
 import { CommentsGateway } from './gateways/comments.gateway';

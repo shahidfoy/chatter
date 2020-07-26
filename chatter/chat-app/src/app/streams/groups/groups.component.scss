@@ -1,0 +1,27 @@
+h2 {
+    margin-left: 30px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+nz-card {
+    margin: 8px;
+    border-radius: 8px;
+}
+
+img {
+    height: 200px;
+    width: 200px;
+    border-radius: 8px;
+}
+
+p {
+    padding-top: 5px;
+}
+
+.img-isMobile {
+    width: 100%;
+}

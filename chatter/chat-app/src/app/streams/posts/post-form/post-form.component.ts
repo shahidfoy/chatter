@@ -10,6 +10,9 @@ import { CloudinaryResponse } from '../../interfaces/cloudinary-response';
 import { environment } from 'src/environments/environment';
 import { PayloadData } from 'src/app/shared/interfaces/jwt-payload.interface';
 import { TokenService } from 'src/app/shared/services/token.service';
+import { GroupsService } from '../../services/groups.service';
+import { Tag } from '../../interfaces/tag.interface';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-post-form',
@@ -31,13 +34,16 @@ export class PostFormComponent implements OnInit {
   charCount = this.MAX_CHARS;
   submitting = false;
   isLoading = false;
+  allowedTags: string[];
 
   constructor(
     private fb: FormBuilder,
     private postService: PostService,
     private imageService: ImageService,
+    private groupsService: GroupsService,
     private notification: NzNotificationService,
     private tokenService: TokenService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -48,12 +54,20 @@ export class PostFormComponent implements OnInit {
       picId: [''],
     });
 
-    this.loggedInUser = this.tokenService.getPayload();
-  }
+    this.route.params.subscribe(params => { 
+      this.allowedTags = [];
+      this.allowedTags.push(params.group);
+      this.postForm.controls.tags.setValue(this.allowedTags);
+    });
 
-  // TODO:: add and retrieve tags for posts
-  // TODO:: fix empty tag on enter bug
-  // TODO:: limit tag length
+    this.loggedInUser = this.tokenService.getPayload();
+
+    // Possibily add later
+    // this.groupsService.getTags().subscribe((tags: Tag[]) => {
+    //   this.allowedTags = tags.map((tag: Tag) => tag.tag);
+    //   this.postForm.controls.tags.setValue(this.allowedTags); 
+    // });
+  }
 
   /**
    * submits users post

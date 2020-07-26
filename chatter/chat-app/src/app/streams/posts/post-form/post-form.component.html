@@ -10,9 +10,10 @@
             rows="4"
             (keydown)="checkCharLength(postTextarea.value)"
             placeholder="What's on your mind.."></textarea>
-          <nz-select nzMode="tags" nzPlaceHolder="Tags" formControlName="tags">
-          </nz-select>
-          <span class="float-right">Limit: {{ charCount }}</span>
+          <div class="padding-12">
+            <nz-tag *ngFor="let tag of allowedTags" nzColor="default">{{ tag }}</nz-tag>
+            <span class="float-right">Text Limit: {{ charCount }}</span>
+          </div>
         </nz-form-item>
         <nz-form-item>
           <button

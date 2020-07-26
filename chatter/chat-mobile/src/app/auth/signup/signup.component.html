@@ -1,0 +1,25 @@
+<div>
+  <div class="logo">
+    <img src="assets/logo_name.jpg">
+  </div>
+
+  <ion-list>
+    <ion-item>
+      <ion-icon name="person-outline"></ion-icon>
+      <ion-input class="input-field" type="text" placeholder="Username"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="mail-outline"></ion-icon>
+      <ion-input class="input-field" type="text" placeholder="Email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="lock-closed-outline"></ion-icon>
+      <ion-input class="input-field" type="password" placeholder="Password"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" color="success">Sign Up</ion-button>
+    <p>Already have an account? <a (click)="navLogin()">Login here</a></p>
+  </ion-list>
+</div>

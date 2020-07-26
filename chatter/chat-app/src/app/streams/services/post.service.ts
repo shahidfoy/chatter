@@ -24,14 +24,25 @@ export class PostService {
 
   /**
    * gets all posts
+   * @param page user selected page
    */
   getPosts(page: number = 0): Observable<Post[]> {
     return this.http.get<Post[]>(`${environment.BASEURL}/api/posts/all/${page}`);
   }
 
   /**
+   * gets all posts by tag
+   * @param tag user selected tag
+   * @param page user selected page
+   */
+  getPostsByTag(tag: string, page: number = 0): Observable<Post[]> {
+    return this.http.get<Post[]>(`${environment.BASEURL}/api/posts/tag/${tag}/${page}`);
+  }
+
+  /**
    * gets posts by user id
    * @param userId user id
+   * @param page user selected page
    */
   getPostsByUserId(userId: string, page: number = 0): Observable<Post[]> {
     return this.http.get<Post[]>(`${environment.BASEURL}/api/posts/userId/${userId}/${page}`);
@@ -39,6 +50,7 @@ export class PostService {
 
   /**
    * gets trending posts
+   * @param page user selected page
    */
   getTrendingPosts(page: number = 0): Observable<Post[]> {
     return this.http.get<Post[]>(`${environment.BASEURL}/api/posts/trending/${page}`);

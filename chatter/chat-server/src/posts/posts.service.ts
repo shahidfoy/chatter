@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { UserPost } from './models/post.model';
 import { User } from '../users/models/user.model';
 import * as Joi from '@hapi/joi';
-import { Tag } from './models/tag.model';
+import { Tag } from '../groups/models/tag.model';
 import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
@@ -20,12 +20,33 @@ export class PostsService {
     ) {}
 
     /**
-     * gets all user posts
+     * gets all posts
+     * @param page user selected page
      */
     async getPosts(page: number = 0): Promise<UserPost[]> {
         const skip = page * this.LIMIT;
         try {
             const posts = await this.postModel.find({}, {},
+                    { skip, limit: this.LIMIT })
+                .populate('user')
+                .sort({ createdAt: -1 });
+            return posts;
+        } catch (err) {
+            throw new InternalServerErrorException({ message: `Retrieving posts Error Occured ${err}`});
+        }
+    }
+
+    /**
+     * get all posts by selected tag
+     * @param tag selected tag
+     * @param page user selected page
+     */
+    async getPostsByTag(tag: string, page: number): Promise<UserPost[]> {
+        const skip = page * this.LIMIT;
+        try {
+            const posts = await this.postModel.find({
+                tags: { $elemMatch: { "$in": [tag] } }
+            }, {},
                     { skip, limit: this.LIMIT })
                 .populate('user')
                 .sort({ createdAt: -1 });

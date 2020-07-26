@@ -18,6 +18,14 @@ export class PostsController {
         return this.postsService.getPosts(page);
     }
 
+    @Get('tag/:tag/:page')
+    async getPostsByTag(
+        @Param('tag') tag: string,
+        @Param('page') page: number = 0,
+    ): Promise<UserPost[]> {
+        return this.postsService.getPostsByTag(tag, page);
+    }
+
     /**
      * gets posts by user id
      * @param userId user id

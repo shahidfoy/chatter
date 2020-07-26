@@ -5,22 +5,23 @@
   nzTheme="dark"
   nzMode="inline">
   <li (click)="closeSideNav()" nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
+    <a [routerLink]="['/streams/groups']">
+      <i nz-icon nzType="appstore"></i>
+      <span>Groups</span>
+    </a>
+  </li>
+  <!-- <li (click)="closeSideNav()" nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
     <a [routerLink]="['/streams/posts']">
       <i nz-icon nzType="wifi"></i>
       <span>Posts</span>
     </a>
-  </li>
+  </li> -->
   <li (click)="closeSideNav()" nz-menu-item [routerLinkActive]="['ant-menu-item-selected']">
     <a [routerLink]="['/streams/trending']">
       <i nz-icon nzType="shake"></i>
       <span>Trending</span>
     </a>
   </li>
-
-  <!-- <li nz-menu-item>
-    <i nz-icon nzType="appstore"></i>
-    <span>Groups</span>
-  </li> -->
 
   <li nz-submenu nzTitle="Users" nzIcon="team">
     <ul>
