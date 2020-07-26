@@ -14,11 +14,11 @@
         </div>
       </div>
 
-      <p>{{ post.post }}</p>
+      <p [innerHTML]="post.post | urlLink"></p>
       <img class="img-width" [src]="postImage"/>
     </div>
     <br>
-    <nz-tag class="post-tags float-right" *ngFor="let tag of post.tags">{{tag}}</nz-tag>
+    <nz-tag class="post-tags float-right" *ngFor="let tag of post.tags">{{ tag }}</nz-tag>
 
     <div class="container-actions">
       <div>
@@ -81,7 +81,7 @@
           nzIcon="user"
           [nzSrc]="getUserAvatar(item.userId)"></nz-avatar>
         <nz-comment-content>
-          <p>{{ item.comment }}</p>
+          <p [innerHtml]="item.comment | urlLink"></p>
         </nz-comment-content>
       </nz-comment>
     </ng-template>

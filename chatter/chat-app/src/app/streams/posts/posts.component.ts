@@ -304,6 +304,8 @@ export class PostsComponent implements OnInit, AfterViewInit {
       this.postService.getPostsByTag(this.selectedGroup, this.PAGE).subscribe(postsByTag => {
         if (postsByTag.length < this.LIMIT) { this.paginateMorePosts = false }
         this.posts = postsByTag;
+        // this.posts.forEach(post => { post.post = this.detectUrl(post.post) });
+        console.log(this.posts);
         this.isLoading = false;
         this.updateLayout();
       });
@@ -315,6 +317,11 @@ export class PostsComponent implements OnInit, AfterViewInit {
         this.updateLayout();
       });
     }
+  }
+
+  private detectUrl(text: string) {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, `<a href="$1" target="_blank">$1</a>`);
   }
 
   /**
@@ -333,6 +340,9 @@ export class PostsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * gets trending posts
+   */
   private getTrendingPosts() {
     this.isTrending = true;
     this.postService.getTrendingPosts(this.PAGE).subscribe(posts => {

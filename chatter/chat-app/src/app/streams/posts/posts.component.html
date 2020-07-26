@@ -18,12 +18,11 @@
                 nzIcon="user"
                 [nzSrc]="getAvatarUrl(post.user)"
                 [nzSize]="'large'"></nz-avatar>
-
             </nz-comment>
 
             <nz-comment>
               <nz-comment-content>
-                <p class="post">{{ post.post }}</p>
+                <p class="post" [innerHTML]="post.post | urlLink"></p>
                 <img [src]="getPostImage(post)"/>
                 <br>
                 <nz-tag *ngFor="let tag of post.tags"><a [routerLink]="['/streams/posts', tag]">{{tag}}</a></nz-tag>
