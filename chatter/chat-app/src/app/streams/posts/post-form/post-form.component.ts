@@ -12,6 +12,7 @@ import { PayloadData } from 'src/app/shared/interfaces/jwt-payload.interface';
 import { TokenService } from 'src/app/shared/services/token.service';
 import { GroupsService } from '../../services/groups.service';
 import { Tag } from '../../interfaces/tag.interface';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-post-form',
@@ -42,9 +43,11 @@ export class PostFormComponent implements OnInit {
     private groupsService: GroupsService,
     private notification: NzNotificationService,
     private tokenService: TokenService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.allowedTags = [];
     this.postForm = this.fb.group({
       post: ['', Validators.required],
       tags: [],
@@ -52,17 +55,19 @@ export class PostFormComponent implements OnInit {
       picId: [''],
     });
 
+    this.route.params.subscribe(params => { 
+      this.allowedTags.push(params.group);
+      this.postForm.controls.tags.setValue(this.allowedTags);
+    });
+
     this.loggedInUser = this.tokenService.getPayload();
 
-    this.groupsService.getTags().subscribe((tags: Tag[]) => {
-      this.allowedTags = tags.map((tag: Tag) => tag.tag);
-      this.postForm.controls.tags.setValue(this.allowedTags); 
-    });
+    // Possibily add later
+    // this.groupsService.getTags().subscribe((tags: Tag[]) => {
+    //   this.allowedTags = tags.map((tag: Tag) => tag.tag);
+    //   this.postForm.controls.tags.setValue(this.allowedTags); 
+    // });
   }
-
-  // TODO:: add and retrieve tags for posts
-  // TODO:: fix empty tag on enter bug
-  // TODO:: limit tag length
 
   /**
    * submits users post

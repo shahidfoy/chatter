@@ -1,7 +1,12 @@
 <h2>Groups</h2>
 <div class="container">
     <nz-card *ngFor="let tag of tags">
-        <img [src]="tag.img" />
-        <p>{{ tag.tag }}</p>
+        <a (click)="navigateToPosts(tag.tag)">
+            <img 
+                [src]="tag.img" 
+                [ngClass]="{ 'img-isMobile': isMobile }"
+            />
+            <p>{{ tag.tag }}</p>
+        </a>
     </nz-card>
 </div>

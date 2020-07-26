@@ -24,6 +24,7 @@ const routes: Routes = [
       { path: 'following/:username', component: UsersComponent },
       { path: 'notifications', component: NotificationsComponent },
       { path: 'post/comments/:id', component: CommentsComponent },
+      { path: 'posts/:group', component: PostsComponent },
       { path: 'posts', component: PostsComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'profile/:username', component: ProfileComponent },

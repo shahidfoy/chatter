@@ -39,6 +39,7 @@ export class PostsComponent implements OnInit, AfterViewInit {
   isLoggedInUser = false;
   isPostVisible = false;
   isTrending = false;
+  selectedGroup: string;
 
   constructor(
     private tokenService: TokenService,
@@ -58,11 +59,14 @@ export class PostsComponent implements OnInit, AfterViewInit {
     this.applicationStateService.isMobile.subscribe(isMobile => {
       this.isMobile = isMobile;
     });
+
+    this.activatedRoute.params.subscribe(params => { 
+      this.selectedGroup = params.group;
+      this.setUpPosts();
+    });
   }
 
   ngAfterViewInit() {
-    this.setUpPosts();
-
     this.imageService.profileImageSubject.subscribe(() => {
       this.setUpPosts();
     });
@@ -296,12 +300,21 @@ export class PostsComponent implements OnInit, AfterViewInit {
    * gets all posts
    */
   private getAllPosts() {
-    this.postService.getPosts(this.PAGE).subscribe(posts => {
-      if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
-      this.posts = posts;
-      this.isLoading = false;
-      this.updateLayout();
-    });
+    if(this.selectedGroup) {
+      this.postService.getPostsByTag(this.selectedGroup, this.PAGE).subscribe(postsByTag => {
+        if (postsByTag.length < this.LIMIT) { this.paginateMorePosts = false }
+        this.posts = postsByTag;
+        this.isLoading = false;
+        this.updateLayout();
+      });
+    } else {
+      this.postService.getPosts(this.PAGE).subscribe(posts => {
+        if (posts.length < this.LIMIT) { this.paginateMorePosts = false; }
+        this.posts = posts;
+        this.isLoading = false;
+        this.updateLayout();
+      });
+    }
   }
 
   /**

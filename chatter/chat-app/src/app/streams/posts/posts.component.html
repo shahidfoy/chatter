@@ -1,5 +1,5 @@
 
-<app-post-form *ngIf="isLoggedInUser && !isTrending" [isMobile]="isMobile"></app-post-form>
+<app-post-form *ngIf="isLoggedInUser && !isTrending && selectedGroup" [isMobile]="isMobile"></app-post-form>
 
 <app-loading *ngIf="isLoading"></app-loading>
 <nz-content class="posts">
