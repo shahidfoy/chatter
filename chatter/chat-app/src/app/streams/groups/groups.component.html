@@ -1,13 +1,24 @@
 <h2>Groups</h2>
 <div class="container">
-    <nz-card *ngFor="let tag of tags">
+    <nz-card *ngFor="let tag of tags" [ngClass]="{ 'isMobile': isMobile }">
         <a (click)="navigateToPosts(tag.tag)">
             <img 
                 [src]="tag.img" 
-                [ngClass]="{ 'img-isMobile': isMobile }"
+                [ngClass]="{ 'isMobile': isMobile }"
             />
             <h3>{{ tag.tag }}</h3>
             <p>{{ tag.description }}</p>
+        </a>
+    </nz-card>
+
+    <nz-card [ngClass]="{ 'isMobile': isMobile }">
+        <a>
+            <img 
+                src="assets/add_group.png" 
+                [ngClass]="{ 'isMobile': isMobile }"
+            />
+            <h3>Request group</h3>
+            <p>Create a request to add a new group</p>
         </a>
     </nz-card>
 </div>
