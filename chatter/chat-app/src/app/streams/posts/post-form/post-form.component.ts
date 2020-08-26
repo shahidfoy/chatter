@@ -91,6 +91,7 @@ export class PostFormComponent implements OnInit {
    * adds post through post service
    */
   addPost() {
+    const postText = this.postForm.value.post;
     this.postService.addPost(this.postForm.value).subscribe((data: Post) => {
       this.postForm.reset();
       this.isLoading = false;

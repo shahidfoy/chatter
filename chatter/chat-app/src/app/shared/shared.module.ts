@@ -84,6 +84,7 @@ import {
   NzWaveModule,
 } from 'ng-zorro-antd';
 import { NzResizableModule } from 'ng-zorro-antd/resizable';
+import { UrlLinkPipe } from './pipes/url-link.pipe';
 
 const socketConfig: SocketIoConfig = { url: `${environment.BASEURL}`, options: {} };
 const zorroModules = [
@@ -163,6 +164,7 @@ const zorroModules = [
     SideNavComponent,
     ChangePasswordModalComponent,
     LoadingComponent,
+    UrlLinkPipe,
   ],
   imports: [
     zorroModules,
@@ -186,6 +188,7 @@ const zorroModules = [
     SideNavComponent,
     ChangePasswordModalComponent,
     LoadingComponent,
+    UrlLinkPipe,
   ],
   providers: [
     ImageService,
